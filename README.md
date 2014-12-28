@@ -31,6 +31,10 @@ defmodule SlackRtm do
 
   def handle_message({:type, "message", response}, socket, state) do
     state = state ++ [response.text]
+
+    message = "Received #{length(state)} messages so far!"
+    Slack.send(message, response.channel, socket)
+
     {:ok, state}
   end
 
@@ -40,9 +44,8 @@ defmodule SlackRtm do
 end
 ```
 
-At the moment there's no method to send replies without using
-`:websocket_client.send`. You can reply to the server via
-`:websocket_client.send({:text, "Hello!"}, socket)`.
+You can send messages to channels using `Slack.send`, which takes the message as
+the first argument, the channel as the second, and the socket as the third.
 
 Slack has *a lot* of message types so it's a good idea to define a callback like
 above where unhandled message types don't crash your application. You can find a

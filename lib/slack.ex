@@ -61,4 +61,12 @@ defmodule Slack do
 
     websocket.start_link url, Slack.Socket, module
   end
+
+  @doc "Sends `text` as a message to the the channel with id of `channel_id`"
+  def send_message(text, channel_id, socket, websocket \\ :websocket_client) do
+    message = %{type: "message", text: text, channel: channel_id}
+              |> JSX.encode!
+
+    websocket.send({:text, message}, socket)
+  end
 end

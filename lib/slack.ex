@@ -1,6 +1,12 @@
 defmodule Slack do
   @moduledoc """
-  A behavior for the Slack real time messaging API via websockets.
+  A behaviour module for implementing Slack realt time messaging through a
+  websocket connection.
+
+  To use this module you will need a valid Slack API token. You can find your
+  token on the [Slack Web API] page.
+
+  [Slack Web API]: https://api.slack.com/web
 
   ## Example
 
@@ -32,14 +38,29 @@ defmodule Slack do
   Slack has a large variety of types it can send you, so it's wise ot have a
   catch all handle like above to avoid crashing.
 
+  ## Callbacks
+
+  * `init(socket)` - Called when the websocket connection starts
+
+
+    It must return:
+
+
+      - `{:ok, state}`
+
+  * `handle_message({:type, type, json_map}, socket, state)`
+
+    It must return:
+
+      - `{:ok, state}`
+
   You can find every type Slack will respond with and examples of each on
   the [Slack RTM API](https://api.slack.com/rtm) page.
   """
-  use Behaviour
 
   defmacro __using__(_) do
     quote do
-      @behaviour Slack
+      @behaviour Slack.Handler
 
       def init(_) do
         {:ok, nil}
@@ -52,13 +73,6 @@ defmodule Slack do
       defoverridable [init: 1, handle_message: 3]
     end
   end
-
-  defcallback init(:websocket_req.Req) :: {:ok, any}
-  defcallback handle_message(
-    {:type, binary, map},
-    :websocket_req.Req,
-    any
-  ) :: {:ok, any}
 
   @doc """
   Starts a websocket connection to the Slack real time messaging API using the

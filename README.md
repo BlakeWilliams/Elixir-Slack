@@ -46,6 +46,7 @@ end
 
 You can send messages to channels using `Slack.send`, which takes the message as
 the first argument, the channel as the second, and the socket as the third.
+`:websocket_client.send({:text, "Hello!"}, socket)`.
 
 Slack has *a lot* of message types so it's a good idea to define a callback like
 above where unhandled message types don't crash your application. You can find a

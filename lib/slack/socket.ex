@@ -1,5 +1,6 @@
 defmodule Slack.Socket do
   @behaviour :websocket_client_handler
+  @moduledoc false
 
   def init(handler, socket) do
     {:ok, state} = handler.init(socket)

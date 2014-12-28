@@ -17,6 +17,7 @@ defmodule Slack do
     end
 
     def handle_message({:type, "message", response}, socket, state) do
+      Slack.send_message("Received message!", response.channel, socket)
       state = state ++ [response.text]
       {:ok, state}
     end
@@ -52,9 +53,20 @@ defmodule Slack do
     end
   end
 
-  defcallback init(pid)
-  defcallback handle_message({:type, binary, binary}, pid, any)
+  defcallback init(:websocket_req.Req) :: {:ok, any}
+  defcallback handle_message(
+    {:type, binary, map},
+    :websocket_req.Req,
+    any
+  ) :: {:ok, any}
 
+  @doc """
+  Starts a websocket connection to the Slack real time messaging API using the
+  given token.
+
+  Once started it calls the `init/1` function on the given module passing in the
+  websocket connection as its argument.
+  """
   def start_link(module, token, rtm \\ Slack.Rtm, websocket \\ :websocket_client) do
     {:ok, rtm_response} = rtm.start(token)
     url = rtm_response.url |> String.to_char_list
@@ -62,7 +74,11 @@ defmodule Slack do
     websocket.start_link url, Slack.Socket, module
   end
 
-  @doc "Sends `text` as a message to the the channel with id of `channel_id`"
+  @doc """
+  Sends `text` as a message to the the channel with id of `channel_id`
+
+  eg: `Slack.send_message("Morning everyone!", "CA1B2C3D4", sock)`
+  """
   def send_message(text, channel_id, socket, websocket \\ :websocket_client) do
     message = %{type: "message", text: text, channel: channel_id}
               |> JSX.encode!

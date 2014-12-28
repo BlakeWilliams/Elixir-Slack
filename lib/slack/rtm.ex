@@ -1,4 +1,5 @@
 defmodule Slack.Rtm do
+  @moduledoc false
   @url "https://slack.com/api/rtm.start?token="
 
   def start(token, http \\ HTTPoison) do

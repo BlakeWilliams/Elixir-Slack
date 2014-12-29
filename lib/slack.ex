@@ -14,12 +14,12 @@ defmodule Slack do
   defmodule SlackRtm do
     use Slack
 
-    def start_link() do
-      Slack.start_link(__MODULE__, "token_value")
+    def start_link(initial_state) do
+      Slack.start_link(__MODULE__, "token_value", initial_state)
     end
 
-    def init(_socket) do
-      {:ok, []}
+    def init(state, _socket) do
+      {:ok, state}
     end
 
     def handle_message({:type, "message", response}, socket, state) do
@@ -40,7 +40,7 @@ defmodule Slack do
 
   ## Callbacks
 
-  * `init(socket)` - Called when the websocket connection starts
+  * `init(state, socket)` - Called when the websocket connection starts
 
 
     It must return:
@@ -62,15 +62,15 @@ defmodule Slack do
     quote do
       @behaviour Slack.Handler
 
-      def init(_) do
-        {:ok, nil}
+      def init(_, state) do
+        {:ok, state}
       end
 
       def handle_message({:type, type, _response}, _socket, state) do
         {:stop, {:unhandled_type, type}, state}
       end
 
-      defoverridable [init: 1, handle_message: 3]
+      defoverridable [init: 2, handle_message: 3]
     end
   end
 
@@ -81,11 +81,13 @@ defmodule Slack do
   Once started it calls the `init/1` function on the given module passing in the
   websocket connection as its argument.
   """
-  def start_link(module, token, rtm \\ Slack.Rtm, websocket \\ :websocket_client) do
-    {:ok, rtm_response} = rtm.start(token)
-    url = rtm_response.url |> String.to_char_list
+  def start_link(module, token, state, options \\ %{}) do
+    options = Map.merge(default_options, options)
+    websocket = options.websocket
 
-    websocket.start_link url, Slack.Socket, module
+    url = start_rtm(token, options.rtm)
+
+    websocket.start_link(url, Slack.Socket, %{handler: module, state: state})
   end
 
   @doc """
@@ -98,5 +100,17 @@ defmodule Slack do
               |> JSX.encode!
 
     websocket.send({:text, message}, socket)
+  end
+
+  defp default_options do
+    %{
+      rtm: Slack.Rtm,
+      websocket: :websocket_client
+    }
+  end
+
+  defp start_rtm(token, rtm)  do
+    {:ok, response} = rtm.start(token)
+    response.url |> String.to_char_list
   end
 end

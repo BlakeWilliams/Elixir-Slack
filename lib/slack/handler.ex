@@ -5,7 +5,7 @@ defmodule Slack.Handler do
 
   use Behaviour
 
-  defcallback init(:websocket_req.Req) :: {:ok, any}
+  defcallback init(any ,:websocket_req.Req) :: {:ok, any}
 
   defcallback handle_message(
     {:type, binary, map},

@@ -15,10 +15,3 @@ defmodule Slack.SocketTest do
       Slack.Socket.websocket_handle({:ping, "cookie!"}, "foo", state)
   end
 end
-
-defmodule FakeWebsocket do
-  def start_link(token, _module, _options) do
-    IO.write "socket:#{token}"
-    {:ok, nil}
-  end
-end

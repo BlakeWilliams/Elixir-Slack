@@ -25,12 +25,12 @@ callback methods.
 defmodule SlackRtm do
   use Slack
 
-  def start_link() do
-    Slack.start_link(__MODULE__, "token_value")
+  def start_link(initial_state) do
+    Slack.start_link(__MODULE__, "token_value", initial_state)
   end
 
-  def init(_socket) do
-    {:ok, []}
+  def init(initial_state, _socket) do
+    {:ok, initial_state}
   end
 
   def handle_message({:type, "message", response}, socket, state) do

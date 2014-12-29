@@ -4,27 +4,30 @@ defmodule SlackTest do
 
   test "send sends a :text message to the websocket" do
     assert capture_io(fn ->
-      Slack.send_message("Hi!", "123", [], FakeSocket)
+      Slack.send_message("Hi!", "123", [], FakeWebsocket)
     end) == ~s/{"channel":"123","text":"Hi!","type":"message"}/
   end
 
   test "start_link calls websocket with rtm token result" do
-    assert capture_io(fn ->
-      Slack.start_link(__MODULE__, "abc123", FakeRtm, FakeWebsocket)
-    end) == "rtm:abc123socket:abc123"
-  end
-end
+    options = %{rtm: FakeRtm, websocket: FakeWebsocket}
 
-defmodule FakeSocket do
-  def send(message, _socket) do
-    {:text, message} = message
-    IO.write message
+    {:ok, "foo"} = Slack.start_link(__MODULE__, "abc123", "foo", options)
   end
 end
 
 defmodule FakeRtm do
   def start(token) do
-    IO.write "rtm:#{token}"
     {:ok, %{url: token}}
+  end
+end
+
+defmodule FakeWebsocket do
+  def start_link(token, _module, options) do
+    {:ok, options.state}
+  end
+
+  def send(message, _socket) do
+    {:text, message} = message
+    IO.write message
   end
 end

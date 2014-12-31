@@ -18,17 +18,17 @@ defmodule Slack do
       Slack.start_link(__MODULE__, "token_value", initial_state)
     end
 
-    def init(state, _socket) do
+    def init(state, _slack) do
       {:ok, state}
     end
 
-    def handle_message({:type, "message", response}, socket, state) do
-      Slack.send_message("Received message!", response.channel, socket)
+    def handle_message({:type, "message", response}, slack, state) do
+      Slack.send_message("Received message!", response.channel, slack)
       state = state ++ [response.text]
       {:ok, state}
     end
 
-    def handle_message({:type, type, _response}, _socket, state) do
+    def handle_message({:type, type, _response}, _slack, state) do
       IO.puts "No callback for #\{type}"
       {:ok, state}
     end
@@ -40,7 +40,7 @@ defmodule Slack do
 
   ## Callbacks
 
-  * `init(state, socket)` - Called when the websocket connection starts
+  * `init(state, slack_state)` - Called when the websocket connection starts
 
 
     It must return:
@@ -48,7 +48,7 @@ defmodule Slack do
 
       - `{:ok, state}`
 
-  * `handle_message({:type, type, json_map}, socket, state)`
+  * `handle_message({:type, type, json_map}, slack_state, state)`
 
     It must return:
 
@@ -62,11 +62,11 @@ defmodule Slack do
     quote do
       @behaviour Slack.Handler
 
-      def init(_, state) do
+      def init(state, slack) do
         {:ok, state}
       end
 
-      def handle_message({:type, type, _response}, _socket, state) do
+      def handle_message({:type, type, _response}, _slack, state) do
         {:stop, {:unhandled_type, type}, state}
       end
 
@@ -85,9 +85,22 @@ defmodule Slack do
     options = Map.merge(default_options, options)
     websocket = options.websocket
 
-    url = start_rtm(token, options.rtm)
+    {:ok, rtm_response} = options.rtm.start(token)
 
-    websocket.start_link(url, Slack.Socket, %{handler: module, state: state})
+    url = rtm_response.url |> String.to_char_list
+
+    bootstrap_state = %{
+      handler: module,
+      state: state,
+      channels: rtm_response.channels,
+      users: rtm_response.users,
+    }
+
+    websocket.start_link(
+      url,
+      Slack.Socket,
+      bootstrap_state
+    )
   end
 
   @doc """
@@ -95,7 +108,8 @@ defmodule Slack do
 
   eg: `Slack.send_message("Morning everyone!", "CA1B2C3D4", sock)`
   """
-  def send_message(text, channel_id, socket, websocket \\ :websocket_client) do
+  def send_message(text, channel_id, state, websocket \\ :websocket_client) do
+    socket = state.socket
     message = %{type: "message", text: text, channel: channel_id}
               |> JSX.encode!
 
@@ -107,10 +121,5 @@ defmodule Slack do
       rtm: Slack.Rtm,
       websocket: :websocket_client
     }
-  end
-
-  defp start_rtm(token, rtm)  do
-    {:ok, response} = rtm.start(token)
-    response.url |> String.to_char_list
   end
 end

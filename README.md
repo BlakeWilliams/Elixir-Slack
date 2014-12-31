@@ -29,11 +29,11 @@ defmodule SlackRtm do
     Slack.start_link(__MODULE__, "token_value", initial_state)
   end
 
-  def init(initial_state, _socket) do
+  def init(initial_state, _slack) do
     {:ok, initial_state}
   end
 
-  def handle_message({:type, "message", response}, socket, state) do
+  def handle_message({:type, "message", response}, slack, state) do
     state = state ++ [response.text]
 
     message = "Received #{length(state)} messages so far!"
@@ -42,14 +42,14 @@ defmodule SlackRtm do
     {:ok, state}
   end
 
-  def handle_message({:type, type, _response}, _socket, state) do
+  def handle_message({:type, type, _response}, _slack, state) do
     {:ok, state}
   end
 end
 ```
 
 You can send messages to channels using `Slack.send`, which takes the message as
-the first argument, the channel as the second, and the socket as the third.
+the first argument, the channel as the second, and the slack state as the third.
 `:websocket_client.send({:text, "Hello!"}, socket)`.
 
 Slack has *a lot* of message types so it's a good idea to define a callback like

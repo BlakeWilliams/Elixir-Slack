@@ -37,7 +37,7 @@ defmodule SlackRtm do
     state = state ++ [response.text]
 
     message = "Received #{length(state)} messages so far!"
-    Slack.send(message, response.channel, socket)
+    Slack.send(message, response.channel, slack)
 
     {:ok, state}
   end
@@ -48,12 +48,17 @@ defmodule SlackRtm do
 end
 ```
 
-You can send messages to channels using `Slack.send`, which takes the message as
-the first argument, the channel as the second, and the slack state as the third.
-`:websocket_client.send({:text, "Hello!"}, socket)`.
+You can send messages to channels using `Slack.send` which takes the message as
+the first argument, channel as the second, and the `slack` argument as the
+third.
+
+`:websocket_client.send({:text, "Hello!"}, slack)`.
 
 Slack has *a lot* of message types so it's a good idea to define a callback like
 above where unhandled message types don't crash your application. You can find a
 list of message types and examples on the [RTM API page].
 
+You can find more detailed documentation on the [Slack hexdocs page].
+
 [RTM API page]: https://api.slack.com/rtm
+[Slack hexdocs page]: http://hexdocs.pm/slack/

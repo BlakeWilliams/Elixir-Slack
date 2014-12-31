@@ -10,11 +10,19 @@ by creating a new [bot integration].
 
 ## Usage
 
-Add Slack to your `mix.exs` dependencies.
+Add Slack to your `mix.exs` `application` and `dependencies` methods. You'll
+also need [websocket_client] since hex.pm doesn't install git based dependencies.
+
+[websocket_client]: https://github.com/jeremyong/websocket_client
 
 ```elixir
+def application do
+  [applications: [:logger, :slack]]
+end
+
 def deps do
-  [{:slack, git: "https://github.com/BlakeWilliams/Elixir-Slack"}]
+  [{:slack, git: "https://github.com/BlakeWilliams/Elixir-Slack"},
+   {:websocket_client, git: "https://github.com/jeremyong/websocket_client"}]
 end
 ```
 

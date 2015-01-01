@@ -30,7 +30,7 @@ defmodule SlackTest do
       users = options.users
       ^users = [%{id: "2"}]
 
-      {:ok, options.state}
+      {:ok, options.initial_state}
     end
 
     def send(message, socket) do

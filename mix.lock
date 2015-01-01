@@ -5,4 +5,4 @@
   "httpoison": {:hex, :httpoison, "0.5.0"},
   "idna": {:hex, :idna, "1.0.1"},
   "jsx": {:hex, :jsx, "2.4.0"},
-  "websocket_client": {:git, "https://github.com/jeremyong/websocket_client", "48c118682292f2e4d80491161134a665525c4934", []}}
+  "websocket_client": {:git, "git://github.com/jeremyong/websocket_client.git", "48c118682292f2e4d80491161134a665525c4934", []}}

@@ -4,9 +4,9 @@ defmodule Slack.SocketTest do
   test "it calls the handler with proper type" do
     message = ~s/{"type": "presence_change", "presence": "away"}/
     state = %{
-      handler: __MODULE__.FakeHandler,
-      handler_state: [],
-      socket_state: %Slack.State{}
+      module: __MODULE__.FakeHandler,
+      module_state: [],
+      slack_state: %Slack.State{}
     }
 
     {:ok, result} = Slack.Socket.websocket_handle({:text, message}, "foo", state)
@@ -17,14 +17,14 @@ defmodule Slack.SocketTest do
   test "it returns existing state if called without type" do
     message = ~s/{"presence": "away"}/
     state = %{
-      handler: __MODULE__.FakeHandler,
-      handler_state: [1],
-      socket_state: %Slack.State{}
+      module: __MODULE__.FakeHandler,
+      module_state: [1],
+      slack_state: %Slack.State{}
     }
 
     {:ok, result} = Slack.Socket.websocket_handle({:text, message}, "foo", state)
 
-    assert result.handler_state == [1]
+    assert result.module_state == [1]
   end
 
   test "it responds to pings with pong" do

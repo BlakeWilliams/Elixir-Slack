@@ -2,14 +2,14 @@ defmodule Slack.Socket do
   @behaviour :websocket_client_handler
   @moduledoc false
 
-  def init(bootstrap = %{handler: handler, state: state}, socket) do
-    socket_state = Slack.State.new(socket, bootstrap.channels, bootstrap.users)
-    {:ok, state} = handler.init(state, socket_state)
+  def init(bootstrap = %{module: module, initial_state: initial_state}, socket) do
+    slack_state = Slack.State.new(socket, bootstrap.channels, bootstrap.users)
+    {:ok, module_state} = module.init(initial_state, slack_state)
 
     state = %{
-      handler: handler,
-      handler_state: state,
-      socket_state: socket_state
+      module: module,
+      module_state: module_state,
+      slack_state: initial_state
     }
 
     {:ok, state}
@@ -40,10 +40,10 @@ defmodule Slack.Socket do
   end
 
   defp send_handler_message(json, state) do
-    state.handler.handle_message(
+    state.module.handle_message(
       {:type, json.type, json},
-      state.socket_state,
-      state.handler_state
+      state.slack_state,
+      state.module_state
     )
   end
 end

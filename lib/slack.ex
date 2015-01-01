@@ -81,22 +81,20 @@ defmodule Slack do
   Once started it calls the `init/1` function on the given module passing in the
   websocket connection as its argument.
   """
-  def start_link(module, token, state, options \\ %{}) do
+  def start_link(module, token, initial_state, options \\ %{}) do
     options = Map.merge(default_options, options)
-    websocket = options.websocket
 
     {:ok, rtm_response} = options.rtm.start(token)
-
     url = rtm_response.url |> String.to_char_list
 
     bootstrap_state = %{
-      handler: module,
-      state: state,
+      module: module,
+      initial_state: initial_state,
       channels: rtm_response.channels,
       users: rtm_response.users,
     }
 
-    websocket.start_link(
+    options.websocket.start_link(
       url,
       Slack.Socket,
       bootstrap_state
@@ -106,12 +104,11 @@ defmodule Slack do
   @doc """
   Sends `text` as a message to the the channel with id of `channel_id`
 
-  eg: `Slack.send_message("Morning everyone!", "CA1B2C3D4", sock)`
+  e.g.: `Slack.send_message("Morning everyone!", "CA1B2C3D4", slack)`
   """
   def send_message(text, channel_id, state, websocket \\ :websocket_client) do
     socket = state.socket
-    message = %{type: "message", text: text, channel: channel_id}
-              |> JSX.encode!
+    message = JSX.encode!(%{type: "message", text: text, channel: channel_id})
 
     websocket.send({:text, message}, socket)
   end

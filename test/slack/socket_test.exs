@@ -1,6 +1,24 @@
 defmodule Slack.SocketTest do
   use ExUnit.Case
 
+  def init(_, _) do
+    {:ok, 1}
+  end
+
+  test "init returns a proper state" do
+    bootstrap = %{
+      module: __MODULE__,
+      initial_state: 0,
+      rtm_response: %{self: %{id: 1}, channels: %{}, users: %{}}
+    }
+
+  {:ok, state} = Slack.Socket.init(bootstrap, "foo")
+
+    assert state.module == __MODULE__
+    assert state.module_state == 1
+    assert state.slack_state.me == %{id: 1}
+  end
+
   test "it calls the handler with proper type" do
     message = ~s/{"type": "presence_change", "presence": "away"}/
     state = %{
@@ -34,8 +52,8 @@ defmodule Slack.SocketTest do
   end
 
   defmodule FakeHandler do
-    def handle_message({:type, "presence_change", _message}, socket_state, state) do
-      ^socket_state = %Slack.State{}
+    def handle_message({:type, "presence_change", _message}, slack, state) do
+      ^slack = %Slack.State{}
 
       new_state = state ++ ["bar"]
       {:ok, new_state}

@@ -9,7 +9,7 @@ defmodule Slack.Socket do
     state = %{
       module: module,
       module_state: module_state,
-      slack_state: initial_state
+      slack_state: slack_state
     }
 
     {:ok, state}

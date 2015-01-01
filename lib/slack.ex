@@ -79,8 +79,8 @@ defmodule Slack do
   Starts a websocket connection to the Slack real time messaging API using the
   given token.
 
-  Once started it calls the `init/1` function on the given module passing in the
-  websocket connection as its argument.
+  Once started it calls the `init/1` function on the given module passing in a
+  Slack.State as its argument.
   """
   def start_link(module, token, initial_state, options \\ %{}) do
     options = Map.merge(default_options, options)

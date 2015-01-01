@@ -37,7 +37,8 @@ defmodule SlackRtm do
     Slack.start_link(__MODULE__, "token_value", initial_state)
   end
 
-  def init(initial_state, _slack) do
+  def init(initial_state, slack) do
+    IO.puts "Connected as #\{slack.me.name}"
     {:ok, initial_state}
   end
 
@@ -61,6 +62,12 @@ the first argument, channel as the second, and the `slack` argument as the
 third.
 
 `:websocket_client.send({:text, "Hello!"}, slack)`.
+
+You can also access the properties about the user you're authenticated as by
+calling `me` on the passed in `slack` state. More details about what's passed as
+`me` can be found on the Slack [rtm.start documentation page][rtm.start].
+
+[rtm.start]: https://api.slack.com/methods/rtm.start
 
 Slack has *a lot* of message types so it's a good idea to define a callback like
 above where unhandled message types don't crash your application. You can find a

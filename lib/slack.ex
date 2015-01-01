@@ -18,7 +18,8 @@ defmodule Slack do
       Slack.start_link(__MODULE__, "token_value", initial_state)
     end
 
-    def init(state, _slack) do
+    def init(state, slack) do
+      IO.puts "Connected as #\{slack.me.name}"
       {:ok, state}
     end
 
@@ -90,8 +91,7 @@ defmodule Slack do
     bootstrap_state = %{
       module: module,
       initial_state: initial_state,
-      channels: rtm_response.channels,
-      users: rtm_response.users,
+      rtm_response: rtm_response,
     }
 
     options.websocket.start_link(

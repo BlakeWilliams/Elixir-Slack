@@ -14,23 +14,32 @@ defmodule Slack.State do
   Slack.State.update_channels(state, [%{id: 2, name: "bar"}])
   Slack.State.channels(state) # %{"1": %{id: 1, name: "Foo"}, "2": %{id: 2, name: "bar"}}
   ```
+
+  You also have access to who you're currently logged in as through the `me`
+  field.
   """
-  defstruct socket: nil, users: nil, channels: nil
-  @type state :: %__MODULE__{socket: :websocket_client.Req, users: pid, channels: pid}
+  defstruct socket: nil, channels: nil, me: nil, users: nil
+  @type state :: %__MODULE__{
+    socket: :websocket_client.Req,
+    channels: pid,
+    me: Map,
+    users: pid
+  }
 
   @doc false
-  def new(socket, channels, users)  do
+  def new(socket, rtm_response)  do
     {:ok, users_pid} = Agent.start(fn -> %{} end)
     {:ok, channels_pid} = Agent.start(fn -> %{} end)
 
     state = %Slack.State{
       channels: channels_pid,
+      me: rtm_response.self,
       socket: socket,
       users: users_pid
     }
 
-    update_channels(state, channels)
-    update_users(state, users)
+    update_channels(state, rtm_response.channels)
+    update_users(state, rtm_response.users)
 
     state
   end
@@ -42,8 +51,7 @@ defmodule Slack.State do
   def users(%__MODULE__{users: users}), do: get_agent_state(users)
 
   @doc """
-  Takes a state and a list of channels and adds the channels to the map of
-  stored channels.
+  Takes a state and a list of channels and adds the channels to the map of stored channels.
   """
   def update_channels(state, channels), do: parse_and_update(state.channels, channels)
 

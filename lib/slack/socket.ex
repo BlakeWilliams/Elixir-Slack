@@ -3,7 +3,7 @@ defmodule Slack.Socket do
   @moduledoc false
 
   def init(bootstrap = %{module: module, initial_state: initial_state}, socket) do
-    slack_state = Slack.State.new(socket, bootstrap.channels, bootstrap.users)
+    slack_state = Slack.State.new(socket, bootstrap.rtm_response)
     {:ok, module_state} = module.init(initial_state, slack_state)
 
     state = %{

@@ -15,19 +15,25 @@ defmodule SlackTest do
     {:ok, "foo"} = Slack.start_link(__MODULE__, "abc123", "foo", options)
   end
 
-
   defmodule FakeRtm do
     def start(token) do
-      {:ok, %{url: token, channels: [%{id: "1"}], users: [%{id: "2"}]}}
+      result = %{
+        url: token,
+        me: %{id: 1},
+        channels: [%{id: "1"}],
+        users: [%{id: "2"}]
+      }
+
+      {:ok, result}
     end
   end
 
   defmodule FakeWebsocket do
     def start_link(token, _module, options) do
-      channels = options.channels 
+      channels = options.rtm_response.channels 
       ^channels = [%{id: "1"}]
 
-      users = options.users
+      users = options.rtm_response.users
       ^users = [%{id: "2"}]
 
       {:ok, options.initial_state}

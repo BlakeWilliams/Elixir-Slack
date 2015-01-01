@@ -38,7 +38,7 @@ defmodule SlackRtm do
   end
 
   def init(initial_state, slack) do
-    IO.puts "Connected as #\{slack.me.name}"
+    IO.puts "Connected as #{slack.me.name}"
     {:ok, initial_state}
   end
 

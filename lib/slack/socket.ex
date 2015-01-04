@@ -35,7 +35,12 @@ defmodule Slack.Socket do
     {:ok, state}
   end
 
-  def websocket_terminate(_reason, _connection, _state) do
+  def websocket_terminate(reason, _connection, state) do
+    state.module.handle_close(
+      reason,
+      state.slack_state,
+      state.module_state
+    )
     :ok
   end
 

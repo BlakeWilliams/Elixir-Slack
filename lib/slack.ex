@@ -33,6 +33,10 @@ defmodule Slack do
       IO.puts "No callback for #\{type}"
       {:ok, state}
     end
+
+    def handle_close(reason, slack, state) do
+      IO.puts "Websocket closed!"
+    end
   end
   ```
 
@@ -54,6 +58,8 @@ defmodule Slack do
     It must return:
 
       - `{:ok, state}`
+
+  * `handle_close(reason, slack_state, state)`
 
   You can find every type Slack will respond with and examples of each on
   the [Slack RTM API](https://api.slack.com/rtm) page.

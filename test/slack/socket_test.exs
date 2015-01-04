@@ -1,8 +1,23 @@
 defmodule Slack.SocketTest do
   use ExUnit.Case
 
+  import ExUnit.CaptureIO
+
   def init(_, _) do
     {:ok, 1}
+  end
+
+  def handle_close(reason, _, state) do
+    IO.write "handle_close called"
+    {:ok, state}
+  end
+
+  test "close gets called on module" do
+    state = %{module: __MODULE__, module_state: [1], slack_state: []}
+
+    assert capture_io(fn ->
+      assert Slack.Socket.websocket_terminate("Foo", nil, state) == :ok
+    end) == "handle_close called"
   end
 
   test "init returns a proper state" do

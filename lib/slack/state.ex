@@ -20,7 +20,7 @@ defmodule Slack.State do
   """
   defstruct socket: nil, channels: nil, me: nil, users: nil
   @type state :: %__MODULE__{
-    socket: :websocket_client.Req,
+    socket: :websocket_req,
     channels: pid,
     me: Map,
     users: pid

@@ -1,8 +1,9 @@
 %{"earmark": {:hex, :earmark, "0.1.12"},
   "ex_doc": {:hex, :ex_doc, "0.6.2"},
   "exjsx": {:hex, :exjsx, "3.1.0"},
-  "hackney": {:hex, :hackney, "0.14.3"},
-  "httpoison": {:hex, :httpoison, "0.5.0"},
-  "idna": {:hex, :idna, "1.0.1"},
+  "hackney": {:hex, :hackney, "1.1.0"},
+  "httpoison": {:hex, :httpoison, "0.6.2"},
+  "idna": {:hex, :idna, "1.0.2"},
   "jsx": {:hex, :jsx, "2.4.0"},
+  "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"},
   "websocket_client": {:git, "git://github.com/jeremyong/websocket_client.git", "48c118682292f2e4d80491161134a665525c4934", []}}

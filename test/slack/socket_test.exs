@@ -44,7 +44,7 @@ defmodule Slack.SocketTest do
 
     {:ok, result} = Slack.Socket.websocket_handle({:text, message}, "foo", state)
 
-    assert result.handler_state == ["bar"]
+    assert result.module_state == ["bar"]
   end
 
   test "it returns existing state if called without type" do

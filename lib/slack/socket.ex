@@ -21,7 +21,7 @@ defmodule Slack.Socket do
     if Map.has_key?(json, :type) do
       {:ok, new_state} = send_handler_message(json, state)
 
-      state = Map.put(state, :handler_state, new_state)
+      state = Map.put(state, :module_state, new_state)
     end
 
     {:ok, state}

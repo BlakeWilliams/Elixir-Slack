@@ -46,7 +46,7 @@ defmodule SlackRtm do
     state = state ++ [response.text]
 
     message = "Received #{length(state)} messages so far!"
-    Slack.send(message, response.channel, slack)
+    Slack.send_message(message, response.channel, slack)
 
     {:ok, state}
   end
@@ -60,8 +60,6 @@ end
 You can send messages to channels using `Slack.send` which takes the message as
 the first argument, channel as the second, and the `slack` argument as the
 third.
-
-`:websocket_client.send({:text, "Hello!"}, slack)`.
 
 You can also access the properties about the user you're authenticated as by
 calling `me` on the passed in `slack` state. More details about what's passed as

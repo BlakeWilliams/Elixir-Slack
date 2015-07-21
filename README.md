@@ -11,7 +11,8 @@ by creating a new [bot integration].
 ## Usage
 
 Add Slack to your `mix.exs` `application` and `dependencies` methods. You'll
-also need [websocket_client] since hex.pm doesn't install git based dependencies.
+also need [websocket_client] since hex.pm doesn't install git based
+dependencies.
 
 [websocket_client]: https://github.com/jeremyong/websocket_client
 
@@ -21,7 +22,7 @@ def application do
 end
 
 def deps do
-  [{:slack, "~> 0.0.5"},
+  [{:slack, "~> 0.2.0"},
    {:websocket_client, git: "https://github.com/jeremyong/websocket_client"}]
 end
 ```
@@ -33,37 +34,33 @@ callback methods.
 defmodule SlackRtm do
   use Slack
 
-  def start_link(initial_state) do
-    Slack.start_link(__MODULE__, "token_value", initial_state)
-  end
-
   def init(initial_state, slack) do
     IO.puts "Connected as #{slack.me.name}"
     {:ok, initial_state}
   end
 
-  def handle_message({:type, "message", response}, slack, state) do
-    state = state ++ [response.text]
-
+  def handle_message(message = {:type, "message"}, slack, state) do
     message = "Received #{length(state)} messages so far!"
-    Slack.send_message(message, response.channel, slack)
+    send_message(message, response.channel, slack)
 
-    {:ok, state}
+    {:ok, state ++ [message.text]}
   end
 
-  def handle_message({:type, type, _response}, _slack, state) do
+  def handle_message(_message, _slack, state)
     {:ok, state}
   end
 end
+
+SlackRtm.start_link("token", [])
 ```
 
-You can send messages to channels using `Slack.send` which takes the message as
-the first argument, channel as the second, and the `slack` argument as the
-third.
+You can send messages to channels using `send_message/3` which takes the message
+as the first argument, channel as the second, and the passed in `slack` state
+as the third.
 
-You can also access the properties about the user you're authenticated as by
-calling `me` on the passed in `slack` state. More details about what's passed as
-`me` can be found on the Slack [rtm.start documentation page][rtm.start].
+The passed in `slack` state holds the current user properties as `me`, team
+properties as `team`, the current websocket connection as `socket`, and a list
+of  `bots`, `channels`, `groups`, and `users`.
 
 [rtm.start]: https://api.slack.com/methods/rtm.start
 

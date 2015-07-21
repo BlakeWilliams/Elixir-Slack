@@ -49,7 +49,6 @@ defmodule Slack.Handlers do
   end)
 
   def handle_slack(%{type: type}, slack) do
-    IO.puts "Unknown #{type}"
     {:ok, slack}
   end
 end

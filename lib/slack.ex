@@ -1,128 +1,157 @@
 defmodule Slack do
   @moduledoc """
-  A behaviour module for implementing Slack realt time messaging through a
-  websocket connection.
+  Slack is a genserver-ish interface for working with the Slack real time
+  messaging API through a Websocket connection.
 
-  To use this module you will need a valid Slack API token. You can find your
-  token on the [Slack Web API] page.
+  To use this module you'll need a valid Slack API token. You can find your
+  personal token on the [Slack Web API] page, or you can add a new
+  [bot integration].
 
   [Slack Web API]: https://api.slack.com/web
+  [bot integration]: https://api.slack.com/bot-users
 
   ## Example
 
   ```
-  defmodule SlackRtm do
+  defmodule Bot do
     use Slack
 
-    def start_link(initial_state) do
-      Slack.start_link(__MODULE__, "token_value", initial_state)
-    end
+    def handle_message(message = {type: "message"}, slack, state) do
+      if message.text == "Hi" do
+        send_message("Hi has been said #\{state} times", message.channel, slack)
+        state = state + 1
+      end
 
-    def init(state, slack) do
-      IO.puts "Connected as #\{slack.me.name}"
       {:ok, state}
-    end
-
-    def handle_message({:type, "message", response}, slack, state) do
-      Slack.send_message("Received message!", response.channel, slack)
-      state = state ++ [response.text]
-      {:ok, state}
-    end
-
-    def handle_message({:type, type, _response}, _slack, state) do
-      IO.puts "No callback for #\{type}"
-      {:ok, state}
-    end
-
-    def handle_close(reason, slack, state) do
-      IO.puts "Websocket closed!"
     end
   end
+
+  Bot.start_link("API_TOKEN", 1)
   ```
 
-  Slack has a large variety of types it can send you, so it's wise ot have a
-  catch all handle like above to avoid crashing.
+  `handle_*` methods are always passed `slack` and `state` arguments. The
+  `slack` argument holds the state of Slack and is kept up to date
+  automatically.
+
+  In this example we're just matching against the message type and checking if
+  the text content is "Hi" and if so, we reply with how many times "Hi" has been
+  said.
+
+  The message type is pattern matched against because the
+  [Slack RTM API](https://api.slack.com/rtm) defines many different types of
+  messages that we can receive. Because of this it's wise to write a catch-all
+  `handle_message/3` in your bots to prevent crashing.
 
   ## Callbacks
 
-  * `init(state, slack_state)` - Called when the websocket connection starts
+  * `handle_connect(slack, state)` - called when connected to Slack.
+  * `handle_message(message, slack, state)` - called when a message is received.
+  * `handle_close(reason, slack, state)` - called when websocket is closed.
 
+  ## Slack argument
 
-    It must return:
+  The Slack argument that's passed to each callback is what contains all of the
+  state related to Slack including a list of channels, users, groups, bots, and
+  even the socket.
 
+  Here's a list of what's stored:
 
-      - `{:ok, state}`
+  * me - The current bot/users information stored as a map of properties.
+  * team - The current team's information stored as a map of properties.
+  * bots - Stored as a map with id's as keys.
+  * channels - Stored as a map with id's as keys.
+  * groups - Stored as a map with id's as keys.
+  * users - Stored as a map with id's as keys.
+  * socket - The connection to Slack.
 
-  * `handle_message({:type, type, json_map}, slack_state, state)`
+  For all but `socket`, you can see what types of data to expect each of the
+  types to contain from the [Slack API types] page.
 
-    It must return:
-
-      - `{:ok, state}`
-
-  * `handle_close(reason, slack_state, state)`
-
-  You can find every type Slack will respond with and examples of each on
-  the [Slack RTM API](https://api.slack.com/rtm) page.
+  [Slack API types]: https://api.slack.com/types
   """
-
   defmacro __using__(_) do
     quote do
-      @behaviour Slack.Handler
+      @behaviour :websocket_client_handler
+      import Slack
+      import Slack.Handlers
 
-      def init(state, slack) do
+      def start_link(token, initial_state) do
+        {:ok, rtm} = Slack.Rtm.start(token)
+
+        state = %{rtm: rtm, state: initial_state}
+
+        url = String.to_char_list(rtm.url)
+        :websocket_client.start_link(url, __MODULE__, state)
+      end
+
+      def init(%{rtm: rtm, state: state}, socket) do
+        slack = %{
+          socket: socket,
+          me: rtm.self,
+          team: rtm.team,
+          bots: rtm_list_to_map(rtm.bots),
+          channels: rtm_list_to_map(rtm.channels),
+          groups: rtm_list_to_map(rtm.groups),
+          users: rtm_list_to_map(rtm.users),
+        }
+
+        {:ok, state} = handle_connect(slack, state)
+        {:ok, %{slack: slack, state: state}}
+      end
+
+      def websocket_info(:start, _connection, state) do
         {:ok, state}
       end
 
-      def handle_message({:type, type, _response}, _slack, state) do
-        {:stop, {:unhandled_type, type}, state}
+      def websocket_terminate(reason, _connection, %{slack: slack, state: state}) do
+        handle_close(reason, slack, state)
       end
 
-      defoverridable [init: 2, handle_message: 3]
+      def websocket_handle({:ping, data}, _connection, state) do
+        {:reply, {:pong, data}, state}
+      end
+
+      def websocket_handle({:text, message}, _con, %{slack: slack, state: state}) do
+        message = JSX.decode!(message, [{:labels, :atom}])
+        if Map.has_key?(message, :type) do
+          {:ok, state} = handle_message(message, slack, state)
+          {:ok, slack} = handle_slack(message, slack)
+        end
+
+        {:ok, %{slack: slack, state: state}}
+      end
+
+      defp rtm_list_to_map(list) do
+        Enum.reduce(list, %{}, fn (item, map) ->
+          Map.put(map, item.id, item)
+        end)
+      end
+
+      def handle_connect(_slack, state), do: {:ok, state}
+      def handle_message(_message, _slack, state), do: {:ok, state}
+      def handle_close(_reason, _slack, state), do: {:error, state}
+
+      defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3]
     end
   end
 
   @doc """
-  Starts a websocket connection to the Slack real time messaging API using the
-  given token.
-
-  Once started it calls the `init/1` function on the given module passing in a
-  Slack.State as its argument.
+  Sends `text` to `channel` for the given `slack` connection.
   """
-  def start_link(module, token, initial_state, options \\ %{}) do
-    options = Map.merge(default_options, options)
+  def send_message(text, channel, slack) do
+    message = JSX.encode!(%{
+      type: "message",
+      text: text,
+      channel: channel
+    })
 
-    {:ok, rtm_response} = options.rtm.start(token)
-    url = rtm_response.url |> String.to_char_list
-
-    bootstrap_state = %{
-      module: module,
-      initial_state: initial_state,
-      rtm_response: rtm_response,
-    }
-
-    options.websocket.start_link(
-      url,
-      Slack.Socket,
-      bootstrap_state
-    )
+    send_raw(message, slack)
   end
 
   @doc """
-  Sends `text` as a message to the the channel with id of `channel_id`
-
-  e.g.: `Slack.send_message("Morning everyone!", "CA1B2C3D4", slack)`
+  Sends raw JSON to a given socket.
   """
-  def send_message(text, channel_id, state, websocket \\ :websocket_client) do
-    socket = state.socket
-    message = JSX.encode!(%{type: "message", text: text, channel: channel_id})
-
-    websocket.send({:text, message}, socket)
-  end
-
-  defp default_options do
-    %{
-      rtm: Slack.Rtm,
-      websocket: :websocket_client
-    }
+  def send_raw(json, %{socket: socket}, client \\ :websocket_client) do
+    client.send({:text, json}, socket)
   end
 end

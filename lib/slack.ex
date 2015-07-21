@@ -135,6 +135,9 @@ defmodule Slack do
     end
   end
 
+  @doc """
+  Sends `text` to `channel` for the given `slack` connection.
+  """
   def send_message(text, channel, slack) do
     message = JSX.encode!(%{
       type: "message",
@@ -145,6 +148,9 @@ defmodule Slack do
     send_raw(message, slack)
   end
 
+  @doc """
+  Sends raw JSON to a given socket.
+  """
   def send_raw(json, %{socket: socket}, client \\ :websocket_client) do
     client.send({:text, json}, socket)
   end

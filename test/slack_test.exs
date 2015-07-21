@@ -1,49 +1,49 @@
 defmodule SlackTest do
   use ExUnit.Case
-  import ExUnit.CaptureIO
 
-  test "send sends a :text message to the websocket" do
-    fake_state = %{socket: []}
-    assert capture_io(fn ->
-      Slack.send_message("Hi!", "123", fake_state, __MODULE__.FakeWebsocket)
-    end) == ~s/{"channel":"123","text":"Hi!","type":"message"}/
+  defmodule Bot do
+    use Slack
   end
 
-  test "start_link calls websocket with rtm token result" do
-    options = %{rtm: __MODULE__.FakeRtm, websocket: __MODULE__.FakeWebsocket}
-
-    {:ok, "foo"} = Slack.start_link(__MODULE__, "abc123", "foo", options)
-  end
-
-  defmodule FakeRtm do
-    def start(token) do
-      result = %{
-        url: token,
-        me: %{id: 1},
-        channels: [%{id: "1"}],
-        users: [%{id: "2"}]
-      }
-
-      {:ok, result}
+  defmodule FakeWebsocketClient do
+    def send({:text, json}, socket) do
+      {json, socket}
     end
   end
 
-  defmodule FakeWebsocket do
-    def start_link(token, _module, options) do
-      channels = options.rtm_response.channels 
-      ^channels = [%{id: "1"}]
+  test "on_connect returns state by default" do
+    assert Bot.handle_connect(nil, 1) == {:ok, 1}
+  end
 
-      users = options.rtm_response.users
-      ^users = [%{id: "2"}]
+  test "handle_message returns state by default" do
+    assert Bot.handle_message(nil, nil, 1) == {:ok, 1}
+  end
 
-      {:ok, options.initial_state}
-    end
+  test "send_raw sends slack formatted to client" do
+    result = Slack.send_raw(~s/{"text": "foo"}/, %{socket: nil}, FakeWebsocketClient)
+    assert result == {~s/{"text": "foo"}/, nil}
+  end
 
-    def send(message, socket) do
-      ^socket = []
+  test "init formats rtm results properly" do
+    rtm = %{
+      self: %{name: "fake"},
+      team: %{name: "Foo"},
+      bots: [%{id: "123"}],
+      channels: [%{id: "123"}],
+      groups: [%{id: "123"}],
+      users: [%{id: "123"}],
+    }
 
-      {:text, message} = message
-      IO.write message
-    end
+    {:ok, %{slack: slack, state: state}} = Bot.init(%{rtm: rtm, state: 1}, nil)
+
+    assert slack.me.name == "fake"
+    assert slack.team.name == "Foo"
+    assert slack.bots     == %{"123" => %{id: "123"}}
+    assert slack.channels == %{"123" => %{id: "123"}}
+    assert slack.groups   == %{"123" => %{id: "123"}}
+    assert slack.users    == %{"123" => %{id: "123"}}
+
+    assert state == 1
   end
 end
+

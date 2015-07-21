@@ -3,7 +3,7 @@ defmodule Slack.Mixfile do
 
   def project do
     [app: :slack,
-     version: "0.1.0",
+     version: "0.2.0",
      elixir: "~> 1.0",
      name: "Slack",
      deps: deps,
@@ -14,11 +14,11 @@ defmodule Slack.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :httpoison]]
+    [applications: [:logger, :httpoison, :hackney]]
   end
 
   defp deps do
-    [{:httpoison, "~> 0.6.2"},
+    [{:httpoison, "~> 0.7.0"},
      {:exjsx, "~> 3.1.0"},
      {:websocket_client, github: "jeremyong/websocket_client"},
      {:earmark, "~> 0.1", only: :dev},

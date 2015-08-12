@@ -39,7 +39,7 @@ defmodule SlackRtm do
     {:ok, initial_state}
   end
 
-  def handle_message(message = {type: "message"}, slack, state) do
+  def handle_message(message = %{type: "message"}, slack, state) do
     message = "Received #{length(state)} messages so far!"
     send_message(message, message.channel, slack)
 

@@ -39,9 +39,9 @@ defmodule SlackRtm do
     {:ok, initial_state}
   end
 
-  def handle_message(message = {:type, "message"}, slack, state) do
+  def handle_message(message = {type: "message"}, slack, state) do
     message = "Received #{length(state)} messages so far!"
-    send_message(message, response.channel, slack)
+    send_message(message, message.channel, slack)
 
     {:ok, state ++ [message.text]}
   end
@@ -50,9 +50,10 @@ defmodule SlackRtm do
     {:ok, state}
   end
 end
-
-SlackRtm.start_link("token", [])
 ```
+
+To run this example, you'll also want to call `SlackRtm.start_link("token", [])`
+and run the project with `mix run --no-halt`.
 
 You can send messages to channels using `send_message/3` which takes the message
 as the first argument, channel as the second, and the passed in `slack` state

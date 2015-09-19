@@ -75,10 +75,10 @@ defmodule Slack do
       import Slack
       import Slack.Handlers
 
-      def start_link(token, initial_state) do
+      def start_link(token, initial_state, opts \\ %{}) do
         {:ok, rtm} = Slack.Rtm.start(token)
 
-        state = %{rtm: rtm, state: initial_state}
+        state = Map.merge(opts, %{rtm: rtm, state: initial_state})
 
         url = String.to_char_list(rtm.url)
         :websocket_client.start_link(url, __MODULE__, state)

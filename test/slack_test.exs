@@ -29,6 +29,11 @@ defmodule SlackTest do
     assert result == {~s/{"channel":"channel","text":"hello","type":"message"}/, nil}
   end
 
+  test "indicate_typing sends typing notification to client" do
+    result = Slack.indicate_typing("channel", %{socket: nil}, FakeWebsocketClient)
+    assert result == {~s/{"channel":"channel","type":"typing"}/, nil}
+  end
+
   test "init formats rtm results properly" do
     rtm = %{
       self: %{name: "fake"},

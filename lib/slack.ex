@@ -148,6 +148,19 @@ defmodule Slack do
     send_raw(message, slack, client)
   end
 
+
+  @doc """
+  Notifies slack that the current `slack` user is typing in `channel`.
+  """
+  def indicate_typing(channel, slack, client \\ :websocket_client) do
+    message = JSX.encode!(%{
+      type: "typing",
+      channel: channel
+    })
+
+    send_raw(message, slack, client)
+  end
+
   @doc """
   Sends raw JSON to a given socket.
   """

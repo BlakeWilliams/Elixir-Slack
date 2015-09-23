@@ -23,7 +23,7 @@ end
 
 def deps do
   [{:slack, "~> 0.2.0"},
-   {:websocket_client, git: "https://github.com/jeremyong/websocket_client"}]
+   {:websocket_client, github: "jeremyong/websocket_client"}]
 end
 ```
 

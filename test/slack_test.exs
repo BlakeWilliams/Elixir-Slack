@@ -24,6 +24,11 @@ defmodule SlackTest do
     assert result == {~s/{"text": "foo"}/, nil}
   end
 
+  test "send_message sends message formatted to client" do
+    result = Slack.send_message("hello", "channel", %{socket: nil}, FakeWebsocketClient)
+    assert result == {~s/{"channel":"channel","text":"hello","type":"message"}/, nil}
+  end
+
   test "init formats rtm results properly" do
     rtm = %{
       self: %{name: "fake"},
@@ -46,4 +51,3 @@ defmodule SlackTest do
     assert state == 1
   end
 end
-

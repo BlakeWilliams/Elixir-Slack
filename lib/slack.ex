@@ -138,14 +138,14 @@ defmodule Slack do
   @doc """
   Sends `text` to `channel` for the given `slack` connection.
   """
-  def send_message(text, channel, slack) do
+  def send_message(text, channel, slack, client \\ :websocket_client) do
     message = JSX.encode!(%{
       type: "message",
       text: text,
       channel: channel
     })
 
-    send_raw(message, slack)
+    send_raw(message, slack, client)
   end
 
   @doc """

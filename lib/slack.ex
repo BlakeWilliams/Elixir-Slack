@@ -150,7 +150,7 @@ defmodule Slack do
 
 
   @doc """
-  Notifies slack that the current `slack` user is typing in `channel`.
+  Notifies Slack that the current user is typing in `channel`.
   """
   def indicate_typing(channel, slack, client \\ :websocket_client) do
     message = JSX.encode!(%{

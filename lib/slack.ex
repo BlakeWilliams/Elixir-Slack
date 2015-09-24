@@ -138,14 +138,27 @@ defmodule Slack do
   @doc """
   Sends `text` to `channel` for the given `slack` connection.
   """
-  def send_message(text, channel, slack) do
+  def send_message(text, channel, slack, client \\ :websocket_client) do
     message = JSX.encode!(%{
       type: "message",
       text: text,
       channel: channel
     })
 
-    send_raw(message, slack)
+    send_raw(message, slack, client)
+  end
+
+
+  @doc """
+  Notifies Slack that the current user is typing in `channel`.
+  """
+  def indicate_typing(channel, slack, client \\ :websocket_client) do
+    message = JSX.encode!(%{
+      type: "typing",
+      channel: channel
+    })
+
+    send_raw(message, slack, client)
   end
 
   @doc """

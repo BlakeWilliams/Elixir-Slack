@@ -48,7 +48,7 @@ defmodule Slack.Handlers do
     end
   end)
 
-  def handle_slack(%{type: type}, slack) do
+  def handle_slack(%{type: _type}, slack) do
     {:ok, slack}
   end
 end

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+function run_bot {
+  # Source the config file to read the env settings
+  source ./.slack_config;
+  echo "Using Slack Token: $SLACK_TOKEN";
+  mix run --no-halt
+}
+
+# Check if config (.slack_config) exists
+if [ ! -f ./.slack_config ]; then
+  # This is probably the first run
+  # if they havn't ran deps.get yet
+  if [ ! -d "./deps/slack" ]; then
+    # If slack is not installed as a dep yet
+    mix deps.get
+  fi
+  echo "[ Did not find .slack_config ]"
+  echo "Creating a .slack_config for you.."
+  echo "Enter your slack token:";
+  # Get token from user input
+  read slack_token;
+  # Write token into config file
+  echo "SLACK_TOKEN=$slack_token" > .slack_config
+  echo "Created .slack_config"
+  echo "Running slackbot.."
+  # Run bot using config
+  run_bot
+else
+  run_bot
+fi
+

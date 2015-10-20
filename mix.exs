@@ -30,7 +30,7 @@ defmodule Slack.Mixfile do
   end
 
   defp package do
-    %{contributors: ["Blake Williams"],
+    %{maintainers: ["Blake Williams"],
       licenses: ["MIT"],
       links: %{
         "Github": "https://github.com/BlakeWilliams/Elixir-Slack",

@@ -7,3 +7,4 @@ otp_release:
   - 18.1
 after_success:
   - mix coveralls.travis
+

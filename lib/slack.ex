@@ -16,7 +16,7 @@ defmodule Slack do
   defmodule Bot do
     use Slack
 
-    def handle_message(message = {type: "message"}, slack, state) do
+    def handle_reply(message = {type: "message"}, slack, state) do
       if message.text == "Hi" do
         send_message("Hi has been said #\{state} times", message.channel, slack)
         state = state + 1
@@ -40,12 +40,12 @@ defmodule Slack do
   The message type is pattern matched against because the
   [Slack RTM API](https://api.slack.com/rtm) defines many different types of
   messages that we can receive. Because of this it's wise to write a catch-all
-  `handle_message/3` in your bots to prevent crashing.
+  `handle_reply/3` in your bots to prevent crashing.
 
   ## Callbacks
 
   * `handle_connect(slack, state)` - called when connected to Slack.
-  * `handle_message(message, slack, state)` - called when a message is received.
+  * `handle_reply(message, slack, state)` - called when a message is received.
   * `handle_close(reason, slack, state)` - called when websocket is closed.
 
   ## Slack argument
@@ -116,7 +116,7 @@ defmodule Slack do
       def websocket_handle({:text, message}, _con, %{slack: slack, state: state}) do
         message = prepare_message message
         if Map.has_key?(message, :type) do
-          {:ok, state} = handle_message(message, slack, state)
+          {:ok, state} = handle_reply(message, slack, state)
           {:ok, slack} = handle_slack(message, slack)
         end
 
@@ -137,10 +137,14 @@ defmodule Slack do
       end
 
       def handle_connect(_slack, state), do: {:ok, state}
-      def handle_message(_message, _slack, state), do: {:ok, state}
+      def handle_reply(_message, _slack, state), do: {:ok, state}
+      def handle_message(_message, _slack, state) do
+        IO.puts "Warning: handle_message is deprecated. Please use handle_reply instead."
+        handle_reply(nil, nil, state)
+      end
       def handle_close(_reason, _slack, state), do: {:error, state}
 
-      defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3]
+      defoverridable [handle_connect: 2, handle_reply: 3, handle_close: 3]
     end
   end
 

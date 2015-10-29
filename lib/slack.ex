@@ -61,6 +61,7 @@ defmodule Slack do
   * bots - Stored as a map with id's as keys.
   * channels - Stored as a map with id's as keys.
   * groups - Stored as a map with id's as keys.
+  * ims - Stored as a map with id's as keys.
   * users - Stored as a map with id's as keys.
   * socket - The connection to Slack.
   * client - The client that makes calls to Slack.
@@ -94,6 +95,7 @@ defmodule Slack do
           bots: rtm_list_to_map(rtm.bots),
           channels: rtm_list_to_map(rtm.channels),
           groups: rtm_list_to_map(rtm.groups),
+          ims: rtm_list_to_map(rtm.ims),
           users: rtm_list_to_map(rtm.users),
         }
 

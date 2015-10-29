@@ -51,6 +51,7 @@ defmodule SlackTest do
       bots: [%{id: "123"}],
       channels: [%{id: "123"}],
       groups: [%{id: "123"}],
+      ims: [%{id: "123"}],
       users: [%{id: "123"}],
     }
 
@@ -61,6 +62,7 @@ defmodule SlackTest do
     assert slack.bots     == %{"123" => %{id: "123"}}
     assert slack.channels == %{"123" => %{id: "123"}}
     assert slack.groups   == %{"123" => %{id: "123"}}
+    assert slack.ims      == %{"123" => %{id: "123"}}
     assert slack.users    == %{"123" => %{id: "123"}}
 
     assert state == 1

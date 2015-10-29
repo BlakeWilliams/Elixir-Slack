@@ -47,6 +47,7 @@ defmodule Slack do
   * `handle_connect(slack, state)` - called when connected to Slack.
   * `handle_message(message, slack, state)` - called when a message is received.
   * `handle_close(reason, slack, state)` - called when websocket is closed.
+  * `handle_info(message, slack, state)`
 
   ## Slack argument
 
@@ -105,6 +106,11 @@ defmodule Slack do
         {:ok, state}
       end
 
+      def websocket_info(message, _connection, %{slack: slack, state: state}) do
+        handle_info(message, slack, state)
+        {:ok, %{slack: slack, state: state}}
+      end
+
       def websocket_terminate(reason, _connection, %{slack: slack, state: state}) do
         handle_close(reason, slack, state)
       end
@@ -139,8 +145,9 @@ defmodule Slack do
       def handle_connect(_slack, state), do: {:ok, state}
       def handle_message(_message, _slack, state), do: {:ok, state}
       def handle_close(_reason, _slack, state), do: {:error, state}
+      def handle_info(_message, _slack, state), do: {:ok, state}
 
-      defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3]
+      defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3, handle_info: 3]
     end
   end
 

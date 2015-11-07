@@ -15,8 +15,8 @@ defmodule SlackTest do
     assert Bot.handle_connect(nil, 1) == {:ok, 1}
   end
 
-  test "handle_message returns state by default" do
-    assert Bot.handle_message(nil, nil, 1) == {:ok, 1}
+  test "handle_reply returns state by default" do
+    assert Bot.handle_reply(nil, nil, 1) == {:ok, 1}
   end
 
   test "send_raw sends slack formatted to client" do

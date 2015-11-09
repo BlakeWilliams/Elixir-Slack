@@ -47,7 +47,7 @@ defmodule Slack do
   * `handle_connect(slack, state)` - called when connected to Slack.
   * `handle_message(message, slack, state)` - called when a message is received.
   * `handle_close(reason, slack, state)` - called when websocket is closed.
-  * `handle_info(message, slack, state)`
+  * `handle_info(message, slack, state)` - called when any other message is received in the process mailbox.
 
   ## Slack argument
 

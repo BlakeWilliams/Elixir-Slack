@@ -14,7 +14,7 @@ defmodule Slack.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :httpoison, :hackney]]
+    [applications: [:logger, :httpoison, :hackney, :exjsx]]
   end
 
   defp deps do

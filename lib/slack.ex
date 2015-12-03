@@ -77,6 +77,7 @@ defmodule Slack do
       @behaviour :websocket_client_handler
       import Slack
       import Slack.Handlers
+      alias Slack.Web
 
       def start_link(token, initial_state, client \\ :websocket_client) do
         {:ok, rtm} = Slack.Rtm.start(token)
@@ -98,6 +99,7 @@ defmodule Slack do
           groups: rtm_list_to_map(rtm.groups),
           ims: rtm_list_to_map(rtm.ims),
           users: rtm_list_to_map(rtm.users),
+          token: rtm.token
         }
 
         {:ok, state} = handle_connect(slack, state)

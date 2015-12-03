@@ -21,4 +21,6 @@ use Mix.Config
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
-#     import_config "#{Mix.env}.exs"
+if File.exists? "config/#{Mix.env}.exs" do
+  import_config "#{Mix.env}.exs"
+end

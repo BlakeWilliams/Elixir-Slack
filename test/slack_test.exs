@@ -53,6 +53,7 @@ defmodule SlackTest do
       groups: [%{id: "123"}],
       ims: [%{id: "123"}],
       users: [%{id: "123"}],
+      token: "token"
     }
 
     {:ok, %{slack: slack, state: state}} = Bot.init(%{rtm: rtm, state: 1, client: FakeWebsocketClient}, nil)
@@ -64,6 +65,7 @@ defmodule SlackTest do
     assert slack.groups   == %{"123" => %{id: "123"}}
     assert slack.ims      == %{"123" => %{id: "123"}}
     assert slack.users    == %{"123" => %{id: "123"}}
+    assert slack.token    == "token"
 
     assert state == 1
   end

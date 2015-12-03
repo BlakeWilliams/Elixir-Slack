@@ -104,8 +104,28 @@ defmodule Slack.HandlersTest do
     assert new_slack.bots["123"].name == "new"
   end
 
+  test "im_created updates adds to ims" do
+    {:ok, new_slack} = Handlers.handle_slack(
+      %{type: "im_created", channel: %{id: "234"}, user: "345"},
+      slack
+    )
+
+    assert new_slack.ims["234"].user == "345"
+    assert new_slack.ims["234"].id == "234"
+  end
+
+  test "im_close removes from ims" do
+    {:ok, new_slack} = Handlers.handle_slack(
+      %{type: "im_close", channel: %{id: "123"}, user: "456"},
+      slack
+    )
+
+    assert new_slack.ims["123"] == nil
+  end
+
   defp slack do
     %{
+      token: "token",
       channels: %{
         "123" => %{
           id: 123,
@@ -125,6 +145,15 @@ defmodule Slack.HandlersTest do
       bots: %{
         "123": %{
           name: "Bot"
+        }
+      },
+      ims: %{
+        "123": %{
+          id: "123",
+          is_im: true,
+          user: "456",
+          created: 1416698705,
+          is_user_deleted: false
         }
       }
     }

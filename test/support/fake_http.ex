@@ -6,7 +6,7 @@ defmodule FakeHttp do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
-  def set_callback(fun) when is_function(fun, 1) do
+  def set_callback(fun) when fun == nil or is_function(fun, 1) do
     GenServer.call(__MODULE__, {:set_callback, fun})
   end
 

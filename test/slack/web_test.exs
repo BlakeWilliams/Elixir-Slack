@@ -9,6 +9,11 @@ defmodule Slack.WebTest do
     assert {:ok, %{id: "456"}} = Web.IM.open("123", @slack)
   end
 
+  test "open im cached" do
+    FakeHttp.set_callback nil
+    assert {:ok, %{id: "678"}} = Web.IM.open("123", Map.put(@slack, :ims, %{"123" => %{id: "678", is_open: true}}))
+  end
+
   test "failure open im" do
     FakeHttp.set_callback success(~s({"ok": false, "error": "broken"}))
     assert {:error, "broken"} = Web.IM.open("123", @slack)

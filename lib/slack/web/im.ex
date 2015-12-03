@@ -10,7 +10,7 @@ defmodule Slack.Web.IM do
   def open(user, slack) do
     cond do
       # Check if already available
-      slack[:ims][user] -> {:ok, slack[:ims][user]}
+      slack[:ims][user] && slack[:ims][user][:is_open] -> {:ok, slack[:ims][user]}
       true ->
         # Will cause an `im_created` event to be broadcast which updates slack state
         case @http_module.get(@open_url <> slack.token <> "&user=" <> user) do

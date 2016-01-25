@@ -19,7 +19,7 @@ defmodule Slack.Handlers do
       {:ok, put_in(slack, [unquote(plural_atom), channel.id, :is_member], true)}
     end
     def handle_slack(%{type: unquote(type <> "_left"), channel: channel}, slack) do
-      {:ok, put_in(slack, [unquote(plural_atom), channel, :is_member], false)}
+      {:ok, put_in(slack, [unquote(plural_atom), channel.id, :is_member], false)}
     end
     def handle_slack(%{type: unquote(type <> "_rename"), channel: channel}, slack) do
       {:ok, put_in(slack, [unquote(plural_atom), channel.id, :name], channel.name)}

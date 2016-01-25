@@ -11,7 +11,7 @@ defmodule Slack.HandlersTest do
     assert new_slack.channels["123"].is_member == true
   end
 
-  test "channel_joined sets is_member to true" do
+  test "channel_left sets is_member to false" do
     {:ok, new_slack} = Handlers.handle_slack(
       %{type: "channel_left", channel: %{id: "123"}},
       slack

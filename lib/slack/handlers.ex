@@ -16,6 +16,7 @@ defmodule Slack.Handlers do
     plural_atom = String.to_atom(type <> "s")
 
     def handle_slack(%{type: unquote(type <> "_joined"), channel: channel}, slack) do
+      slack = put_in(slack, [unquote(plural_atom), channel.id, :members], channel.members)
       {:ok, put_in(slack, [unquote(plural_atom), channel.id, :is_member], true)}
     end
     def handle_slack(%{type: unquote(type <> "_left"), channel: channel}, slack) do

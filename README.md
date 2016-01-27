@@ -37,9 +37,9 @@ callback methods.
 defmodule SlackRtm do
   use Slack
 
-  def init(initial_state, slack) do
+  def handle_connect(slack, state) do
     IO.puts "Connected as #{slack.me.name}"
-    {:ok, initial_state}
+    {:ok, state}
   end
 
   def handle_message(message = %{type: "message"}, slack, state) do

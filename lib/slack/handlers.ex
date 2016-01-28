@@ -49,6 +49,14 @@ defmodule Slack.Handlers do
     end
   end)
 
+  def handle_slack(%{type: "im_created", channel: channel, user: user}, slack) do
+    {:ok, put_in(slack, [:ims, channel.id], %{id: channel.id, user: user, is_open: true})}
+  end
+
+  def handle_slack(%{type: "im_close", channel: im_id}, slack) do
+    {:ok, put_in(slack, [:ims], Map.delete(slack[:ims], im_id))}
+  end
+
   def handle_slack(%{type: _type}, slack) do
     {:ok, slack}
   end

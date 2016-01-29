@@ -31,6 +31,12 @@ defmodule Slack.Handlers do
     def handle_slack(%{type: unquote(type <> "_unarchive"), channel: channel}, slack) do
       {:ok, put_in(slack, [unquote(plural_atom), channel, :is_archived], false)}
     end
+    def handle_slack(%{type: "message", subtype: unquote(type <> "_join"), channel: channel, user: user}, slack) do
+      {:ok, put_in(slack, [unquote(plural_atom), channel, :members], [user | slack[unquote(plural_atom)][channel][:members]])}
+    end
+    def handle_slack(%{type: "message", subtype: unquote(type <> "_leave"), channel: channel, user: user}, slack) do
+      {:ok, put_in(slack, [unquote(plural_atom), channel, :members], slack[unquote(plural_atom)][channel][:members] -- [user])}
+    end
   end)
 
   def handle_slack(%{type: "team_rename", name: name}, slack) do

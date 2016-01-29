@@ -105,6 +105,24 @@ defmodule Slack.HandlersTest do
     assert new_slack.bots["123"].name == "new"
   end
 
+  test "channel_join message should add member" do
+    {:ok, new_slack} = Handlers.handle_slack(
+      %{type: "message", subtype: "channel_join", user: "U456", channel: "123"},
+      slack
+    )
+
+    assert (new_slack.channels["123"].members |> Enum.sort) == ["U123", "U456"]
+  end
+
+  test "channel_leave message should remove member" do
+    {:ok, new_slack} = Handlers.handle_slack(
+      %{type: "message", subtype: "channel_leave", user: "U123", channel: "123"},
+      slack
+    )
+
+    assert new_slack.channels["123"].members == []
+  end
+
   defp slack do
     %{
       channels: %{
@@ -112,7 +130,8 @@ defmodule Slack.HandlersTest do
           id: 123,
           name: "foo",
           is_member: nil,
-          is_archived: nil
+          is_archived: nil,
+          members: ["U123"]
         }
       },
       team: %{

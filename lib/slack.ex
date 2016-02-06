@@ -122,8 +122,8 @@ defmodule Slack do
       def websocket_handle({:text, message}, _con, %{slack: slack, state: state}) do
         message = prepare_message message
         if Map.has_key?(message, :type) do
-          {:ok, state} = handle_message(message, slack, state)
           {:ok, slack} = handle_slack(message, slack)
+          {:ok, state} = handle_message(message, slack, state)
         end
 
         {:ok, %{slack: slack, state: state}}

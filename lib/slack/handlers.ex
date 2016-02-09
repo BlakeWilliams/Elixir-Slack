@@ -20,11 +20,6 @@ defmodule Slack.Handlers do
   end
 
   def handle_slack(%{type: "group_joined", channel: channel}, slack) do
-    # Sent when a user joins / is invited to a group. The bot is a
-    # member of the group by definition, and it will actually be
-    # listed in the members list
-    #
-    # Slack doesn't have a group_created event!
     {:ok, put_in(slack, [:groups, channel.id], channel)}
   end
 
@@ -33,12 +28,6 @@ defmodule Slack.Handlers do
   end
 
   def handle_slack(%{type: "message", subtype: "group_join", channel: channel, user: user}, slack) do
-    # When the bot joins a group, it gets both a group_joined event
-    # _and_ a group_join message. It also gets a group_join message
-    # when other users join the group. As a result, we need to make
-    # sure the members are unique and not duplicated)
-
-    # Note: here, channel is just the ID
     {:ok, update_in(slack, [:groups, channel, :members], &(Enum.uniq([user | &1])))}
   end
 
@@ -47,8 +36,6 @@ defmodule Slack.Handlers do
   end
 
   def handle_slack(%{type: "group_left", channel: channel}, slack) do
-    # When the user leaves the group, they're out for good; no use in
-    # continuing to track ittt
     {:ok, update_in(slack, [:groups], &(Map.delete(&1, channel)))}
   end
 

@@ -12,16 +12,36 @@ defmodule Slack.Handlers do
     {:ok, put_in(slack, [:channels, channel.id], channel)}
   end
 
+  def handle_slack(%{type: "channel_joined", channel: channel}=x, slack) do
+    slack = slack
+    |> put_in([:channels, channel.id, :members], channel.members)
+    |> put_in([:channels, channel.id, :is_member], true)
+    {:ok, slack}
+  end
+
+  def handle_slack(%{type: "group_joined", channel: channel}, slack) do
+    {:ok, put_in(slack, [:groups, channel.id], channel)}
+  end
+
+  def handle_slack(%{type: "message", subtype: "channel_join", channel: channel, user: user}, slack) do
+    {:ok, put_in(slack, [:channels, channel, :members], [user | slack[:channels][channel][:members]])}
+  end
+
+  def handle_slack(%{type: "message", subtype: "group_join", channel: channel, user: user}, slack) do
+    {:ok, update_in(slack, [:groups, channel, :members], &(Enum.uniq([user | &1])))}
+  end
+
+  def handle_slack(%{type: "channel_left", channel: channel}, slack) do
+    {:ok, put_in(slack, [:channels, channel.id, :is_member], false)}
+  end
+
+  def handle_slack(%{type: "group_left", channel: channel}, slack) do
+    {:ok, update_in(slack, [:groups], &(Map.delete(&1, channel)))}
+  end
+
   Enum.map(["channel", "group"], fn (type) ->
     plural_atom = String.to_atom(type <> "s")
 
-    def handle_slack(%{type: unquote(type <> "_joined"), channel: channel}, slack) do
-      slack = put_in(slack, [unquote(plural_atom), channel.id, :members], channel.members)
-      {:ok, put_in(slack, [unquote(plural_atom), channel.id, :is_member], true)}
-    end
-    def handle_slack(%{type: unquote(type <> "_left"), channel: channel}, slack) do
-      {:ok, put_in(slack, [unquote(plural_atom), channel.id, :is_member], false)}
-    end
     def handle_slack(%{type: unquote(type <> "_rename"), channel: channel}, slack) do
       {:ok, put_in(slack, [unquote(plural_atom), channel.id, :name], channel.name)}
     end
@@ -31,11 +51,8 @@ defmodule Slack.Handlers do
     def handle_slack(%{type: unquote(type <> "_unarchive"), channel: channel}, slack) do
       {:ok, put_in(slack, [unquote(plural_atom), channel, :is_archived], false)}
     end
-    def handle_slack(%{type: "message", subtype: unquote(type <> "_join"), channel: channel, user: user}, slack) do
-      {:ok, put_in(slack, [unquote(plural_atom), channel, :members], [user | slack[unquote(plural_atom)][channel][:members]])}
-    end
     def handle_slack(%{type: "message", subtype: unquote(type <> "_leave"), channel: channel, user: user}, slack) do
-      {:ok, put_in(slack, [unquote(plural_atom), channel, :members], slack[unquote(plural_atom)][channel][:members] -- [user])}
+      {:ok, update_in(slack, [unquote(plural_atom), channel, :members], &(&1 -- [user]))}
     end
   end)
 

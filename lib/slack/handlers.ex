@@ -12,7 +12,7 @@ defmodule Slack.Handlers do
     {:ok, put_in(slack, [:channels, channel.id], channel)}
   end
 
-  def handle_slack(%{type: "channel_joined", channel: channel}=x, slack) do
+  def handle_slack(%{type: "channel_joined", channel: channel}, slack) do
     slack = slack
     |> put_in([:channels, channel.id, :members], channel.members)
     |> put_in([:channels, channel.id, :is_member], true)

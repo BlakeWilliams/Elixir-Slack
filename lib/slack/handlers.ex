@@ -31,8 +31,8 @@ defmodule Slack.Handlers do
     {:ok, update_in(slack, [:groups, channel, :members], &(Enum.uniq([user | &1])))}
   end
 
-  def handle_slack(%{type: "channel_left", channel: channel}, slack) do
-    {:ok, put_in(slack, [:channels, channel.id, :is_member], false)}
+  def handle_slack(%{type: "channel_left", channel: channel_id}, slack) do
+    {:ok, put_in(slack, [:channels, channel_id, :is_member], false)}
   end
 
   def handle_slack(%{type: "group_left", channel: channel}, slack) do

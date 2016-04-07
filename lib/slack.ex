@@ -78,12 +78,18 @@ defmodule Slack do
       import Slack.Handlers
 
       def start_link(token, initial_state, client \\ :websocket_client) do
-        {:ok, rtm} = Slack.Rtm.start(token)
-
-        state = %{rtm: rtm, state: initial_state, client: client}
-
-        url = String.to_char_list(rtm.url)
-        client.start_link(url, __MODULE__, state)
+        case Slack.Rtm.start(token) do
+          {:ok, rtm} ->
+            state = %{rtm: rtm, state: initial_state, client: client}
+            url = String.to_char_list(rtm.url)
+            client.start_link(url, __MODULE__, state)
+          {:error, %HTTPoison.Error{reason: :connect_timeout}} ->
+            {:error, "Timed out while connecting to the Slack RTM API"}
+          {:error, %HTTPoison.Error{reason: :nxdomain}} ->
+            {:error, "Could not connect to the Slack RTM API"}
+          {:error, error} ->
+            {:error, error}
+        end
       end
 
       def init(%{rtm: rtm, client: client, state: state}, socket) do

@@ -171,6 +171,28 @@ defmodule Slack do
   end
 
   @doc """
+  Sends `text` and `attachments` to `channel` for the given `slack` connection.
+  The `attachments` should be a list of maps, see the [Slack attachment docs] for
+  information on how to structure attachments.
+
+  [Slack attachment docs]: https://api.slack.com/docs/attachments
+  """
+  def send_attachments(text, attachments, channel, slack) when is_list(attachments) do
+    message = %{
+      type: "message",
+      text: text,
+      attachments: attachments,
+      channel: channel
+    }
+
+    message |> JSX.encode! |> send_raw(slack)
+  end
+
+  def send_attachments(text, attachment, channel, slack) do
+    send_attachments(text, [attachment], channel, slack)
+  end
+
+  @doc """
   Notifies Slack that the current user is typing in `channel`.
   """
   def indicate_typing(channel, slack) do

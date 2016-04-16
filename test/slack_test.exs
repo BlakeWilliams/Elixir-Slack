@@ -29,6 +29,15 @@ defmodule SlackTest do
     assert result == {~s/{"channel":"channel","text":"hello","type":"message"}/, nil}
   end
 
+  test "send_attachments sends message + attachments formatted to client" do
+    attachment = %{
+      title: "Attachment",
+      color: "#fff",
+    }
+    result = Slack.send_attachments("hello", [attachment], "channel", %{socket: nil, client: FakeWebsocketClient})
+    assert result == {~s/{"attachments":[{"color":"#fff","title":"Attachment"}],"channel":"channel","text":"hello","type":"message"}/, nil}
+  end
+
   test "indicate_typing sends typing notification to client" do
     result = Slack.indicate_typing("channel", %{socket: nil, client: FakeWebsocketClient})
     assert result == {~s/{"channel":"channel","type":"typing"}/, nil}

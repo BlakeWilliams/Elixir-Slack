@@ -160,6 +160,18 @@ defmodule Slack do
   @doc """
   Sends `text` to `channel` for the given `slack` connection.
   """
+  def send_message(text, "#" <> channel_name, slack) do
+    channel_id =
+      slack.channels
+      |> Map.values
+      |> Enum.find(fn channel -> channel.name == channel_name end)
+      |> Map.get(:id)
+    if channel_id do
+      send_message(text, channel_id, slack)
+    else
+      raise ArgumentError, "channel ##{channel_name} not found"
+    end
+  end
   def send_message(text, channel, slack) do
     %{
       type: "message",

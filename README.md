@@ -76,3 +76,42 @@ You can find more detailed documentation on the [Slack hexdocs page].
 
 [RTM API page]: https://api.slack.com/rtm
 [Slack hexdocs page]: http://hexdocs.pm/slack/
+
+## send_message outside a handler
+
+If you wish to send messages to Slack outside an existing handler, you will need to save and retrieve the `slack` parameter that contains the `socket`. Here is an example of catching and storing it in the [ETS](http://elixir-lang.org/getting-started/mix-otp/ets.html)
+
+**Note**! You *must* add the user/bot to the channel ("general" in this case) in order for the messages to be received and displayed. You can do this by inviting the bot in the Slack channel.
+
+```elixir
+defmodule Myapp.SlackBot do
+  use Slack
+
+  def handle_connect(slack, state) do
+    :ets.new(:slack_state, [:named_table])
+    |> :ets.insert({"slack", slack})
+
+    {:ok, state}
+  end
+
+  # Sends a message on the "general" channel
+  def send_general_message(message) do
+    [{"slack", slack}] = :ets.lookup(:slack_state, "slack")
+
+    # Probably some fancier pattern matching way to do this...
+    general = slack.channels
+    |> Map.values
+    |> Enum.find(&(&1[:is_general]))
+
+    send_message(message, general.id)
+  end
+
+  def send_message(message, channel) do
+    [{"slack", slack}] = :ets.lookup(:slack_state, "slack")
+    send_message(message, channel, slack)
+  end
+end
+
+# Somewhere else...
+Myapp.SlackBot.send_general_message("This will appear in general.")
+```

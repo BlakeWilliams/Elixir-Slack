@@ -160,6 +160,16 @@ defmodule Slack.HandlersTest do
     refute new_slack.groups["G000"]
   end
 
+  test "im_created message should add direct message channel to list" do
+    channel = %{name: "channel", id: "C456"}
+    {:ok, new_slack} = Handlers.handle_slack(
+      %{type: "im_created", channel: channel},
+      slack
+    )
+
+    assert new_slack.ims == %{"C456" => channel}
+  end
+
   defp slack do
     %{
       channels: %{
@@ -189,7 +199,8 @@ defmodule Slack.HandlersTest do
         "123": %{
           name: "Bot"
         }
-      }
+      },
+      ims: %{ }
     }
   end
 end

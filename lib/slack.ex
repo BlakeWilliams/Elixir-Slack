@@ -80,7 +80,12 @@ defmodule Slack do
       def start_link(token, initial_state, client \\ :websocket_client) do
         case Slack.Rtm.start(token) do
           {:ok, rtm} ->
-            state = %{rtm: rtm, state: initial_state, client: client}
+            state = %{
+              rtm: rtm,
+              state: initial_state,
+              client: client,
+              token: token
+            }
             url = String.to_char_list(rtm.url)
             client.start_link(url, __MODULE__, state)
           {:error, %HTTPoison.Error{reason: :connect_timeout}} ->
@@ -92,10 +97,11 @@ defmodule Slack do
         end
       end
 
-      def init(%{rtm: rtm, client: client, state: state}, socket) do
+      def init(%{rtm: rtm, client: client, state: state, token: token}, socket) do
         slack = %{
           socket: socket,
           client: client,
+          token: token,
           me: rtm.self,
           team: rtm.team,
           bots: rtm_list_to_map(rtm.bots),
@@ -164,7 +170,7 @@ defmodule Slack do
   def lookup_user_id("@" <> user_name, slack) do
     slack.users
     |> Map.values
-    |> Enum.find(fn user -> user.name == user_name end)
+    |> Enum.find(%{ }, fn user -> user.name == user_name end)
     |> Map.get(:id)
   end
 
@@ -181,7 +187,7 @@ defmodule Slack do
   def lookup_direct_message_id(user_id, slack) do
     slack.ims
     |> Map.values
-    |> Enum.find(fn direct_message -> direct_message.user == user_id end)
+    |> Enum.find(%{ }, fn direct_message -> direct_message.user == user_id end)
     |> Map.get(:id)
   end
 
@@ -232,7 +238,18 @@ defmodule Slack do
     if direct_message_id do
       send_message(text, direct_message_id, slack)
     else
-      raise ArgumentError, "direct message channel for ##{user_name} not found"
+      im_open = HTTPoison.post(
+        "https://slack.com/api/im.open",
+        {:form, [token: slack.token, user: lookup_user_id(user, slack)]}
+      )
+      case im_open do
+        {:ok, response} ->
+          case JSX.decode!(response.body, [{:labels, :atom}]) do
+            %{ok: true, channel: %{id: id}} -> send_message(text, id, slack)
+            _ -> :delivery_failed
+          end
+        {:error, reason} -> :delivery_failed
+      end
     end
   end
   def send_message(text, channel, slack) do

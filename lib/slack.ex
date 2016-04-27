@@ -63,6 +63,7 @@ defmodule Slack do
   * channels - Stored as a map with id's as keys.
   * groups - Stored as a map with id's as keys.
   * users - Stored as a map with id's as keys.
+  * ims (direct message channels) - Stored as a map with id's as keys.
   * socket - The connection to Slack.
   * client - The client that makes calls to Slack.
 

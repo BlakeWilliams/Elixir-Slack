@@ -60,6 +60,10 @@ defmodule Slack.Handlers do
     {:ok, put_in(slack, [:team, :name], name)}
   end
 
+  def handle_slack(%{type: "presence_change", user: user, presence: presence}, slack) do
+    {:ok, put_in(slack, [:users, user, :presence], presence)}
+  end
+  
   Enum.map(["team_join", "user_change"], fn (type) ->
     def handle_slack(%{type: unquote(type), user: user}, slack) do
       {:ok, put_in(slack, [:users, user.id], user)}

@@ -123,6 +123,15 @@ defmodule Slack.HandlersTest do
     assert new_slack.channels["123"].members == []
   end
 
+  test "presence_change message should update user" do
+    {:ok, new_slack} = Handlers.handle_slack(
+      %{presence: "testing", type: "presence_change", user: "123"},
+      slack
+    )
+
+    assert new_slack.users["123"].presence == "testing"
+  end
+
   test "group_joined event should add group" do
     {:ok, new_slack} = Handlers.handle_slack(
       %{type: "group_joined", channel: %{id: "G123", members: ["U123", "U456"]}},
@@ -175,8 +184,9 @@ defmodule Slack.HandlersTest do
         name: "Foo",
       },
       users: %{
-        "123": %{
-          name: "Bar"
+        "123" => %{
+          name: "Bar",
+          presence: "active"
         }
       },
       groups: %{
@@ -186,7 +196,7 @@ defmodule Slack.HandlersTest do
         }
       },
       bots: %{
-        "123": %{
+        "123" => %{
           name: "Bot"
         }
       }

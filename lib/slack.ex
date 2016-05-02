@@ -63,6 +63,7 @@ defmodule Slack do
   * channels - Stored as a map with id's as keys.
   * groups - Stored as a map with id's as keys.
   * users - Stored as a map with id's as keys.
+  * ims (direct message channels) - Stored as a map with id's as keys.
   * socket - The connection to Slack.
   * client - The client that makes calls to Slack.
 
@@ -76,11 +77,18 @@ defmodule Slack do
       @behaviour :websocket_client_handler
       import Slack
       import Slack.Handlers
+      import Slack.Lookups
+      import Slack.Sends
 
       def start_link(token, initial_state, client \\ :websocket_client) do
         case Slack.Rtm.start(token) do
           {:ok, rtm} ->
-            state = %{rtm: rtm, state: initial_state, client: client}
+            state = %{
+              rtm: rtm,
+              state: initial_state,
+              client: client,
+              token: token
+            }
             url = String.to_char_list(rtm.url)
             client.start_link(url, __MODULE__, state)
           {:error, %HTTPoison.Error{reason: :connect_timeout}} ->
@@ -92,16 +100,18 @@ defmodule Slack do
         end
       end
 
-      def init(%{rtm: rtm, client: client, state: state}, socket) do
+      def init(%{rtm: rtm, client: client, state: state, token: token}, socket) do
         slack = %{
           socket: socket,
           client: client,
+          token: token,
           me: rtm.self,
           team: rtm.team,
           bots: rtm_list_to_map(rtm.bots),
           channels: rtm_list_to_map(rtm.channels),
           groups: rtm_list_to_map(rtm.groups),
           users: rtm_list_to_map(rtm.users),
+          ims: rtm_list_to_map(rtm.ims)
         }
 
         {:ok, state} = handle_connect(slack, state)
@@ -155,49 +165,5 @@ defmodule Slack do
 
       defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3, handle_info: 3]
     end
-  end
-
-  @doc """
-  Sends `text` to `channel` for the given `slack` connection.
-  """
-  def send_message(text, channel, slack) do
-    %{
-      type: "message",
-      text: text,
-      channel: channel
-    }
-      |> JSX.encode!
-      |> send_raw(slack)
-  end
-
-  @doc """
-  Notifies Slack that the current user is typing in `channel`.
-  """
-  def indicate_typing(channel, slack) do
-    %{
-      type: "typing",
-      channel: channel
-    }
-      |> JSX.encode!
-      |> send_raw(slack)
-  end
-
-  @doc """
-  Notifies slack that the current `slack` user is typing in `channel`.
-  """
-  def send_ping(data \\ [], slack) do
-    %{
-      type: "ping"
-    }
-      |> Dict.merge(data)
-      |> JSX.encode!
-      |> send_raw(slack)
-  end
-
-  @doc """
-  Sends raw JSON to a given socket.
-  """
-  def send_raw(json, %{socket: socket, client: client}) do
-    client.send({:text, json}, socket)
   end
 end

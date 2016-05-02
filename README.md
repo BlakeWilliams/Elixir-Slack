@@ -64,7 +64,7 @@ as the third.
 
 The passed in `slack` state holds the current user properties as `me`, team
 properties as `team`, the current websocket connection as `socket`, and a list
-of  `bots`, `channels`, `groups`, and `users`.
+of  `bots`, `channels`, `groups`, `users`, and `ims` (direct message channels).
 
 [rtm.start]: https://api.slack.com/methods/rtm.start
 

@@ -42,7 +42,7 @@ defmodule Slack.Sends do
   @doc """
   Notifies Slack that the current user is typing in `channel`.
   """
-  def indicate_typing(channel, slack) do
+  def indicate_typing(channel, slack = %Slack{}) do
     %{
       type: "typing",
       channel: channel
@@ -54,7 +54,7 @@ defmodule Slack.Sends do
   @doc """
   Notifies slack that the current `slack` user is typing in `channel`.
   """
-  def send_ping(data \\ [], slack) do
+  def send_ping(data \\ [], slack = %Slack{}) do
     %{
       type: "ping"
     }

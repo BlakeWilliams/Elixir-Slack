@@ -72,6 +72,26 @@ defmodule Slack do
 
   [Slack API types]: https://api.slack.com/types
   """
+  defstruct [
+    socket: nil,
+    client: nil,
+    token:  nil,
+    me:     nil,
+    team:   nil,
+    bots:     %{},
+    channels: %{},
+    groups:   %{},
+    users:    %{},
+    ims:      %{},
+  ]
+    
+  @behaviour Access
+  
+  defdelegate fetch(slack, key),                    to: Map
+  defdelegate get(slack, key),                      to: Map
+  defdelegate get(slack, key, default),             to: Map
+  defdelegate get_and_update(slack, key, function), to: Map
+  
   defmacro __using__(_) do
     quote do
       @behaviour :websocket_client_handler
@@ -101,7 +121,7 @@ defmodule Slack do
       end
 
       def init(%{rtm: rtm, client: client, state: state, token: token}, socket) do
-        slack = %{
+        slack = %Slack{
           socket: socket,
           client: client,
           token: token,
@@ -122,12 +142,12 @@ defmodule Slack do
         {:ok, state}
       end
 
-      def websocket_info(message, _connection, %{slack: slack, state: state}) do
+      def websocket_info(message, _connection, %{slack: slack = %Slack{}, state: state}) do
         {:ok, state} = handle_info(message, slack, state)
         {:ok, %{slack: slack, state: state}}
       end
 
-      def websocket_terminate(reason, _connection, %{slack: slack, state: state}) do
+      def websocket_terminate(reason, _connection, %{slack: slack = %Slack{}, state: state}) do
         handle_close(reason, slack, state)
       end
 
@@ -135,7 +155,7 @@ defmodule Slack do
         {:reply, {:pong, data}, state}
       end
 
-      def websocket_handle({:text, message}, _con, %{slack: slack, state: state}) do
+      def websocket_handle({:text, message}, _con, %{slack: slack = %Slack{}, state: state}) do
         message = prepare_message message
         if Map.has_key?(message, :type) do
           {:ok, slack} = handle_slack(message, slack)
@@ -158,10 +178,10 @@ defmodule Slack do
           |> JSX.decode!([{:labels, :atom}])
       end
 
-      def handle_connect(_slack, state), do: {:ok, state}
-      def handle_message(_message, _slack, state), do: {:ok, state}
-      def handle_close(_reason, _slack, state), do: {:error, state}
-      def handle_info(_message, _slack, state), do: {:ok, state}
+      def handle_connect(%Slack{}, state), do: {:ok, state}
+      def handle_message(_message, %Slack{}, state), do: {:ok, state}
+      def handle_close(_reason, %Slack{}, state), do: {:error, state}
+      def handle_info(_message, %Slack{}, state), do: {:ok, state}
 
       defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3, handle_info: 3]
     end

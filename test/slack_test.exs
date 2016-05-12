@@ -6,11 +6,11 @@ defmodule SlackTest do
   end
 
   test "on_connect returns state by default" do
-    assert Bot.handle_connect(nil, 1) == {:ok, 1}
+    assert Bot.handle_connect(%Slack{}, 1) == {:ok, 1}
   end
 
   test "handle_message returns state by default" do
-    assert Bot.handle_message(nil, nil, 1) == {:ok, 1}
+    assert Bot.handle_message(nil, %Slack{}, 1) == {:ok, 1}
   end
 
   test "init formats rtm results properly" do
@@ -24,7 +24,7 @@ defmodule SlackTest do
       ims: [%{id: "123"}]
     }
 
-    {:ok, %{slack: slack, state: state}} = Bot.init(%{rtm: rtm, state: 1, client: FakeWebsocketClient, token: "ABC"}, nil)
+    {:ok, %{slack: slack = %Slack{}, state: state}} = Bot.init(%{rtm: rtm, state: 1, client: FakeWebsocketClient, token: "ABC"}, nil)
 
     assert slack.me.name == "fake"
     assert slack.team.name == "Foo"

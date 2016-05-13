@@ -10,7 +10,7 @@ defmodule Slack.SendsTest do
   end
 
   test "send_raw sends slack formatted to client" do
-    slack = %Client{
+    slack = %{
       socket: nil,
       client: FakeWebsocketClient
     }
@@ -19,7 +19,7 @@ defmodule Slack.SendsTest do
   end
 
   test "send_message sends message formatted to client" do
-    slack = %Client{
+    slack = %{
       socket: nil,
       client: FakeWebsocketClient
     }
@@ -28,7 +28,7 @@ defmodule Slack.SendsTest do
   end
 
   test "send_message understands #channel names" do
-    slack = %Client{
+    slack = %{
       socket: nil,
       client: FakeWebsocketClient,
       channels: %{"C456" => %{name: "channel", id: "C456"}}
@@ -38,7 +38,7 @@ defmodule Slack.SendsTest do
   end
 
   test "send_message understands @user names" do
-    slack = %Client{
+    slack = %{
       socket: nil,
       client: FakeWebsocketClient,
       users: %{"U123" => %{name: "user", id: "U123"}},
@@ -49,7 +49,7 @@ defmodule Slack.SendsTest do
   end
 
   test "indicate_typing sends typing notification to client" do
-    slack = %Client{
+    slack = %{
       socket: nil,
       client: FakeWebsocketClient
     }
@@ -58,7 +58,7 @@ defmodule Slack.SendsTest do
   end
 
   test "send_ping sends ping to client" do
-    slack = %Client{
+    slack = %{
       socket: nil,
       client: FakeWebsocketClient
     }
@@ -67,7 +67,7 @@ defmodule Slack.SendsTest do
   end
 
   test "send_ping with data sends ping + data to client" do
-    slack = %Client{
+    slack = %{
       socket: nil,
       client: FakeWebsocketClient
     }

@@ -5,8 +5,8 @@ defmodule Slack.Lookups do
   @doc ~S"""
   Turns a string like `"@USER_NAME"` into the ID that Slack understands (`"U…"`).
   """
-  def lookup_user_id("@" <> user_name, slack = %Client{}) do
-    slack.users
+  def lookup_user_id("@" <> user_name, client) do
+    client.users
     |> Map.values
     |> Enum.find(%{ }, fn user -> user.name == user_name end)
     |> Map.get(:id)
@@ -17,13 +17,13 @@ defmodule Slack.Lookups do
   direct message channel of that user (`"D…"`).  `nil` is returned if a direct
   message channel has not yet been opened.
   """
-  def lookup_direct_message_id(user = "@" <> _user_name, slack = %Client{}) do
+  def lookup_direct_message_id(user = "@" <> _user_name, client) do
     user
-    |> lookup_user_id(slack)
-    |> lookup_direct_message_id(slack)
+    |> lookup_user_id(client)
+    |> lookup_direct_message_id(client)
   end
-  def lookup_direct_message_id(user_id, slack = %Client{}) do
-    slack.ims
+  def lookup_direct_message_id(user_id, client) do
+    client.ims
     |> Map.values
     |> Enum.find(%{ }, fn direct_message -> direct_message.user == user_id end)
     |> Map.get(:id)
@@ -33,8 +33,8 @@ defmodule Slack.Lookups do
   Turns a string like `"@CHANNEL_NAME"` into the ID that Slack understands
   (`"C…"`).
   """
-  def lookup_channel_id("#" <> channel_name, slack = %Client{}) do
-    slack.channels
+  def lookup_channel_id("#" <> channel_name, client) do
+    client.channels
     |> Map.values
     |> Enum.find(fn channel -> channel.name == channel_name end)
     |> Map.get(:id)
@@ -44,17 +44,17 @@ defmodule Slack.Lookups do
   Turns a Slack user ID (`"U…"`) or direct message ID (`"D…"`) into a string in
   the format "@USER_NAME".
   """
-  def lookup_user_name(direct_message_id = "D" <> _id, slack = %Client{}) do
-    lookup_user_name(slack.ims[direct_message_id].user, slack)
+  def lookup_user_name(direct_message_id = "D" <> _id, client) do
+    lookup_user_name(client.ims[direct_message_id].user, client)
   end
-  def lookup_user_name(user_id = "U" <> _id, slack = %Client{}) do
-    "@" <> slack.users[user_id].name
+  def lookup_user_name(user_id = "U" <> _id, client) do
+    "@" <> client.users[user_id].name
   end
 
   @doc ~S"""
   Turns a Slack channel ID (`"C…"`) into a string in the format "#CHANNEL_NAME".
   """
-  def lookup_channel_name(channel_id = "C" <> _id, slack = %Client{}) do
-    "#" <> slack.channels[channel_id].name
+  def lookup_channel_name(channel_id = "C" <> _id, client) do
+    "#" <> client.channels[channel_id].name
   end
 end

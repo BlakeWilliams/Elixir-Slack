@@ -1,6 +1,5 @@
 defmodule Slack.Sends do
   alias Slack.Lookups
-  alias Slack.Client
 
   @doc """
   Sends `text` to `channel` for the given `client` connection.  `channel` can be

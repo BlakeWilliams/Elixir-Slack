@@ -1,6 +1,6 @@
 defmodule Slack.Handlers do
   @moduledoc """
-  Defines `handle_slack/3` methods for keeping the `Slack` struct`
+  Defines `handle_slack/3` methods for keeping the `Slack.Client` struct
   up to date.
   """
   

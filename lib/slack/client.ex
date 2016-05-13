@@ -1,7 +1,7 @@
 defmodule Slack.Client do
   @moduledoc """
-  A Struct that keeps updated with the state of your Slack team
-  as it notices new events.
+  A datastructure that allows you to monitor, inspect, and react to the state of
+  your Slack team.
   """
   
   defstruct [

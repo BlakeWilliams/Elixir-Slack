@@ -1,4 +1,4 @@
-defmodule Slack.State do
+defmodule Slack.Client do
   
   defstruct [
     socket: nil,

@@ -1,13 +1,13 @@
 defmodule Slack.Sends do
   alias Slack.Lookups
-  alias Slack.State
+  alias Slack.Client
 
   @doc """
   Sends `text` to `channel` for the given `slack` connection.  `channel` can be
   a string in the format of `"#CHANNEL_NAME"`, `"@USER_NAME"`, or any ID that
   Slack understands.
   """
-  def send_message(text, channel = "#" <> channel_name, slack = %State{}) do
+  def send_message(text, channel = "#" <> channel_name, slack = %Client{}) do
     channel_id = Lookups.lookup_channel_id(channel, slack)
 
     if channel_id do
@@ -16,7 +16,7 @@ defmodule Slack.Sends do
       raise ArgumentError, "channel ##{channel_name} not found"
     end
   end
-  def send_message(text, user = "@" <> _user_name, slack = %State{}) do
+  def send_message(text, user = "@" <> _user_name, slack = %Client{}) do
     direct_message_id = Lookups.lookup_direct_message_id(user, slack)
 
     if direct_message_id do
@@ -30,7 +30,7 @@ defmodule Slack.Sends do
       )
     end
   end
-  def send_message(text, channel, slack = %State{}) do
+  def send_message(text, channel, slack = %Client{}) do
     %{
       type: "message",
       text: text,
@@ -43,7 +43,7 @@ defmodule Slack.Sends do
   @doc """
   Notifies Slack that the current user is typing in `channel`.
   """
-  def indicate_typing(channel, slack = %State{}) do
+  def indicate_typing(channel, slack = %Client{}) do
     %{
       type: "typing",
       channel: channel
@@ -55,7 +55,7 @@ defmodule Slack.Sends do
   @doc """
   Notifies slack that the current `slack` user is typing in `channel`.
   """
-  def send_ping(data \\ [], slack = %State{}) do
+  def send_ping(data \\ [], slack = %Client{}) do
     %{
       type: "ping"
     }

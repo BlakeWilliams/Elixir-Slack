@@ -73,7 +73,7 @@ defmodule Slack do
   [Slack API types]: https://api.slack.com/types
   """
   
-  alias Slack.State
+  alias Slack.Client
   
   defmacro __using__(_) do
     quote do
@@ -104,7 +104,7 @@ defmodule Slack do
       end
 
       def init(%{rtm: rtm, client: client, state: state, token: token}, socket) do
-        slack = %State{
+        slack = %Client{
           socket: socket,
           client: client,
           token: token,
@@ -125,12 +125,12 @@ defmodule Slack do
         {:ok, state}
       end
 
-      def websocket_info(message, _connection, %{slack: slack = %State{}, state: state}) do
+      def websocket_info(message, _connection, %{slack: slack = %Client{}, state: state}) do
         {:ok, state} = handle_info(message, slack, state)
         {:ok, %{slack: slack, state: state}}
       end
 
-      def websocket_terminate(reason, _connection, %{slack: slack = %State{}, state: state}) do
+      def websocket_terminate(reason, _connection, %{slack: slack = %Client{}, state: state}) do
         handle_close(reason, slack, state)
       end
 
@@ -138,7 +138,7 @@ defmodule Slack do
         {:reply, {:pong, data}, state}
       end
 
-      def websocket_handle({:text, message}, _con, %{slack: slack = %State{}, state: state}) do
+      def websocket_handle({:text, message}, _con, %{slack: slack = %Client{}, state: state}) do
         message = prepare_message message
         if Map.has_key?(message, :type) do
           {:ok, slack} = handle_slack(message, slack)
@@ -161,10 +161,10 @@ defmodule Slack do
           |> JSX.decode!([{:labels, :atom}])
       end
 
-      def handle_connect(%State{}, state), do: {:ok, state}
-      def handle_message(_message, %State{}, state), do: {:ok, state}
-      def handle_close(_reason, %State{}, state), do: {:error, state}
-      def handle_info(_message, %State{}, state), do: {:ok, state}
+      def handle_connect(%Client{}, state), do: {:ok, state}
+      def handle_message(_message, %Client{}, state), do: {:ok, state}
+      def handle_close(_reason, %Client{}, state), do: {:error, state}
+      def handle_info(_message, %Client{}, state), do: {:ok, state}
 
       defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3, handle_info: 3]
     end

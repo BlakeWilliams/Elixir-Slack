@@ -180,7 +180,7 @@ defmodule Slack.HandlersTest do
   end
 
   defp slack do
-    %Slack.State{
+    %Slack.Client{
       channels: %{
         "123" => %{
           id: 123,

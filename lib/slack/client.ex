@@ -4,7 +4,32 @@ defmodule Slack.Client do
   your Slack team.
   """
   
-  @derive [Access]
+  if :lt == Version.compare(System.version, "1.1.0") do
+    
+    @derive [Access]
+    
+  else
+  
+    @behaviour Access
+    
+    @type key :: any
+    @type value :: any
+
+    @doc """
+    Implements fetch/2 for Access protocol.
+    """
+    @spec fetch(Client.t, key) :: value
+    def fetch(client, key)
+    defdelegate fetch(client, key), to: Map
+      
+    @doc """
+    Implements get_and_update/3 for Access protocol.
+    """
+    @spec get_and_update(Client.t, key, (value -> {value, value})) :: Client.t
+    def get_and_update(client, key, function)
+    defdelegate get_and_update(client, key, function), to: Map
+    
+  end
   
   defstruct [
     socket: nil,

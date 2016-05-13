@@ -46,7 +46,7 @@ defmodule Slack.Client do
   
   [:channel, :im, :group, :user, :bot] |> Enum.map( fn type ->
     plural_type = type |> Atom.to_string |> Kernel.<>("s") |> String.to_atom
-    def track(client = %__MODULE__{}, unquote(type), object) do
+    def track(client, unquote(type), object) do
       put_in client, [unquote(plural_type), object.id], object
     end
   end )
@@ -59,13 +59,13 @@ defmodule Slack.Client do
   @spec join(Client.t, Atom.t, Map.t) :: Client.t
   def join(client, type, object)
   
-  def join(client = %__MODULE__{}, :channel, channel) do
+  def join(client, :channel, channel) do
     client
       |> put_in([:channels, channel.id, :members], channel.members)
       |> put_in([:channels, channel.id, :is_member], true)
   end
   
-  def join(client = %__MODULE__{}, :group, group) do
+  def join(client, :group, group) do
     put_in(client, [:groups, group.id], group)
   end
   
@@ -79,7 +79,7 @@ defmodule Slack.Client do
   
   [:channel, :group] |> Enum.map( fn type ->
     plural_type = type |> Atom.to_string |> Kernel.<>("s") |> String.to_atom
-    def joined(client = %__MODULE__{}, unquote(type), object, user) do
+    def joined(client, unquote(type), object, user) do
       update_in(client, [unquote(plural_type), object, :members], &(Enum.uniq([user | &1])))
     end
   end )
@@ -92,11 +92,11 @@ defmodule Slack.Client do
   @spec leave(Client.t, Atom.t, Map.t) :: Client.t
   def leave(client, type, object)
   
-  def leave(client = %__MODULE__{}, :channel, channel) do
+  def leave(client, :channel, channel) do
     put_in(client, [:channels, channel, :is_member], false)
   end
   
-  def leave(client = %__MODULE__{}, :group, group) do
+  def leave(client, :group, group) do
     update_in(client, [:groups], &(Map.delete(&1, group)))
   end
   
@@ -110,7 +110,7 @@ defmodule Slack.Client do
   
   [:channel, :group] |> Enum.map( fn type ->
     plural_type = type |> Atom.to_string |> Kernel.<>("s") |> String.to_atom
-    def left(client = %__MODULE__{}, unquote(type), object, user) do
+    def left(client, unquote(type), object, user) do
       update_in(client, [unquote(plural_type), object, :members], &(&1 -- [user]))
     end
   end )
@@ -125,7 +125,7 @@ defmodule Slack.Client do
   
   [:channel, :group] |> Enum.map( fn type ->
     plural_type = type |> Atom.to_string |> Kernel.<>("s") |> String.to_atom
-    def archive(client = %__MODULE__{}, unquote(type), object) do
+    def archive(client, unquote(type), object) do
       put_in(client, [unquote(plural_type), object, :is_archived], true)
     end
   end )
@@ -140,7 +140,7 @@ defmodule Slack.Client do
   
   [:channel, :group] |> Enum.map( fn type ->
     plural_type = type |> Atom.to_string |> Kernel.<>("s") |> String.to_atom
-    def unarchive(client = %__MODULE__{}, unquote(type), object) do
+    def unarchive(client, unquote(type), object) do
       put_in(client, [unquote(plural_type), object, :is_archived], false)
     end
   end )
@@ -154,14 +154,14 @@ defmodule Slack.Client do
   """
   
   @spec rename(Client.t, Atom.t, String.t) :: Client.t
-  def rename(client = %__MODULE__{}, :team, name) do
+  def rename(client, :team, name) do
     put_in(client, [:team, :name], name)
   end
   
   @spec rename(Client.t, Atom.t, String.t) :: Client.t
   [:channel, :group] |> Enum.map( fn type ->
     plural_type = type |> Atom.to_string |> Kernel.<>("s") |> String.to_atom
-    def rename(client = %__MODULE__{}, unquote(type), object) do
+    def rename(client, unquote(type), object) do
       put_in(client, [unquote(plural_type), object.id, :name], object.name)
     end
   end )
@@ -177,14 +177,73 @@ defmodule Slack.Client do
   @spec change(Client.t, Atom.t, Map.t) :: Client.t
   [:user, :bot] |> Enum.map( fn type ->
     plural_type = type |> Atom.to_string |> Kernel.<>("s") |> String.to_atom
-    def change(client = %__MODULE__{}, unquote(type), object) do
+    def change(client, unquote(type), object) do
       put_in(client, [unquote(plural_type), object.id], object)
     end
   end )
   
   @spec change(Client.t, Atom.t, Map.t, String.t) :: Client.t
-  def change(client = %__MODULE__{}, :user, user, presence) do
+  def change(client, :user, user, presence) do
     put_in(client, [:users, user, :presence], presence)
+  end
+  
+  @doc """
+  Converts between Slack ID formats.
+  
+  Available conversions: 
+    - `:user: [:id, :im, :name]``
+    - `:channel: [:id, :name]``
+  """
+  @spec lookup(Client.t, Atom.t, Atom.t, String.t) :: Map.t
+  def lookup(client, type, format, name)
+  
+  def lookup(_client, _type, _format, nil) do
+    nil
+  end
+    
+  def lookup(_client, :user, :id, id = "U" <> _id), do: id
+  def lookup(client, :user, :id, im = "D" <> _id) do
+    name = lookup(client, :user, :name, im)
+    lookup(client, :user, :id, name)
+  end
+  def lookup(client, :user, :id, "@" <> user_name) do
+    client.users
+      |> Map.values
+      |> Enum.find(%{ }, fn user -> user.name == user_name end)
+      |> Map.get(:id)
+  end
+  
+  def lookup(_client, :user, :im, im = "D" <> _id), do: im
+  def lookup(client, :user, :im, name = "@" <> _id) do
+    id = lookup(client, :user, :id, name)
+    lookup(client, :user, :im, id)
+  end
+  def lookup(client, :user, :im, id = "U" <> _id) do
+    client.ims
+      |> Map.values
+      |> Enum.find(%{ }, fn im -> im.user == id end)
+      |> Map.get(:id)
+  end
+  
+  def lookup(_client, :user, :name, name = "@" <> _id), do: name
+  def lookup(client, :user, :name, im_id = "D" <> _id) do
+    lookup(client, :user, :name, client.ims[im_id].user)
+  end
+  def lookup(client, :user, :name, user_id = "U" <> _id) do
+    "@" <> client.users[user_id].name
+  end
+  
+  def lookup(_client, :channel, :id, id = "C" <> _id), do: id
+  def lookup(client, :channel, :id, "#" <> channel_name) do
+    client.channels
+      |> Map.values
+      |> Enum.find(fn channel -> channel.name == channel_name end)
+      |> Map.get(:id)
+  end
+  
+  def lookup(_client, :channel, :name, name = "#" <> _id), do: name
+  def lookup(client, :channel, :name, channel_id = "C" <> _id) do
+    "#" <> client.channels[channel_id].name
   end
    
 end

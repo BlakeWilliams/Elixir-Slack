@@ -16,9 +16,9 @@ defmodule Slack do
   defmodule Bot do
     use Slack
 
-    def handle_message(message = {type: "message"}, slack, state) do
+    def handle_event(event = {type: "message"}, slack, state) do
       if message.text == "Hi" do
-        send_message("Hi has been said #\{state} times", message.channel, slack)
+        send_message("Hi has been said #\{state} times", event.channel, slack)
         state = state + 1
       end
 
@@ -33,21 +33,21 @@ defmodule Slack do
   `slack` argument holds the state of Slack and is kept up to date
   automatically.
 
-  In this example we're just matching against the message type and checking if
+  In this example we're just matching against the event type and checking if
   the text content is "Hi" and if so, we reply with how many times "Hi" has been
   said.
 
-  The message type is pattern matched against because the
+  The event type is pattern matched against because the
   [Slack RTM API](https://api.slack.com/rtm) defines many different types of
   messages that we can receive. Because of this it's wise to write a catch-all
-  `handle_message/3` in your bots to prevent crashing.
+  `handle_event/3` in your bots to prevent crashing.
 
   ## Callbacks
 
   * `handle_connect(slack, state)` - called when connected to Slack.
-  * `handle_message(message, slack, state)` - called when a message is received.
+  * `handle_event(event, slack, state)` - called when an event is received.
   * `handle_close(reason, slack, state)` - called when websocket is closed.
-  * `handle_info(message, slack, state)` - called when any other message is received in the process mailbox.
+  * `handle_info(event, slack, state)` - called when any other event is received in the process mailbox.
 
   ## Slack argument
 

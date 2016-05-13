@@ -196,10 +196,6 @@ defmodule Slack.Client do
   """
   @spec lookup(Client.t, Atom.t, Atom.t, String.t) :: Map.t
   def lookup(client, type, format, name)
-  
-  def lookup(_client, _type, _format, nil) do
-    nil
-  end
     
   def lookup(_client, :user, :id, id = "U" <> _id), do: id
   def lookup(client, :user, :id, im = "D" <> _id) do
@@ -244,6 +240,10 @@ defmodule Slack.Client do
   def lookup(_client, :channel, :name, name = "#" <> _id), do: name
   def lookup(client, :channel, :name, channel_id = "C" <> _id) do
     "#" <> client.channels[channel_id].name
+  end
+  
+  def lookup(_client, _type, _format, _id) do
+    nil
   end
    
 end

@@ -52,13 +52,13 @@ defmodule Slack.Sends do
   end
 
   @doc """
-  Notifies client that the current `client` user is typing in `channel`.
+  Sends Slack a ping message with optional `payload`.
   """
-  def send_ping(data \\ [], client) do
+  def send_ping(payload \\ [], client) do
     %{
       type: "ping"
     }
-      |> Dict.merge(data)
+      |> Dict.merge(payload)
       |> JSX.encode!
       |> send_raw(client)
   end

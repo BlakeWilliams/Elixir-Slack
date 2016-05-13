@@ -37,19 +37,19 @@ callback methods.
 defmodule SlackRtm do
   use Slack
 
-  def handle_connect(slack, state) do
-    IO.puts "Connected as #{slack.me.name}"
+  def handle_connect(client, state) do
+    IO.puts "Connected as #{client.me.name}"
     {:ok, state}
   end
 
-  def handle_message(message = %{type: "message"}, slack, state) do
+  def handle_message(message = %{type: "message"}, client, state) do
     message_to_send = "Received #{length(state)} messages so far!"
-    send_message(message_to_send, message.channel, slack)
+    send_message(message_to_send, message.channel, client)
 
     {:ok, state ++ [message.text]}
   end
 
-  def handle_message(_message, _slack, state) do
+  def handle_message(_message, _client, state) do
     {:ok, state}
   end
 end
@@ -62,7 +62,7 @@ You can send messages to channels using `send_message/3` which takes the message
 as the first argument, channel as the second, and the passed in `slack` state
 as the third.
 
-The passed in `slack` state holds the current user properties as `me`, team
+The Slack.Client state passed in as `client` holds the current user properties as `me`, team
 properties as `team`, the current websocket connection as `socket`, and a list
 of  `bots`, `channels`, `groups`, `users`, and `ims` (direct message channels).
 

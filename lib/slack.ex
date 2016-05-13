@@ -16,9 +16,9 @@ defmodule Slack do
   defmodule Bot do
     use Slack
 
-    def handle_message(message = {type: "message"}, slack, state) do
+    def handle_message(message = {type: "message"}, client, state) do
       if message.text == "Hi" do
-        send_message("Hi has been said #\{state} times", message.channel, slack)
+        send_message("Hi has been said #\{state} times", message.channel, client)
         state = state + 1
       end
 
@@ -29,8 +29,8 @@ defmodule Slack do
   Bot.start_link("API_TOKEN", 1)
   ```
 
-  `handle_*` methods are always passed `slack` and `state` arguments. The
-  `slack` argument holds the state of Slack and is kept up to date
+  `handle_*` methods are always passed `client` and `state` arguments. The
+  `client` argument holds the state of Slack and is kept up to date
   automatically.
 
   In this example we're just matching against the message type and checking if
@@ -44,14 +44,14 @@ defmodule Slack do
 
   ## Callbacks
 
-  * `handle_connect(slack, state)` - called when connected to Slack.
-  * `handle_message(message, slack, state)` - called when a message is received.
-  * `handle_close(reason, slack, state)` - called when websocket is closed.
-  * `handle_info(message, slack, state)` - called when any other message is received in the process mailbox.
+  * `handle_connect(client, state)` - called when connected to Slack.
+  * `handle_message(message, client, state)` - called when a message is received.
+  * `handle_close(reason, client, state)` - called when websocket is closed.
+  * `handle_info(message, client, state)` - called when any other message is received in the process mailbox.
 
-  ## Slack argument
+  ## The Slack.Client argument
 
-  The Slack argument that's passed to each callback is what contains all of the
+  The Slack.Client that's passed to each callback is what contains all of the
   state related to Slack including a list of channels, users, groups, bots, and
   even the socket.
 
@@ -65,7 +65,7 @@ defmodule Slack do
   * users - Stored as a map with id's as keys.
   * ims (direct message channels) - Stored as a map with id's as keys.
   * socket - The connection to Slack.
-  * client - The client that makes calls to Slack.
+  * client - The lower-level client that makes calls to Slack.
 
   For all but `socket` and `client`, you can see what types of data to expect each of the
   types to contain from the [Slack API types] page.

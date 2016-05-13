@@ -1,5 +1,7 @@
 defmodule SlackTest do
   use ExUnit.Case
+  
+  import ExUnit.CaptureIO
 
   defmodule Bot do
     use Slack
@@ -9,8 +11,16 @@ defmodule SlackTest do
     assert Bot.handle_connect(nil, 1) == {:ok, 1}
   end
 
-  test "handle_message returns state by default" do
-    assert Bot.handle_message(nil, nil, 1) == {:ok, 1}
+  test "handle_event returns state by default" do
+    assert Bot.handle_event(nil, nil, 1) == {:ok, 1}
+  end
+
+  test "handle_message emits deprecation warning but behaves normally" do
+    warning = "Slack.handle_message/3 is deprecated, please use Slack.handle_event/3 instead\n"
+    expected_behaviour = fn ->
+      assert Bot.handle_message(nil, nil, 1) == {:ok, 1}
+    end
+    assert capture_io(:stderr, expected_behaviour) == warning
   end
 
   test "init formats rtm results properly" do

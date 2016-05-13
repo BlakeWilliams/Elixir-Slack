@@ -30,6 +30,8 @@ def deps do
 end
 ```
 
+### General Usage
+
 Define a module that uses the Slack behaviour and defines the appropriate
 callback methods.
 
@@ -76,3 +78,33 @@ You can find more detailed documentation on the [Slack hexdocs page].
 
 [RTM API page]: https://api.slack.com/rtm
 [Slack hexdocs page]: http://hexdocs.pm/slack/
+
+### External Usage
+
+If you want to do things like trigger the sending of messages outside of 
+your Slack handlers, you can leverage the `handle_info/3` callback to implement an
+external API:
+
+```elixir
+defmodule SlackRtm do
+  use Slack
+  def handle_info({:message, text, channel}, slack, state) do
+    IO.puts "Sending your message, captain!"
+    send_message(text, channel, slack)
+    {:ok, state}
+  end
+  def handle_info(_, _, state), do: {:ok, state}
+end
+```
+
+This allows you to not just respond to Slack RTM events, but programmatically
+control Slack from your Elixir runtime:
+
+```elixir
+{:ok, rtm} = SlackRtm.start_link("token", [])
+# Assuming you've invited this bot to the #general channel
+send rtm, {:message, "External message", "general"}
+#=> {:message, "External message", "#general"}
+#==> Sending your message, captain!
+#==SLACK==> bot_name: External message
+```

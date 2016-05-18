@@ -13,7 +13,7 @@ defmodule Slack.Handlers do
   @spec handle_slack(Map.t, Client.t) :: {Atom.t, Client.t}
   def handle_slack(event, client)
   
-# CHANNELS
+  # CHANNELS
 
   def handle_slack(%{type: "channel_created", channel: channel}, client) do
     {:ok, track(client, :channel, channel)}
@@ -47,13 +47,13 @@ defmodule Slack.Handlers do
     {:ok, leave(client, :channel, channel)}
   end
   
-# IMS
+  # IMS
 
   def handle_slack(%{type: "im_created", channel: im}, client) do
     {:ok, track(client, :im, im)}
   end
   
-# GROUPS
+  # GROUPS
 
   def handle_slack(%{type: "group_joined", channel: group}, client) do
     {:ok, join(client, :group, group)}
@@ -83,7 +83,7 @@ defmodule Slack.Handlers do
     {:ok, leave(client, :group, group)}
   end
   
-# TEAM
+  # TEAM
 
   def handle_slack(%{type: "team_join", user: user}, client) do
     {:ok, track(client, :user, user)}
@@ -93,7 +93,7 @@ defmodule Slack.Handlers do
     {:ok, rename(client, :team, name)}
   end
   
-# USERS
+  # USERS
 
   def handle_slack(%{type: "presence_change", user: user, presence: presence}, client) do
     {:ok, change(client, :user, user, presence)}
@@ -103,7 +103,7 @@ defmodule Slack.Handlers do
     {:ok, change(client, :user, user)}
   end
   
-# BOTS
+  # BOTS
 
   def handle_slack(%{type: "bot_added", bot: bot}, client) do
     {:ok, track(client, :bot, bot)}
@@ -113,10 +113,9 @@ defmodule Slack.Handlers do
     {:ok, change(client, :bot, bot)}
   end
   
-# CATCHALL
+  # CATCHALL
 
   def handle_slack(%{type: _type}, client) do
     {:ok, client}
   end
-  
 end

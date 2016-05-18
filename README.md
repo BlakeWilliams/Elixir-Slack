@@ -101,7 +101,7 @@ end
 
 This allows you to use interact with Slack beyond just responding to Slack events.
 
-Here's an example that assumes you've already invite your bot into #general:
+Here's an example that assumes you've already invited your bot into #general:
 
 ```elixir
 {:ok, client} = MySlack.start_link("token", [])

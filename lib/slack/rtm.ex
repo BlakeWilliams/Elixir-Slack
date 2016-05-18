@@ -12,10 +12,10 @@ defmodule Slack.Rtm do
 
   def start(token) do
     case HTTPoison.get(@url <> token) do
-      {:ok, %HTTPoison.Response{body: body} } ->
+      {:ok, %HTTPoison.Response{body: body}} ->
         case JSX.decode(body, [{:labels, :atom}]) do
           {:ok, json}       -> {:ok, json}
-          {:error, reason}  -> {:error, %JSX.DecodeError{reason: reason, string: body} }
+          {:error, reason}  -> {:error, %JSX.DecodeError{reason: reason, string: body}}
         end
       {:error, reason} -> {:error, reason}
     end

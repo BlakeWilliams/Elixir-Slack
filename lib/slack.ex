@@ -74,7 +74,7 @@ defmodule Slack do
   """
   defmacro __using__(_) do
     quote do
-      @behaviour :websocket_client_handler
+      @behaviour :websocket_client
       import Slack
       import Slack.Handlers
       import Slack.Lookups
@@ -110,7 +110,6 @@ defmodule Slack do
 
       def init(%{rtm: rtm, client: client, state: state, token: token}) do
         slack = %{
-          socket: socket,
           client: client,
           token: token,
           me: rtm.self,

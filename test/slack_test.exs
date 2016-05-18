@@ -24,7 +24,7 @@ defmodule SlackTest do
       ims: [%{id: "123"}]
     }
 
-    {:ok, %{slack: slack, state: state}} = Bot.init(%{rtm: rtm, state: 1, client: FakeWebsocketClient, token: "ABC"}, nil)
+    {:once, %{slack: slack, state: state}} = Bot.init(%{rtm: rtm, state: 1, client: FakeWebsocketClient, token: "ABC"})
 
     assert slack.me.name == "fake"
     assert slack.team.name == "Foo"

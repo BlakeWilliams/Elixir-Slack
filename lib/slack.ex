@@ -16,9 +16,9 @@ defmodule Slack do
   defmodule Bot do
     use Slack
 
-    def handle_message(message = {type: "message"}, slack, state) do
+    def handle_message(message = {type: "message"}, client, state) do
       if message.text == "Hi" do
-        send_message("Hi has been said #\{state} times", message.channel, slack)
+        send_message("Hi has been said #\{state} times", message.channel, client)
         state = state + 1
       end
 
@@ -29,8 +29,8 @@ defmodule Slack do
   Bot.start_link("API_TOKEN", 1)
   ```
 
-  `handle_*` methods are always passed `slack` and `state` arguments. The
-  `slack` argument holds the state of Slack and is kept up to date
+  `handle_*` methods are always passed `client` and `state` arguments. The
+  `client` argument holds the state of Slack and is kept up to date
   automatically.
 
   In this example we're just matching against the message type and checking if
@@ -44,14 +44,14 @@ defmodule Slack do
 
   ## Callbacks
 
-  * `handle_connect(slack, state)` - called when connected to Slack.
-  * `handle_message(message, slack, state)` - called when a message is received.
-  * `handle_close(reason, slack, state)` - called when websocket is closed.
-  * `handle_info(message, slack, state)` - called when any other message is received in the process mailbox.
+  * `handle_connect(client, state)` - called when connected to Slack.
+  * `handle_message(message, client, state)` - called when a message is received.
+  * `handle_close(reason, client, state)` - called when websocket is closed.
+  * `handle_info(message, client, state)` - called when any other message is received in the process mailbox.
 
-  ## Slack argument
+  ## The Slack.Client argument
 
-  The Slack argument that's passed to each callback is what contains all of the
+  The Slack.Client that's passed to each callback is what contains all of the
   state related to Slack including a list of channels, users, groups, bots, and
   even the socket.
 
@@ -65,13 +65,14 @@ defmodule Slack do
   * users - Stored as a map with id's as keys.
   * ims (direct message channels) - Stored as a map with id's as keys.
   * socket - The connection to Slack.
-  * client - The client that makes calls to Slack.
+  * client - The lower-level client that makes calls to Slack.
 
   For all but `socket` and `client`, you can see what types of data to expect each of the
   types to contain from the [Slack API types] page.
 
   [Slack API types]: https://api.slack.com/types
   """
+  
   defmacro __using__(_) do
     quote do
       @behaviour :websocket_client_handler
@@ -101,7 +102,7 @@ defmodule Slack do
       end
 
       def init(%{rtm: rtm, client: client, state: state, token: token}, socket) do
-        slack = %{
+        slack_client = %Slack.Client{
           socket: socket,
           client: client,
           token: token,
@@ -114,35 +115,35 @@ defmodule Slack do
           ims: rtm_list_to_map(rtm.ims)
         }
 
-        {:ok, state} = handle_connect(slack, state)
-        {:ok, %{slack: slack, state: state}}
+        {:ok, state} = handle_connect(slack_client, state)
+        {:ok, %{client: slack_client, state: state}}
       end
 
       def websocket_info(:start, _connection, state) do
         {:ok, state}
       end
 
-      def websocket_info(message, _connection, %{slack: slack, state: state}) do
-        {:ok, state} = handle_info(message, slack, state)
-        {:ok, %{slack: slack, state: state}}
+      def websocket_info(message, _connection, %{client: client, state: state}) do
+        {:ok, state} = handle_info(message, client, state)
+        {:ok, %{client: client, state: state}}
       end
 
-      def websocket_terminate(reason, _connection, %{slack: slack, state: state}) do
-        handle_close(reason, slack, state)
+      def websocket_terminate(reason, _connection, %{client: client, state: state}) do
+        handle_close(reason, client, state)
       end
 
       def websocket_handle({:ping, data}, _connection, state) do
         {:reply, {:pong, data}, state}
       end
 
-      def websocket_handle({:text, message}, _con, %{slack: slack, state: state}) do
+      def websocket_handle({:text, message}, _con, %{client: client, state: state}) do
         message = prepare_message message
         if Map.has_key?(message, :type) do
-          {:ok, slack} = handle_slack(message, slack)
-          {:ok, state} = handle_message(message, slack, state)
+          {:ok, client} = handle_slack(message, client)
+          {:ok, state} = handle_message(message, client, state)
         end
 
-        {:ok, %{slack: slack, state: state}}
+        {:ok, %{client: client, state: state}}
       end
 
       defp rtm_list_to_map(list) do
@@ -158,10 +159,10 @@ defmodule Slack do
           |> JSX.decode!([{:labels, :atom}])
       end
 
-      def handle_connect(_slack, state), do: {:ok, state}
-      def handle_message(_message, _slack, state), do: {:ok, state}
-      def handle_close(_reason, _slack, state), do: {:error, state}
-      def handle_info(_message, _slack, state), do: {:ok, state}
+      def handle_connect(_client, state), do: {:ok, state}
+      def handle_message(_message, _client, state), do: {:ok, state}
+      def handle_close(_reason, _client, state), do: {:error, state}
+      def handle_info(_message, _client, state), do: {:ok, state}
 
       defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3, handle_info: 3]
     end

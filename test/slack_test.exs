@@ -24,15 +24,15 @@ defmodule SlackTest do
       ims: [%{id: "123"}]
     }
 
-    {:ok, %{slack: slack, state: state}} = Bot.init(%{rtm: rtm, state: 1, client: FakeWebsocketClient, token: "ABC"}, nil)
+    {:ok, %{client: client, state: state}} = Bot.init(%{rtm: rtm, state: 1, client: FakeWebsocketClient, token: "ABC"}, nil)
 
-    assert slack.me.name == "fake"
-    assert slack.team.name == "Foo"
-    assert slack.bots     == %{"123" => %{id: "123"}}
-    assert slack.channels == %{"123" => %{id: "123"}}
-    assert slack.groups   == %{"123" => %{id: "123"}}
-    assert slack.users    == %{"123" => %{id: "123"}}
-    assert slack.ims      == %{"123" => %{id: "123"}}
+    assert client.me.name == "fake"
+    assert client.team.name == "Foo"
+    assert client.bots     == %{"123" => %{id: "123"}}
+    assert client.channels == %{"123" => %{id: "123"}}
+    assert client.groups   == %{"123" => %{id: "123"}}
+    assert client.users    == %{"123" => %{id: "123"}}
+    assert client.ims      == %{"123" => %{id: "123"}}
 
     assert state == 1
   end

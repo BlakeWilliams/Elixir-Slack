@@ -1,9 +1,22 @@
 language: elixir
+
 elixir:
   - 1.0.5
   - 1.1.1
-env: MIX_ENV=test
+  - 1.2.5
+  
+sudo: false
+
 otp_release:
+  - 17.5
   - 18.1
+  
+env: MIX_ENV=test
+
+matrix:
+  exclude:
+    - otp_release: 17.5
+      elixir: 1.2.5
+
 after_success:
   - mix coveralls.travis

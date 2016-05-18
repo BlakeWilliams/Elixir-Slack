@@ -140,7 +140,7 @@ defmodule Slack do
         message = prepare_message message
         if Map.has_key?(message, :type) do
           {:ok, client} = handle_slack(message, client)
-          {:ok, state}  = handle_message(message, client, state)
+          {:ok, state} = handle_message(message, client, state)
         end
 
         {:ok, %{client: client, state: state}}

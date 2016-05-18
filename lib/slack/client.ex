@@ -3,22 +3,18 @@ defmodule Slack.Client do
   A struct that represents the state of the Slack team you've connected to.
   """
   
-  if :lt == Version.compare(System.version, "1.1.0") do
-    @derive [Access]
-  else
-    @behaviour Access
-    
-    @type key :: any
-    @type value :: any
+  @behaviour Access
+  
+  @type key :: any
+  @type value :: any
 
-    @spec fetch(Client.t, key) :: value
-    def fetch(client, key)
-    defdelegate fetch(client, key), to: Map
-      
-    @spec get_and_update(Client.t, key, (value -> {value, value})) :: Client.t
-    def get_and_update(client, key, function)
-    defdelegate get_and_update(client, key, function), to: Map
-  end
+  @spec fetch(Client.t, key) :: value
+  def fetch(client, key)
+  defdelegate fetch(client, key), to: Map
+    
+  @spec get_and_update(Client.t, key, (value -> {value, value})) :: Client.t
+  def get_and_update(client, key, function)
+  defdelegate get_and_update(client, key, function), to: Map
   
   defstruct [
     socket: nil,
@@ -32,7 +28,6 @@ defmodule Slack.Client do
     users:    %{},
     ims:      %{},
   ]
-  
   
   @doc """
   Update client state when an update is received.
@@ -51,14 +46,14 @@ defmodule Slack.Client do
   ]
   
   trackables = trackable |> Enum.map(fn(type) ->
-    { type, "#{type}s" |> String.to_atom }
+    {type, "#{type}s" |> String.to_atom}
   end)
   
-  trackables |> Enum.map( fn {type, plural} ->
+  trackables |> Enum.map(fn({type, plural}) ->
     def track(client, unquote(type), object) do
       put_in client, [unquote(plural), object.id], object
     end
-  end )
+  end)
   
   @doc """
   Updates Slack client when a channel or group is joined.
@@ -88,14 +83,14 @@ defmodule Slack.Client do
   ]
   
   joinables = joinable |> Enum.map(fn(type) ->
-    { type, "#{type}s" |> String.to_atom }
+    {type, "#{type}s" |> String.to_atom}
   end)
   
-  joinables |> Enum.map( fn {type, plural} ->
+  joinables |> Enum.map(fn({type, plural}) ->
     def joined(client, unquote(type), object, user) do
       update_in(client, [unquote(plural), object, :members], &(Enum.uniq([user | &1])))
     end
-  end )
+  end)
   
   @doc """
   Updates client state when you leave a channel or group.
@@ -123,14 +118,14 @@ defmodule Slack.Client do
   ]
   
   leavables = leavable |> Enum.map(fn(type) ->
-    { type, "#{type}s" |> String.to_atom }
+    {type, "#{type}s" |> String.to_atom}
   end)
   
-  leavables |> Enum.map( fn {type, plural} ->
+  leavables |> Enum.map(fn({type, plural}) ->
     def left(client, unquote(type), object, user) do
       update_in(client, [unquote(plural), object, :members], &(&1 -- [user]))
     end
-  end )
+  end)
   
   @doc """
   Updates client state when a channel or group is archived.
@@ -144,14 +139,14 @@ defmodule Slack.Client do
   ]
   
   archivables = archivable |> Enum.map(fn(type) ->
-    { type, "#{type}s" |> String.to_atom }
+    {type, "#{type}s" |> String.to_atom}
   end)
   
-  archivables |> Enum.map( fn {type, plural} ->
+  archivables |> Enum.map(fn({type, plural}) ->
     def archive(client, unquote(type), object) do
       put_in(client, [unquote(plural), object, :is_archived], true)
     end
-  end )
+  end)
   
   @doc """
   Updates client state when a channel or group is archived.
@@ -165,14 +160,14 @@ defmodule Slack.Client do
   ]
   
   unarchivables = unarchivable |> Enum.map(fn(type) ->
-    { type, "#{type}s" |> String.to_atom }
+    {type, "#{type}s" |> String.to_atom}
   end)
   
-  unarchivables |> Enum.map( fn {type, plural} ->
+  unarchivables |> Enum.map(fn({type, plural}) ->
     def unarchive(client, unquote(type), object) do
       put_in(client, [unquote(plural), object, :is_archived], false)
     end
-  end )
+  end)
   
   @doc """
   Updates client state when a channel, group, or team's name changes.
@@ -190,14 +185,14 @@ defmodule Slack.Client do
   ]
   
   renameables = renameable |> Enum.map(fn(type) ->
-    { type, "#{type}s" |> String.to_atom }
+    {type, "#{type}s" |> String.to_atom}
   end)
   
-  renameables |> Enum.map( fn {type, plural} ->
+  renameables |> Enum.map(fn({type, plural}) ->
     def rename(client, unquote(type), object) do
       put_in(client, [unquote(plural), object.id, :name], object.name)
     end
-  end )
+  end)
   
   @doc """
   Updates client state when a user's presence changes.
@@ -219,12 +214,12 @@ defmodule Slack.Client do
   ]
   
   changeables = changeable |> Enum.map(fn(type) ->
-    { type, "#{type}s" |> String.to_atom }
+    {type, "#{type}s" |> String.to_atom}
   end)
   
-  changeables |> Enum.map( fn {type, plural} ->
+  changeables |> Enum.map(fn({type, plural}) ->
     def change(client, unquote(type), object) do
       put_in(client, [unquote(plural), object.id], object)
     end
-  end )
+  end)
 end

@@ -103,7 +103,7 @@ defmodule Slack do
       def onconnect(_req, state) do
         {:ok, state}
       end
-  
+
       def ondisconnect({:remote, :closed}, state) do
         {:reconnect, state}
       end
@@ -126,7 +126,7 @@ defmodule Slack do
       end
 
       def websocket_info(:start, _connection, state) do
-        {:ok, state}
+        {:ok, %{ state | socket: self}}
       end
 
       def websocket_info(message, _connection, %{slack: slack, state: state}) do

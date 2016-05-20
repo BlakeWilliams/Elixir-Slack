@@ -74,7 +74,7 @@ defmodule Slack do
   """
   defmacro __using__(_) do
     quote do
-      @behaviour :websocket_client_handler
+      @behaviour :websocket_client
       import Slack
       import Slack.Handlers
       import Slack.Lookups
@@ -100,9 +100,16 @@ defmodule Slack do
         end
       end
 
-      def init(%{rtm: rtm, client: client, state: state, token: token}, socket) do
+      def onconnect(_req, state) do
+        {:ok, state}
+      end
+
+      def ondisconnect({:remote, :closed}, state) do
+        {:reconnect, state}
+      end
+
+      def init(%{rtm: rtm, client: client, state: state, token: token}) do
         slack = %{
-          socket: socket,
           client: client,
           token: token,
           me: rtm.self,
@@ -115,11 +122,11 @@ defmodule Slack do
         }
 
         {:ok, state} = handle_connect(slack, state)
-        {:ok, %{slack: slack, state: state}}
+        {:once, %{slack: slack, state: state}}
       end
 
       def websocket_info(:start, _connection, state) do
-        {:ok, state}
+        {:ok, %{ state | socket: self}}
       end
 
       def websocket_info(message, _connection, %{slack: slack, state: state}) do
@@ -135,7 +142,7 @@ defmodule Slack do
         {:reply, {:pong, data}, state}
       end
 
-      def websocket_handle({:text, message}, _con, %{slack: slack, state: state}) do
+      def websocket_handle({:text, message}, _connection, %{slack: slack, state: state}) do
         message = prepare_message message
         if Map.has_key?(message, :type) do
           {:ok, slack} = handle_slack(message, slack)

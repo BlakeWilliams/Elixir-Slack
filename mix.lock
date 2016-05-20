@@ -10,4 +10,4 @@
   "pact": {:hex, :pact, "0.2.0"},
   "socket": {:git, "git://github.com/meh/elixir-socket.git", "ec03c935565dbe4708d6b594ef57d6de17a93592", []},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"},
-  "websocket_client": {:git, "https://github.com/jeremyong/websocket_client.git", "48c118682292f2e4d80491161134a665525c4934", []}}
+  "websocket_client": {:hex, :websocket_client, "1.1.0"}}

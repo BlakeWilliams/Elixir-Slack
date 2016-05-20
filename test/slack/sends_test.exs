@@ -3,19 +3,19 @@ defmodule Slack.SendsTest do
   alias Slack.Sends
 
   defmodule FakeWebsocketClient do
-    def send({:text, json}, socket) do
-      {json, socket}
+    def send(socket, {:text, json}) do
+      {socket, json}
     end
   end
 
   test "send_raw sends slack formatted to client" do
     result = Sends.send_raw(~s/{"text": "foo"}/, %{socket: nil, client: FakeWebsocketClient})
-    assert result == {~s/{"text": "foo"}/, nil}
+    assert result == {nil, ~s/{"text": "foo"}/}
   end
 
   test "send_message sends message formatted to client" do
     result = Sends.send_message("hello", "channel", %{socket: nil, client: FakeWebsocketClient})
-    assert result == {~s/{"channel":"channel","text":"hello","type":"message"}/, nil}
+    assert result == {nil, ~s/{"channel":"channel","text":"hello","type":"message"}/}
   end
 
   test "send_message understands #channel names" do
@@ -25,7 +25,7 @@ defmodule Slack.SendsTest do
       channels: %{"C456" => %{name: "channel", id: "C456"}}
     }
     result = Sends.send_message("hello", "#channel", slack)
-    assert result == {~s/{"channel":"C456","text":"hello","type":"message"}/, nil}
+    assert result == {nil, ~s/{"channel":"C456","text":"hello","type":"message"}/}
   end
 
   test "send_message understands @user names" do
@@ -36,21 +36,21 @@ defmodule Slack.SendsTest do
       ims: %{"D789" => %{user: "U123", id: "D789"}}
     }
     result = Sends.send_message("hello", "@user", slack)
-    assert result == {~s/{"channel":"D789","text":"hello","type":"message"}/, nil}
+    assert result == {nil, ~s/{"channel":"D789","text":"hello","type":"message"}/}
   end
 
   test "indicate_typing sends typing notification to client" do
     result = Sends.indicate_typing("channel", %{socket: nil, client: FakeWebsocketClient})
-    assert result == {~s/{"channel":"channel","type":"typing"}/, nil}
+    assert result == {nil, ~s/{"channel":"channel","type":"typing"}/}
   end
 
   test "send_ping sends ping to client" do
     result = Sends.send_ping(%{socket: nil, client: FakeWebsocketClient})
-    assert result == {~s/{"type":"ping"}/, nil}
+    assert result == {nil, ~s/{"type":"ping"}/}
   end
 
   test "send_ping with data sends ping + data to client" do
     result = Sends.send_ping([foo: :bar], %{socket: nil, client: FakeWebsocketClient})
-    assert result == {~s/{"foo":"bar","type":"ping"}/, nil}
+    assert result == {nil, ~s/{"foo":"bar","type":"ping"}/}
   end
 end

@@ -25,7 +25,7 @@ def application do
 end
 
 def deps do
-  [{:slack, "~> 0.5.0"},
+  [{:slack, "~> 0.6.0"},
    {:websocket_client, git: "https://github.com/jeremyong/websocket_client"}]
 end
 ```

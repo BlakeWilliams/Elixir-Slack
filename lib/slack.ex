@@ -72,9 +72,11 @@ defmodule Slack do
 
   [Slack API types]: https://api.slack.com/types
   """
+
   defmacro __using__(_) do
     quote do
       @behaviour :websocket_client_handler
+      require Logger
       import Slack
       import Slack.Handlers
       import Slack.Lookups
@@ -123,12 +125,21 @@ defmodule Slack do
       end
 
       def websocket_info(message, _connection, %{slack: slack, state: state}) do
-        {:ok, state} = handle_info(message, slack, state)
+        try do
+          {:ok, state} = handle_info(message, slack, state)
+        rescue
+          e -> handle_exception(e)
+        end
+
         {:ok, %{slack: slack, state: state}}
       end
 
       def websocket_terminate(reason, _connection, %{slack: slack, state: state}) do
-        handle_close(reason, slack, state)
+        try do
+          handle_close(reason, slack, state)
+        rescue
+          e -> handle_exception(e)
+        end
       end
 
       def websocket_handle({:ping, data}, _connection, state) do
@@ -139,7 +150,12 @@ defmodule Slack do
         message = prepare_message message
         if Map.has_key?(message, :type) do
           {:ok, slack} = handle_slack(message, slack)
-          {:ok, state} = handle_message(message, slack, state)
+
+          try do
+            {:ok, state} = handle_message(message, slack, state)
+          rescue
+            e -> handle_exception(e)
+          end
         end
 
         {:ok, %{slack: slack, state: state}}
@@ -156,6 +172,13 @@ defmodule Slack do
           |> :binary.split(<<0>>)
           |> List.first
           |> JSX.decode!([{:labels, :atom}])
+      end
+
+      defp handle_exception(e) do
+        message = Exception.message(e)
+        Logger.error(message)
+        System.stacktrace |> Exception.format_stacktrace |> Logger.error
+        raise message
       end
 
       def handle_connect(_slack, state), do: {:ok, state}

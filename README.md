@@ -30,6 +30,8 @@ def deps do
 end
 ```
 
+### General Usage
+
 Define a module that uses the Slack behaviour and defines the appropriate
 callback methods.
 
@@ -76,3 +78,36 @@ You can find more detailed documentation on the [Slack hexdocs page].
 
 [RTM API page]: https://api.slack.com/rtm
 [Slack hexdocs page]: http://hexdocs.pm/slack/
+
+### External Usage
+
+If you want to do things like trigger the sending of messages outside of 
+your Slack handlers, you can leverage the `handle_info/3` callback to implement
+an external API:
+
+```elixir
+defmodule MySlack do
+  use Slack
+  
+  def handle_info({:message, text, channel}, slack, state) do
+    IO.puts "Sending your message, captain!"
+    send_message(text, channel, slack)
+    
+    {:ok, state}
+  end
+  def handle_info(_, _, state), do: {:ok, state}
+end
+```
+
+This allows you to use interact with Slack beyond just responding to Slack events.
+
+Here's an example that assumes you've already invited your bot into #general:
+
+```elixir
+{:ok, client} = MySlack.start_link("token", [])
+send client, {:message, "External message", "#general"}
+#=> {:message, "External message", "#general"}
+#==> Sending your message, captain!
+```
+
+If you check #general you'll see that your bot has posted `"External message"`.

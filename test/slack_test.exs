@@ -12,7 +12,15 @@ defmodule SlackTest do
   test "handle_message returns state by default" do
     assert Bot.handle_message(nil, nil, 1) == {:ok, 1}
   end
-
+  
+  test "handle_info returns state by default" do
+    assert Bot.handle_info(nil, nil, 1) == {:ok, 1}
+  end
+  
+  test "handle_close returns state by default" do
+    assert Bot.handle_close(nil, nil, 1) == {:error, 1}
+  end
+  
   test "init formats rtm results properly" do
     rtm = %{
       self: %{name: "fake"},

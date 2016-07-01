@@ -42,14 +42,14 @@ defmodule SlackRtm do
     {:ok, state}
   end
 
-  def handle_message(message = %{type: "message"}, slack, state) do
+  def handle_event(event = %{type: "message"}, slack, state) do
     message_to_send = "Received #{length(state)} messages so far!"
-    send_message(message_to_send, message.channel, slack)
+    send_message(message_to_send, event.channel, slack)
 
-    {:ok, state ++ [message.text]}
+    {:ok, state ++ [event.text]}
   end
 
-  def handle_message(_message, _slack, state) do
+  def handle_event(_event, _slack, state) do
     {:ok, state}
   end
 end
@@ -58,7 +58,7 @@ end
 To run this example, you'll also want to call `SlackRtm.start_link("token", [])`
 and run the project with `mix run --no-halt`.
 
-You can send messages to channels using `send_message/3` which takes the message
+You can send messages to channels using `send_event/3` which takes the event
 as the first argument, channel as the second, and the passed in `slack` state
 as the third.
 
@@ -68,9 +68,9 @@ of  `bots`, `channels`, `groups`, `users`, and `ims` (direct message channels).
 
 [rtm.start]: https://api.slack.com/methods/rtm.start
 
-Slack has *a lot* of message types so it's a good idea to define a callback like
-above where unhandled message types don't crash your application. You can find a
-list of message types and examples on the [RTM API page].
+Slack has *a lot* of event types so it's a good idea to define a callback like
+above where unhandled event types don't crash your application. You can find a
+list of event types and examples on the [RTM API page].
 
 You can find more detailed documentation on the [Slack hexdocs page].
 

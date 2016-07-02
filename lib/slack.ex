@@ -74,7 +74,6 @@ defmodule Slack do
       @behaviour :websocket_client_handler
       require Logger
       import Slack
-      import Slack.Handlers
       import Slack.Lookups
       import Slack.Sends
 
@@ -98,7 +97,7 @@ defmodule Slack do
       end
 
       def init(%{rtm: rtm, client: client, token: token}, socket) do
-        slack = %{
+        slack = %Slack.State{
           socket: socket,
           client: client,
           token: token,
@@ -152,7 +151,7 @@ defmodule Slack do
             e -> handle_exception(e)
           end
 
-          handle_slack(message, slack)
+          Slack.State.update(message, slack)
         else
           slack
         end

@@ -1,9 +1,9 @@
-defmodule Slack.HandlersTest do
+defmodule Slack.StateTest do
   use ExUnit.Case
-  alias Slack.Handlers
+  alias Slack.State
 
   test "channel_joined sets is_member to true" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "channel_joined", channel: %{id: "123", members: ["123456", "654321"]}},
       slack
     )
@@ -13,7 +13,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "channel_left sets is_member to false" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "channel_left", channel: "123"},
       slack
     )
@@ -22,7 +22,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "channel_rename renames the channel" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "channel_rename", channel: %{id: "123", name: "bar"}},
       slack
     )
@@ -31,7 +31,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "channel_archive marks channel as archived" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "channel_archive", channel: "123"},
       slack
     )
@@ -40,7 +40,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "channel_unarchive marks channel as not archived" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "channel_unarchive", channel: "123"},
       slack
     )
@@ -49,7 +49,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "channel_leave marks channel as not archived" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "channel_unarchive", channel: "123"},
       slack
     )
@@ -58,7 +58,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "team_rename renames team" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "team_rename", name: "Bar"},
       slack
     )
@@ -68,7 +68,7 @@ defmodule Slack.HandlersTest do
 
   test "team_join adds user to users" do
     user_length = Map.size(slack.users)
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "team_join", user: %{id: "345"}},
       slack
     )
@@ -77,7 +77,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "user_change updates user" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "team_join", user: %{id: "123", name: "bar"}},
       slack
     )
@@ -88,7 +88,7 @@ defmodule Slack.HandlersTest do
   test "bot_added adds bot to bots" do
     bot_length = Map.size(slack.bots)
 
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "bot_added", bot: %{id: "345", name: "new"}},
       slack
     )
@@ -97,7 +97,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "bot_changed updates bot in bots" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "bot_added", bot: %{id: "123", name: "new"}},
       slack
     )
@@ -106,7 +106,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "channel_join message should add member" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "message", subtype: "channel_join", user: "U456", channel: "123"},
       slack
     )
@@ -115,7 +115,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "channel_leave message should remove member" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "message", subtype: "channel_leave", user: "U123", channel: "123"},
       slack
     )
@@ -124,7 +124,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "presence_change message should update user" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{presence: "testing", type: "presence_change", user: "123"},
       slack
     )
@@ -133,7 +133,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "group_joined event should add group" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "group_joined", channel: %{id: "G123", members: ["U123", "U456"]}},
       slack
     )
@@ -143,7 +143,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "group_join message should add user to member list" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "message", subtype: "group_join", channel: "G000", user: "U000"},
       slack
     )
@@ -152,7 +152,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "group_leave message should remove user from member list" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "message", subtype: "group_leave", channel: "G000", user: "U111"},
       slack
     )
@@ -161,7 +161,7 @@ defmodule Slack.HandlersTest do
   end
 
   test "group_left message should remove group altogether" do
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "group_left", channel: "G000"},
       slack
     )
@@ -171,7 +171,7 @@ defmodule Slack.HandlersTest do
 
   test "im_created message should add direct message channel to list" do
     channel = %{name: "channel", id: "C456"}
-    new_slack = Handlers.handle_slack(
+    new_slack = State.update(
       %{type: "im_created", channel: channel},
       slack
     )

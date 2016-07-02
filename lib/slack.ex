@@ -16,17 +16,14 @@ defmodule Slack do
   defmodule Bot do
     use Slack
 
-    def handle_message(message = {type: "message"}, slack, state) do
+    def handle_message(message = {type: "message"}, slack) do
       if message.text == "Hi" do
-        send_message("Hi has been said #\{state} times", message.channel, slack)
-        state = state + 1
+        send_message("Hello to you too!", message.channel, slack)
       end
-
-      {:ok, state}
     end
   end
 
-  Bot.start_link("API_TOKEN", 1)
+  Bot.start_link("API_TOKEN")
   ```
 
   `handle_*` methods are always passed `slack` and `state` arguments. The
@@ -34,8 +31,7 @@ defmodule Slack do
   automatically.
 
   In this example we're just matching against the message type and checking if
-  the text content is "Hi" and if so, we reply with how many times "Hi" has been
-  said.
+  the text content is "Hi" and if so, we reply with our own greeting.
 
   The message type is pattern matched against because the
   [Slack RTM API](https://api.slack.com/rtm) defines many different types of
@@ -44,10 +40,10 @@ defmodule Slack do
 
   ## Callbacks
 
-  * `handle_connect(slack, state)` - called when connected to Slack.
-  * `handle_message(message, slack, state)` - called when a message is received.
-  * `handle_close(reason, slack, state)` - called when websocket is closed.
-  * `handle_info(message, slack, state)` - called when any other message is received in the process mailbox.
+  * `handle_connect(slack)` - called when connected to Slack.
+  * `handle_message(message, slack)` - called when a message is received.
+  * `handle_close(reason, slack)` - called when websocket is closed.
+  * `handle_info(message, slack)` - called when any other message is received in the process mailbox.
 
   ## Slack argument
 
@@ -82,12 +78,11 @@ defmodule Slack do
       import Slack.Lookups
       import Slack.Sends
 
-      def start_link(token, initial_state, client \\ :websocket_client) do
+      def start_link(token, client \\ :websocket_client) do
         case Slack.Rtm.start(token) do
           {:ok, rtm} ->
             state = %{
               rtm: rtm,
-              state: initial_state,
               client: client,
               token: token
             }
@@ -102,7 +97,7 @@ defmodule Slack do
         end
       end
 
-      def init(%{rtm: rtm, client: client, state: state, token: token}, socket) do
+      def init(%{rtm: rtm, client: client, token: token}, socket) do
         slack = %{
           socket: socket,
           client: client,
@@ -116,53 +111,53 @@ defmodule Slack do
           ims: rtm_list_to_map(rtm.ims)
         }
 
-        {:ok, state} = handle_connect(slack, state)
-        {:ok, %{slack: slack, state: state}}
+        handle_connect(slack)
+        {:ok, slack}
       end
 
       def websocket_info(:start, _connection, state) do
         {:ok, state}
       end
 
-      def websocket_info(message, _connection, %{slack: slack, state: state}) do
+      def websocket_info(message, _connection, slack) do
         try do
-          {:ok, state} = handle_info(message, slack, state)
+          handle_info(message, slack)
         rescue
           e -> handle_exception(e)
         end
 
-        {:ok, %{slack: slack, state: state}}
+        {:ok, slack}
       end
 
-      def websocket_terminate(reason, _connection, %{slack: slack, state: state}) do
+      def websocket_terminate(reason, _conn, slack) do
         try do
-          handle_close(reason, slack, state)
+          handle_close(reason, slack)
         rescue
           e -> handle_exception(e)
         end
       end
 
-      def websocket_handle({:ping, data}, _connection, state) do
+      def websocket_handle({:ping, data}, _conn, state) do
         {:reply, {:pong, data}, state}
       end
 
-      def websocket_handle({:text, message}, _con, %{slack: slack, state: state}) do
+      def websocket_handle({:text, message}, _conn, slack) do
         message = prepare_message message
 
-        {slack, state} = if Map.has_key?(message, :type) do
-          {:ok, slack} = handle_slack(message, slack)
-
+        slack = if Map.has_key?(message, :type) do
           try do
-            {:ok, state} = handle_message(message, slack, state)
-            {slack, state}
+            handle_message(message, slack)
+            slack
           rescue
             e -> handle_exception(e)
           end
+
+          handle_slack(message, slack)
         else
-          {slack, state}
+          slack
         end
 
-        {:ok, %{slack: slack, state: state}}
+        {:ok, slack}
       end
 
       defp rtm_list_to_map(list) do
@@ -185,12 +180,12 @@ defmodule Slack do
         raise message
       end
 
-      def handle_connect(_slack, state), do: {:ok, state}
-      def handle_message(_message, _slack, state), do: {:ok, state}
-      def handle_close(_reason, _slack, state), do: {:error, state}
-      def handle_info(_message, _slack, state), do: {:ok, state}
+      def handle_connect(_slack ), do: :ok
+      def handle_message(_message, _slack), do: :ok
+      def handle_close(_reason, _slack), do: :ok
+      def handle_info(_message, _slack), do: :ok
 
-      defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3, handle_info: 3]
+      defoverridable [handle_connect: 1, handle_message: 2, handle_close: 2, handle_info: 2]
     end
   end
 end

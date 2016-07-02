@@ -37,21 +37,14 @@ callback methods.
 defmodule SlackRtm do
   use Slack
 
-  def handle_connect(slack, state) do
+  def handle_connect(slack) do
     IO.puts "Connected as #{slack.me.name}"
-    {:ok, state}
   end
 
-  def handle_message(message = %{type: "message"}, slack, state) do
-    message_to_send = "Received #{length(state)} messages so far!"
-    send_message(message_to_send, message.channel, slack)
-
-    {:ok, state ++ [message.text]}
+  def handle_message(message = %{type: "message"}, slack) do
+    send_message("I got a message!", message.channel, slack)
   end
-
-  def handle_message(_message, _slack, state) do
-    {:ok, state}
-  end
+  def handle_message(_,_), do: :ok
 end
 ```
 
@@ -59,8 +52,8 @@ To run this example, you'll also want to call `SlackRtm.start_link("token", [])`
 and run the project with `mix run --no-halt`.
 
 You can send messages to channels using `send_message/3` which takes the message
-as the first argument, channel as the second, and the passed in `slack` state
-as the third.
+as the first argument, channel/user as the second, and the passed in `slack`
+state as the third.
 
 The passed in `slack` state holds the current user properties as `me`, team
 properties as `team`, the current websocket connection as `socket`, and a list

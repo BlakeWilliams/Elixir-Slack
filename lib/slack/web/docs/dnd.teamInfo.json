@@ -1,0 +1,12 @@
+{
+	"desc": "Retrieves the Do Not Disturb status for users on a team.",
+
+	"args": {
+		"users": {
+			"required"	: false,
+			"type"		: "string",
+			"example"	: "U1234,U4567",
+			"desc"		: "Comma-separated list of users to fetch Do Not Disturb status for"
+		}
+	}
+}

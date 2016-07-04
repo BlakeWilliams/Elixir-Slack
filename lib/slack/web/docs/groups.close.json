@@ -1,0 +1,15 @@
+{
+	"desc": "Closes a private channel.",
+
+	"args": {
+		"channel": {
+			"type"		: "group",
+			"required"	: true,
+			"desc"		: "Private channel to close."
+		}
+	},
+
+	"errors": {
+		"channel_not_found"	: "Value passed for `channel` was invalid."
+	}
+}

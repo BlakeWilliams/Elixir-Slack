@@ -22,7 +22,7 @@ defmodule Slack.Mixfile do
      {:exjsx, "~> 3.2.0"},
      {:websocket_client, github: "jeremyong/websocket_client"},
      {:earmark, "~> 0.2.0", only: :dev},
-     {:ex_doc, "~> 0.11", only: :dev}]
+     {:ex_doc, "~> 0.12", only: :dev}]
   end
 
   def docs do

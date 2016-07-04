@@ -1,0 +1,29 @@
+{
+  "desc": "Edit an existing file comment.",
+
+  "args": {
+    "file": {
+      "required"	: true,
+      "example"	: "F1234567890",
+      "desc"		: "File containing the comment to edit."
+    },
+    "id": {
+      "required"	: true,
+      "example"	: "Fc1234567890",
+      "desc"		: "The comment to edit."
+    },
+    "comment": {
+      "required"	: true,
+      "example"	: "Everyone should take a moment to read this file, seriously.",
+      "desc"		: "Text of the comment to edit."
+    }
+  },
+
+  "errors": {
+    "file_not_found"	  : "The requested file could not be found.",
+    "file_deleted"		  : "The requested file was previously deleted.",
+    "no_comment"        : "The `comment` field was empty.",
+    "edit_window_closed": "The timeframe for editing the comment has expired.",
+    "cant_edit"	        : "The requested file could not be found."
+  }
+}

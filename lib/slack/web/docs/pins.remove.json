@@ -1,0 +1,39 @@
+{
+	"desc": "Un-pins an item from a channel.",
+
+	"args": {
+		"channel": {
+			"required"	: true,
+			"type"		: "channel",
+			"desc"		: "Channel where the item is pinned to."
+		},
+
+		"file": {
+			"type"		: "file",
+			"required"	: false,
+			"desc"		: "File to un-pin."
+		},
+
+		"file_comment": {
+			"type"		: "file_comment",
+			"required"	: false,
+			"desc"		: "File comment to un-pin."
+		},
+
+		"timestamp": {
+			"required"	: false,
+			"type"		: "timestamp",
+			"desc"		: "Timestamp of the message to un-pin."
+		}
+	},
+
+	"errors": {
+		"bad_timestamp"			: "Value passed for `timestamp` was invalid.",
+		"file_not_found"		: "File specified by `file` does not exist.",
+		"file_comment_not_found"	: "File comment specified by `file_comment` does not exist.",
+		"message_not_found"		: "Message specified by `channel` and `timestamp` does not exist.",
+		"no_item_specified"		: "One of `file`, `file_comment`, or `timestamp` was not specified.",
+		"not_pinned"			: "The specified item is not pinned to the channel.",
+		"permission_denied"		: "The user does not have permission to remove pins from the channel."
+	}
+}

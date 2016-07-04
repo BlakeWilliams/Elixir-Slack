@@ -1,0 +1,16 @@
+{
+	"desc": "Manually set user presence",
+	"deprecated": true,
+
+	"args": {
+		"presence": {
+			"required"	: true,
+			"example"   : "away",
+			"desc"		: "Either `active` or `away`"
+		}
+	},
+
+	"errors": {
+		"invalid_presence": "Value passed for `presence` was invalid."
+	}
+}

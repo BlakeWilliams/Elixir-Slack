@@ -1,0 +1,8 @@
+{
+	"desc": "Ends the current user's Do Not Disturb session immediately.",
+
+	"errors": {
+		"unknown_error"	: "There was a mysterious problem ending the user's Do Not Disturb session"
+	}
+
+}

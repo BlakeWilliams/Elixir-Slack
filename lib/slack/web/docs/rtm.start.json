@@ -1,0 +1,28 @@
+{
+	"desc": "Starts a Real Time Messaging session.",
+
+	"args": {
+	        "simple_latest": {
+	            "type"	: "int",
+	            "required"	: false,
+	            "desc"	: "Return timestamp only for latest message object of each channel (improves performance)."
+	        },
+
+	        "no_unreads": {
+	            "type"	: "int",
+	            "required"  : false,
+	            "desc"      : "Skip unread counts for each channel (improves performance)."
+	        },
+	        "mpim_aware": {
+				"type" 		: "bool",
+				"required"	: false,
+				"desc"		: "Returns MPIMs to the client in the API response."
+			}
+	},
+
+
+	"errors": {
+
+		"migration_in_progress"	: "Team is being migrated between servers. See [the `team_migration_started` event documentation](/events/team_migration_started) for details."
+	}
+}

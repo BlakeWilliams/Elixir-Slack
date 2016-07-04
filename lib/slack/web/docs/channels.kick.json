@@ -1,0 +1,26 @@
+{
+	"desc": "Removes a user from a channel.",
+
+	"args": {
+		"channel": {
+			"type"		: "channel",
+			"required"	: true,
+			"desc"		: "Channel to remove user from."
+		},
+		"user": {
+			"type"		: "user",
+			"required"	: true,
+			"desc"		: "User to remove from channel."
+		}
+	},
+
+	"errors": {
+		"channel_not_found"	: "Value passed for `channel` was invalid.",
+		"user_not_found"	: "Value passed for `user` was invalid.",
+		"cant_kick_self"	: "Authenticated user can't kick themselves from a channel.",
+		"not_in_channel"	: "User was not in the channel.",
+		"cant_kick_from_general": "User cannot be removed from #general.",
+		"cant_kick_from_last_channel": "User cannot be removed from the last channel they're in.",
+		"restricted_action"	: "A team preference prevents the authenticated user from kicking."
+	}
+}

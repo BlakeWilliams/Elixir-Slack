@@ -1,0 +1,47 @@
+{
+	"desc": "Uploads or creates a file.",
+
+	"args": {
+		"file": {
+			"required"	: true,
+			"example"	: "...",
+			"desc"		: "File contents via `multipart/form-data`.",
+			"type"		: "file"
+		},
+		"content": {
+			"required"	: false,
+			"example"	: "...",
+			"desc"		: "File contents via a POST var."
+		},
+		"filetype": {
+			"required"	: false,
+			"example"	: "php",
+			"desc"		: "Slack-internal file type identifier."
+		},
+		"filename": {
+			"required"	: true,
+			"example"	: "foo.txt",
+			"desc"		: "Filename of file."
+		},
+		"title": {
+			"required"	: false,
+			"example"	: "My File",
+			"desc"		: "Title of file."
+		},
+		"initial_comment": {
+			"required"	: false,
+			"example"	: "Best!",
+			"desc"		: "Initial comment to add to file."
+		},
+		"channels": {
+			"type"		: "channel",
+			"required"	: false,
+			"desc"		: "Comma-separated list of channel names or IDs where the file will be shared."
+		}
+	},
+
+	"errors": {
+		"posting_to_general_channel_denied"	: "An admin has restricted posting to the #general channel.",
+		"invalid_channel"			: "One or more channels supplied are invalid"
+	}
+}

@@ -1,0 +1,33 @@
+{
+	"desc": "Searches for messages and files matching a query.",
+
+	"args": {
+		"query": {
+			"required"	: true,
+			"example"	: "pickleface",
+			"desc"		: "Search query. May contains booleans, etc."
+		},
+		"sort": {
+			"required"	: false,
+			"default"	: "score",
+			"example"	: "timestamp",
+			"desc"		: "Return matches sorted by either `score` or `timestamp`."
+		},
+		"sort_dir": {
+			"required"	: false,
+			"default"	: "desc",
+			"example"	: "asc",
+			"desc"		: "Change sort direction to ascending (`asc`) or descending (`desc`)."
+		},
+		"highlight": {
+			"required"	: false,
+			"example"	: 1,
+			"desc"		: "Pass a value of `1` to enable query highlight markers (see below)."
+		}
+	},
+
+	"has_paging" : true,
+
+	"errors": {
+	}
+}

@@ -1,0 +1,49 @@
+{
+	"desc": "Updates a message.",
+
+	"args": {
+		"ts": {
+			"required"	: true,
+			"example"	: "1405894322.002768",
+			"desc"		: "Timestamp of the message to be updated."
+		},
+		"channel": {
+			"type"		: "channel",
+			"required"	: true,
+			"desc"		: "Channel containing the message to be updated."
+		},
+		"text": {
+			"required"	: true,
+			"example"	: "Hello world",
+			"desc"		: "New text for the message, using the [default formatting rules](/docs/formatting)."
+		},
+		"attachments": {
+			"example"	: "[{\"pretext\": \"pre-hello\", \"text\": \"text-world\"}]",
+			"desc"		: "Structured message attachments."
+		},
+		"parse": {
+			"required"	: false,
+			"example"	: "none",
+			"desc"		: "Change how messages are treated. Defaults to `client`, unlike `chat.postMessage`. See [below](#formatting)."
+		},
+		"link_names": {
+			"required"	: false,
+			"example"	: "1",
+			"desc"		: "Find and link channel names and usernames. Defaults to `none`. This parameter should be used in conjunction with `parse`. To set `link_names` to `1`, specify a `parse` mode of `full`."
+		},
+		"as_user": {
+			"required"	: false,
+			"example"	: "true",
+			"desc"		: "Pass true to update the message as the authed user. [Bot users](/bot-users) in this context are considered authed users."
+		}
+	},
+
+	"errors": {
+		"message_not_found" : "No message exists with the requested timestamp.",
+		"cant_update_message" : "Authenticated user does not have permission to update this message.",
+		"channel_not_found"	: "Value passed for `channel` was invalid.",
+		"edit_window_closed": "The message cannot be edited due to the team message edit settings",
+		"msg_too_long"		: "Message text is too long",
+		"no_text"			: "No message text provided"
+	}
+}

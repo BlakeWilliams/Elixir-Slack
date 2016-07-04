@@ -1,0 +1,17 @@
+{
+	"desc": "This method opens a multiparty direct message.",
+
+	"args": {
+		"users": {
+			"type"		: "users",
+			"required"	: true,
+			"desc"		: "Comma separated lists of users.  The ordering of the users is preserved whenever a MPIM group is returned."
+		}
+	},
+
+	"errors": {
+		"users_list_not_supplied"	: "Missing `users` in request",
+	  	"not_enough_users"			: "Needs at least 2 users to open",
+	  	"too_many_users"			: "Needs at most 8 users to open"
+	}
+}

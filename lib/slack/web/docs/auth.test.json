@@ -1,0 +1,9 @@
+{
+	"desc": "Checks authentication & identity.",
+
+	"args": {
+	},
+
+	"errors": {
+	}
+}

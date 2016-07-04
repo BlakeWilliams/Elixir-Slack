@@ -1,0 +1,39 @@
+{
+	"desc": "Update an existing user group",
+
+	"args": {
+		"usergroup": {
+			"required"	: true,
+			"type"		: "string",
+			"example"	: "S0604QSJC",
+			"desc"		: "The encoded ID of the user group to update."
+		},
+		"name": {
+			"required"	: false,
+			"type"		: "string",
+			"example"	: "My Test Team",
+			"desc"		: "A name for the user group. Must be unique among user groups."
+		},
+		"handle": {
+			"required"	: false,
+			"type"		: "string",
+			"desc"		: "A mention handle. Must be unique among channels, users and user groups."
+		},
+		"description": {
+			"required"	: false,
+			"type"		: "string",
+			"desc"		: "A short description of the user group."
+		},
+		"channels": {
+			"required"	: false,
+			"type"		: "string",
+			"desc"		: "A comma separated string of encoded channel IDs for which the user group uses as a default."
+		},
+		"include_count": {
+			"required"	: false,
+			"type"		: "int",
+			"example"	: "1",
+			"desc"		: "Include the number of users in the user group."
+		}
+	}
+}

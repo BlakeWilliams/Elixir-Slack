@@ -1,0 +1,15 @@
+{
+	"desc": "Closes a multiparty direct message channel.",
+
+	"args": {
+		"channel": {
+			"type"		: "mpim",
+			"required"	: true,
+			"desc"		: "MPIM to close."
+		}
+	},
+
+	"errors": {
+		"channel_not_found"	: "Value passed for `channel` was invalid."
+	}
+}

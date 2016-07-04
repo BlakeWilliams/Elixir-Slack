@@ -1,0 +1,9 @@
+{
+	"desc": "Marks a user as active.",
+
+	"args": {
+	},
+
+	"errors": {
+	}
+}

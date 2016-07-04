@@ -1,0 +1,14 @@
+{
+    "desc": "Gets the access logs for the current team.",
+
+    "args": {
+    },
+
+    "has_paging"    : true,
+    "default_count" : 100,
+
+    "errors": {
+        "paid_only": "This is only available to paid teams.",
+        "over_pagination_limit": "It is not possible to request more than 1000 items per page or more than 100 pages."
+    }
+}

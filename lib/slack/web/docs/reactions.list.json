@@ -1,0 +1,23 @@
+{
+    "desc": "Lists reactions made by a user.",
+
+    "args": {
+        "user": {
+            "type"		: "user",
+            "required"	: false,
+            "desc"		: "Show reactions made by this user. Defaults to the authed user."
+        },
+
+        "full": {
+            "required"  : false,
+            "desc"      : "If true always return the complete reaction list."
+        }
+    },
+
+    "has_paging"	: true,
+    "default_count"	: 100,
+
+    "errors": {
+        "user_not_found"	: "Value passed for `user` was invalid."
+    }
+}

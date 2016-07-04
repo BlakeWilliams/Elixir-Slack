@@ -1,0 +1,24 @@
+{
+	"desc": "Sets the purpose for a channel.",
+
+	"args": {
+		"channel": {
+			"type"		: "channel",
+			"required"	: true,
+			"desc"		: "Channel to set the purpose of"
+		},
+		"purpose": {
+			"required"	: true,
+			"example"	: "My Purpose",
+			"desc"		: "The new purpose"
+		}
+	},
+
+	"errors": {
+		"channel_not_found"	: "Value passed for `channel` was invalid.",
+		"not_in_channel": "Authenticated user is not in the channel.",
+		"is_archived"	: "Channel has been archived.",
+		"too_long": "Purpose was longer than 250 characters.",
+		"user_is_restricted" : "Setting the purpose is a restricted action."
+	}
+}

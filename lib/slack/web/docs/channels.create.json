@@ -1,0 +1,17 @@
+{
+	"desc": "Creates a channel.",
+
+	"args": {
+		"name": {
+			"required"	: true,
+			"desc"		: "Name of channel to create",
+			"example"	: "mychannel"
+		}
+	},
+
+	"errors": {
+		"name_taken"    : "A channel cannot be created with the given name.",
+		"restricted_action": "A team preference prevents the authenticated user from creating channels.",
+		"no_channel"	: "Value passed for `name` was empty."
+	}
+}

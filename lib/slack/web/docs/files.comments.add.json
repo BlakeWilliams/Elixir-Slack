@@ -1,0 +1,22 @@
+{
+  "desc": "Add a comment to an existing file.",
+
+  "args": {
+    "file": {
+      "required"	: true,
+      "example"	: "F1234567890",
+      "desc"		: "File to add a comment to."
+    },
+    "comment": {
+      "required"	: true,
+      "example"	: "Everyone should take a moment to read this file.",
+      "desc"		: "Text of the comment to add."
+    }
+  },
+
+  "errors": {
+    "file_not_found"	: "The requested file could not be found.",
+    "file_deleted"		: "The requested file was previously deleted.",
+    "no_comment"      : "The `comment` field was empty."
+  }
+}

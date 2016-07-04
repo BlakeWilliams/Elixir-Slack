@@ -1,0 +1,66 @@
+{
+	"desc": "Sends a message to a channel.",
+
+	"args": {
+		"channel": {
+			"type"		: "channel",
+			"required"	: true,
+			"desc"		: "Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name. See [below](#channels) for more details."
+		},
+		"text": {
+			"required"	: true,
+			"example"	: "Hello world",
+			"desc"		: "Text of the message to send. See below for an explanation of [formatting](#formatting)."
+		},
+		"parse": {
+			"example"	: "full",
+			"desc"		: "Change how messages are treated. Defaults to `none`. See [below](#formatting)."
+		},
+		"link_names": {
+			"example"	: "1",
+			"desc"		: "Find and link channel names and usernames."
+		},
+		"attachments": {
+			"example"	: "[{\"pretext\": \"pre-hello\", \"text\": \"text-world\"}]",
+			"desc"		: "Structured message attachments."
+		},
+		"unfurl_links": {
+			"example"	: "true",
+			"desc"		: "Pass true to enable unfurling of primarily text-based content."
+		},
+		"unfurl_media": {
+			"example"	: "false",
+			"desc"		: "Pass false to disable unfurling of media content."
+		},
+		"username": {
+			"required"	: false,
+			"example"	: "My Bot",
+			"desc"		: "Set your bot's user name. Must be used in conjunction with `as_user` set to false, otherwise ignored. See [authorship](#authorship) below."
+		},
+		"as_user": {
+			"required"	: false,
+			"example"	: "true",
+			"desc"		: "Pass true to post the message as the authed user, instead of as a bot. Defaults to false. See [authorship](#authorship) below."
+		},
+		"icon_url": {
+			"required"	: false,
+			"example"	: "http://lorempixel.com/48/48",
+			"desc"		: "URL to an image to use as the icon for this message. Must be used in conjunction with `as_user` set to false, otherwise ignored. See [authorship](#authorship) below."
+		},
+		"icon_emoji": {
+			"required"	: false,
+			"example"	: ":chart_with_upwards_trend:",
+			"desc"		: "emoji to use as the icon for this message. Overrides `icon_url`. Must be used in conjunction with `as_user` set to false, otherwise ignored. See [authorship](#authorship) below."
+		}
+	},
+
+	"errors": {
+
+		"channel_not_found"	: "Value passed for `channel` was invalid.",
+		"not_in_channel"	: "Cannot post user messages to a channel they are not in.",
+		"is_archived"		: "Channel has been archived.",
+		"msg_too_long"		: "Message text is too long",
+		"no_text"		: "No message text provided",
+		"rate_limited"      : "Application has posted too many messages, [read the Rate Limit documentation](/docs/rate-limits) for more information"
+	}
+}

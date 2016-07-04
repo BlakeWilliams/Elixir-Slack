@@ -1,0 +1,39 @@
+{
+	"desc": "Removes a star from an item.",
+
+	"args": {
+		"file": {
+			"type"		: "file",
+			"required"	: false,
+			"desc"		: "File to remove star from."
+		},
+
+		"file_comment": {
+			"type"		: "file_comment",
+			"required"	: false,
+			"desc"		: "File comment to remove star from."
+		},
+
+		"channel": {
+			"required"	: false,
+			"type"		: "channel",
+			"desc"		: "Channel to remove star from, or channel where the message to remove star from was posted (used with `timestamp`)."
+		},
+
+		"timestamp": {
+			"required"	: false,
+			"type"		: "timestamp",
+			"desc"		: "Timestamp of the message to remove star from."
+		}
+	},
+
+	"errors": {
+		"bad_timestamp"			: "Value passed for `timestamp` was invalid.",
+		"message_not_found"		: "Message specified by `channel` and `timestamp` does not exist.",
+		"file_not_found"		: "File specified by `file` does not exist.",
+		"file_comment_not_found"	: "File comment specified by `file_comment` does not exist.",
+		"channel_not_found"		: "Channel, private group, or DM specified by `channel` does not exist",
+		"no_item_specified"		: "`file`, `file_comment`, `channel` and `timestamp` was not specified.",
+		"not_starred"			: "The specified item is not currently starred by the authenticated user."
+	}
+}

@@ -1,0 +1,52 @@
+{
+	"desc": "Fetches history of messages and events from a channel.",
+
+	"args": {
+		"channel": {
+			"type"		: "channel",
+			"required"	: true,
+			"desc"		: "Channel to fetch history for."
+		},
+
+		"latest": {
+			"type"		: "timestamp",
+			"required"	: false,
+			"default"	: "now",
+			"desc"		: "End of time range of messages to include in results."
+		},
+
+		"oldest": {
+			"type"		: "timestamp",
+			"required"	: false,
+			"default"	: "0",
+			"desc"		: "Start of time range of messages to include in results."
+		},
+
+		"inclusive": {
+			"example"	: 1,
+			"default"	: 0,
+			"desc"		: "Include messages with latest or oldest timestamp in results."
+		},
+
+		"count": {
+			"required"	: false,
+			"default"	: "100",
+			"example"	: "100",
+			"desc"		: "Number of messages to return, between 1 and 1000."
+		},
+
+		"unreads": {
+			"required"	: false,
+			"default"	: 0,
+			"example"	: 1,
+			"desc"		: "Include `unread_count_display` in the output?"
+		}
+	},
+
+	"errors": {
+
+		"channel_not_found"	: "Value passed for `channel` was invalid.",
+		"invalid_ts_latest"	: "Value passed for `latest` was invalid",
+		"invalid_ts_oldest"	: "Value passed for `oldest` was invalid"
+	}
+}

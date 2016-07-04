@@ -1,0 +1,36 @@
+{
+	"desc": "Exchanges a temporary OAuth code for an API token.",
+
+	"args": {
+		"client_id": {
+			"required"	: true,
+			"example"	: "4b39e9-752c4",
+			"desc"		: "Issued when you created your application."
+		},
+
+		"client_secret": {
+			"required"	: true,
+			"example"	: "33fea0113f5b1",
+			"desc"		: "Issued when you created your application."
+		},
+
+		"code": {
+			"required"	: true,
+			"example"	: "ccdaa72ad",
+			"desc"		: "The `code` param returned via the OAuth callback."
+		},
+
+		"redirect_uri": {
+			"required"	: false,
+			"example"	: "http://example.com",
+			"desc"		: "This must match the originally submitted URI (if one was sent)."
+		}
+	},
+
+	"errors": {
+		"invalid_client_id"	: "Value passed for `client_id` was invalid.",
+		"bad_client_secret"	: "Value passed for `client_secret` was invalid.",
+		"invalid_code"		: "Value passed for `code` was invalid.",
+		"bad_redirect_uri"	: "Value passed for `redirect_uri` did not match the `redirect_uri` in the original request."
+	}
+}

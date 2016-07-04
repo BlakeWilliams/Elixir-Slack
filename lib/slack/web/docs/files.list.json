@@ -1,0 +1,42 @@
+{
+	"desc": "Lists & filters team files.",
+
+	"args": {
+		"user": {
+			"type"		: "user",
+			"required"	: false,
+			"desc"		: "Filter files created by a single user."
+		},
+		"channel": {
+			"type"		: "channel",
+			"required"	: false,
+			"desc"		: "Filter files appearing in a specific channel, indicated by its ID."
+		},
+		"ts_from": {
+			"required"	: false,
+			"example"	: "123456789",
+			"default"	: "0",
+			"desc"		: "Filter files created after this timestamp (inclusive)."
+		},
+		"ts_to": {
+			"required"	: false,
+			"example"	: "123456789",
+			"default"	: "now",
+			"desc"		: "Filter files created before this timestamp (inclusive)."
+		},
+		"types": {
+			"required"	: false,
+			"default"	: "all",
+			"example"	: "images",
+			"desc"		: "Filter files by type:\n\n* `all` - All files\n* `posts` - Posts\n* `snippets` - Snippets\n* `images` - Image files\n* `gdocs` - Google docs\n* `zips` - Zip files\n* `pdfs` - PDF files\n\nYou can pass multiple values in the types argument, like `types=posts,snippets`.The default value is `all`, which does not filter the list."
+		}
+	},
+
+	"has_paging"	: true,
+	"default_count"	: 100,
+
+	"errors": {
+		"user_not_found"	: "Value passed for `user` was invalid",
+		"unknown_type"		: "Value passed for `types` was invalid"
+	}
+}

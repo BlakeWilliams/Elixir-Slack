@@ -1,0 +1,22 @@
+{
+	"desc": "Sets the read cursor in a private channel.",
+
+	"args": {
+		"channel": {
+			"type"		: "group",
+			"required"	: true,
+			"desc"		: "Private channel to set reading cursor in."
+		},
+
+		"ts": {
+			"type"		: "timestamp",
+			"required"	: true,
+			"desc"		: "Timestamp of the most recently seen message."
+		}
+	},
+
+	"errors": {
+		"channel_not_found"	: "Value passed for `channel` was invalid.",
+		"invalid_timestamp"	: "Value passed for `timestamp` was invalid."
+	}
+}

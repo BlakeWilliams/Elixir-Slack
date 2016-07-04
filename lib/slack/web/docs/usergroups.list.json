@@ -1,0 +1,24 @@
+{
+	"desc": "List all user groups for a team",
+
+	"args": {
+		"include_disabled": {
+			"required"	: false,
+			"type"		: "int",
+			"example"	: "1",
+			"desc"		: "Include disabled user groups."
+		},
+		"include_count": {
+			"required"	: false,
+			"type"		: "int",
+			"example"	: "1",
+			"desc"		: "Include the number of users in each user group."
+		},
+		"include_users": {
+			"required"	: false,
+			"type"		: "int",
+			"example"	: "1",
+			"desc"		: "Include the list of users for each user group."
+		}
+	}
+}

@@ -11,7 +11,7 @@ by creating a new [bot integration].
 [Web API page]: https://api.slack.com/web
 [bot integration]: https://my.slack.com/services/new/bot
 
-## Usage
+## Installing
 
 Add Slack to your `mix.exs` `application` and `dependencies` methods. You'll
 also need [websocket_client] since hex.pm doesn't install git based
@@ -29,6 +29,8 @@ def deps do
    {:websocket_client, git: "https://github.com/jeremyong/websocket_client"}]
 end
 ```
+
+## RTM Usage
 
 Define a module that uses the Slack behaviour and defines the appropriate
 callback methods.
@@ -65,7 +67,36 @@ Slack has *a lot* of message types so it's a good idea to define a callback like
 above where unhandled message types don't crash your application. You can find a
 list of message types and examples on the [RTM API page].
 
-You can find more detailed documentation on the [Slack hexdocs page].
+You can find more detailed documentation on the [Slack hexdocs
+page][documentation].
 
 [RTM API page]: https://api.slack.com/rtm
-[Slack hexdocs page]: http://hexdocs.pm/slack/
+
+## Web API Usage
+
+The complete Slack Web API is implemented by generating modules/functions from
+the JSON documentation. You can view this project's [documentation] for more
+details.
+
+There are two ways to authenticate your API calls. You can configure `api_token`
+on `slack` that will authenticate all calls to the API automatically.
+
+```
+config :slack, api_token: "VALUE"
+```
+
+Alternatively you can pass in `%{token: "VALUE"}` to any API call in
+`optional_params`. This also allows you to override the configured `api_token`
+value if desired.
+
+Quick example, getting the names of everyone on your team:
+
+```
+names = Slack.Web.Users.list(%{token: "TOKEN_HERE"})
+|> Map.get("members")
+|> Enum.map(fn(member) ->
+  member["real_name"]
+end)
+```
+
+[documentation]: http://hexdocs.pm/slack/

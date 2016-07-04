@@ -1,0 +1,22 @@
+{
+  "desc": "Deletes an existing comment on a file.",
+
+  "args": {
+    "file": {
+      "required"	: true,
+      "example"	: "F1234567890",
+      "desc"		: "File to delete a comment from."
+    },
+    "id": {
+      "required"	: true,
+      "example"	: "Fc1234567890",
+      "desc"		: "The comment to delete."
+    }
+  },
+
+  "errors": {
+    "file_not_found"	: "The requested file could not be found.",
+    "file_deleted"		: "The requested file was previously deleted.",
+    "cant_delete"	    : "The requested comment could not be deleted."
+  }
+}

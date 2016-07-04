@@ -1,0 +1,16 @@
+{
+	"desc": "Enables a file for public/external sharing.",
+
+	"args": {
+		"file": {
+			"required"	: true,
+			"desc"		: "File to share",
+			"type"		: "file"
+		}
+	},
+
+	"errors": {
+		"file_not_found"	: "Value passed for `file` was invalid",
+		"not_allowed"		: "Public sharing has been disabled for this team"
+	}
+}

@@ -1,0 +1,42 @@
+{
+    "desc": "Gets reactions for an item.",
+
+    "args": {
+        "file": {
+            "type"		: "file",
+            "required"	: false,
+            "desc"		: "File to get reactions for."
+        },
+
+        "file_comment": {
+            "type"		: "file_comment",
+            "required"	: false,
+            "desc"		: "File comment to get reactions for."
+        },
+
+        "channel": {
+            "required"	: false,
+            "type"      : "channel",
+            "desc"		: "Channel where the message to get reactions for was posted."
+        },
+
+        "timestamp": {
+            "required"	: false,
+            "type"      : "timestamp",
+            "desc"		: "Timestamp of the message to get reactions for."
+        },
+
+        "full": {
+            "required"	: false,
+            "desc"		: "If true always return the complete reaction list."
+        }
+    },
+
+    "errors": {
+        "bad_timestamp"	: "Value passed for `timestamp` was invalid.",
+        "file_not_found"	: "File specified by `file` does not exist.",
+        "file_comment_not_found"	: "File comment specified by `file_comment` does not exist.",
+        "message_not_found"	: "Message specified by `channel` and `timestamp` does not exist.",
+        "no_item_specified"	: "`file`, `file_comment`, or combination of `channel` and `timestamp` was not specified."
+    }
+}

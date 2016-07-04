@@ -1,0 +1,18 @@
+{
+	"desc": "Leaves a private channel.",
+
+	"args": {
+		"channel": {
+			"type"		: "group",
+			"required"	: true,
+			"desc"		: "Private channel to leave"
+		}
+	},
+
+	"errors": {
+		"channel_not_found"	: "Value passed for `channel` was invalid.",
+		"is_archived"		: "Group has been archived.",
+		"cant_leave_last_channel": "Authenticated user cannot leave the last channel they are in",
+		"last_member"		: "Authenticated user is the last member of a group and cannot leave it"
+	}
+}

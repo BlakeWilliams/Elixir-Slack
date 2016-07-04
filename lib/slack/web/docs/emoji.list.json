@@ -1,0 +1,9 @@
+{
+	"desc": "Lists custom emoji for a team.",
+
+	"args": {
+	},
+
+	"errors": {
+	}
+}

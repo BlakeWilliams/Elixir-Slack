@@ -47,6 +47,15 @@ defmodule SlackRtm do
     send_message("I got a message!", message.channel, slack)
   end
   def handle_message(_,_), do: :ok
+
+  def handle_info({:message, text, channel}, slack) do
+    IO.puts "Sending your message, captain!"
+
+    send_message(text, channel, slack)
+
+    {:ok, state}
+  end
+  def handle_info(_, _), do: :ok
 end
 ```
 
@@ -62,6 +71,20 @@ properties as `team`, the current websocket connection as `socket`, and a list
 of  `bots`, `channels`, `groups`, `users`, and `ims` (direct message channels).
 
 [rtm.start]: https://api.slack.com/methods/rtm.start
+
+If you want to do things like trigger the sending of messages outside of your
+Slack handlers, you can leverage the `handle_info/2` callback to implement an
+external API.
+
+This allows you to not just respond to Slack RTM events, but programmatically
+control Slack from your Elixir runtime:
+
+```elixir
+{:ok, rtm} = SlackRtm.start_link("token", [])
+send rtm, {:message, "External message", "general"}
+#=> {:message, "External message", "#general"}
+#==> Sending your message, captain!
+```
 
 Slack has *a lot* of message types so it's a good idea to define a callback like
 above where unhandled message types don't crash your application. You can find a
@@ -81,7 +104,7 @@ details.
 There are two ways to authenticate your API calls. You can configure `api_token`
 on `slack` that will authenticate all calls to the API automatically.
 
-```
+```elixir
 config :slack, api_token: "VALUE"
 ```
 
@@ -91,7 +114,7 @@ value if desired.
 
 Quick example, getting the names of everyone on your team:
 
-```
+```elixir
 names = Slack.Web.Users.list(%{token: "TOKEN_HERE"})
 |> Map.get("members")
 |> Enum.map(fn(member) ->

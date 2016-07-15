@@ -53,7 +53,7 @@ defmodule SlackRtm do
 
     send_message(text, channel, slack)
 
-    {:ok, state}
+    {:ok}
   end
   def handle_info(_, _), do: :ok
 end
@@ -80,7 +80,7 @@ This allows you to not just respond to Slack RTM events, but programmatically
 control Slack from your Elixir runtime:
 
 ```elixir
-{:ok, rtm} = SlackRtm.start_link("token", [])
+{:ok, rtm} = SlackRtm.start_link("token")
 send rtm, {:message, "External message", "general"}
 #=> {:message, "External message", "#general"}
 #==> Sending your message, captain!

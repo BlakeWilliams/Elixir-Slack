@@ -81,7 +81,7 @@ control Slack from your Elixir runtime:
 
 ```elixir
 {:ok, rtm} = SlackRtm.start_link("token")
-send rtm, {:message, "External message", "general"}
+send rtm, {:message, "External message", "#general"}
 #=> {:message, "External message", "#general"}
 #==> Sending your message, captain!
 ```

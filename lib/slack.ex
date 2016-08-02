@@ -16,7 +16,7 @@ defmodule Slack do
   defmodule Bot do
     use Slack
 
-    def handle_message(message = {type: "message"}, slack) do
+    def handle_message(message = %{type: "message"}, slack) do
       if message.text == "Hi" do
         send_message("Hello to you too!", message.channel, slack)
       end

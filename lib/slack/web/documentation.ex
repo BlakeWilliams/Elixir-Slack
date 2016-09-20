@@ -56,9 +56,14 @@ defmodule Slack.Web.Documentation do
     Map.get(documentation, field)
     |> Enum.reduce("\n#{title}\n", fn(param, doc) ->
       meta = get_in(documentation.raw, ["args", to_string(param)])
-      doc <> "* `#{param}` - #{meta["desc"]}\n"
+      doc <> "* `#{param}` - #{meta["desc"]} #{example(meta)}\n"
     end)
   end
+
+  def example(%{"example" => example}) do
+    "ex: `#{example}`"
+  end
+  def example(_meta), do: ""
 
   defp errors_docs(%__MODULE__{errors: nil}), do: ""
   defp errors_docs(%__MODULE__{errors: errors}) do
@@ -74,7 +79,11 @@ defmodule Slack.Web.Documentation do
   defp get_params_with_required(%{"args" => args}, required) do
     args
     |> Enum.filter(fn({_, meta}) ->
-      meta["required"] == required
+      if required do
+        meta["required"]
+      else
+        !meta["required"]
+      end
     end)
     |> Enum.map(fn({name, _meta}) ->
       name |> String.to_atom

@@ -59,7 +59,7 @@ defmodule SlackRtm do
 end
 ```
 
-To run this example, you'll also want to call `SlackRtm.start_link("token", [])`
+To run this example, you'll also want to call `SlackRtm.start_link("token")`
 and run the project with `mix run --no-halt`.
 
 You can send messages to channels using `send_message/3` which takes the message

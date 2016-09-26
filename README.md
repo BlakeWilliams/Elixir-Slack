@@ -36,7 +36,7 @@ Define a module that uses the Slack behaviour and defines the appropriate
 callback methods.
 
 ```elixir
-defmodule SlackRtm do
+defmodule TranslatorBot do
   use Slack
 
   def handle_connect(slack) do
@@ -59,7 +59,7 @@ defmodule SlackRtm do
 end
 ```
 
-To run this example, you'll also want to call `SlackRtm.start_link("token")`
+To run this example, you'll also want to call `TranslatorBot.start_link("token")`
 and run the project with `mix run --no-halt`.
 
 You can send messages to channels using `send_message/3` which takes the message
@@ -80,7 +80,7 @@ This allows you to not just respond to Slack RTM events, but programmatically
 control Slack from your Elixir runtime:
 
 ```elixir
-{:ok, rtm} = SlackRtm.start_link("token")
+{:ok, rtm} = TranslatorBot.start_link("token")
 send rtm, {:message, "External message", "#general"}
 #=> {:message, "External message", "#general"}
 #==> Sending your message, captain!

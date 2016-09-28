@@ -8,7 +8,7 @@ defmodule Slack.State do
   defdelegate get_and_update(client, key, function), to: Map
 
   defstruct [
-    :socket,
+    :process,
     :client,
     :token,
     :me,

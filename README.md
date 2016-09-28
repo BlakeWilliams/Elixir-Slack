@@ -3,9 +3,9 @@ Status](https://api.travis-ci.org/BlakeWilliams/Elixir-Slack.svg?branch=master)]
 
 # Elixir-Slack
 
-This is a work in progress Slack [Real Time Messaging API] client for Elixir.
-You'll need a Slack API token which can be retrieved from the [Web API page] or
-by creating a new [bot integration].
+This is a Slack [Real Time Messaging API] client for Elixir.  You'll need a
+Slack API token which can be retrieved from the [Web API page] or by creating a
+new [bot integration].
 
 [Real time Messaging API]: https://api.slack.com/rtm
 [Web API page]: https://api.slack.com/web
@@ -13,9 +13,7 @@ by creating a new [bot integration].
 
 ## Installing
 
-Add Slack to your `mix.exs` `application` and `dependencies` methods. You'll
-also need [websocket_client] since hex.pm doesn't install git based
-dependencies.
+Add Slack to your `mix.exs` `application` and `dependencies` functions.
 
 [websocket_client]: https://github.com/jeremyong/websocket_client
 
@@ -25,12 +23,11 @@ def application do
 end
 
 def deps do
-  [{:slack, "~> 0.7.1"},
-   {:websocket_client, git: "https://github.com/jeremyong/websocket_client"}]
+  [{:slack, "~> 0.7.1"}]
 end
 ```
 
-## RTM Usage
+## RTM (Bot) Usage
 
 Define a module that uses the Slack behaviour and defines the appropriate
 callback methods.
@@ -39,28 +36,30 @@ callback methods.
 defmodule SlackRtm do
   use Slack
 
-  def handle_connect(slack) do
+  def handle_connect(slack, state) do
     IO.puts "Connected as #{slack.me.name}"
+    {:ok, state}
   end
 
-  def handle_message(message = %{type: "message"}, slack) do
+  def handle_message(message = %{type: "message"}, slack, state) do
     send_message("I got a message!", message.channel, slack)
+    {:ok, state}
   end
-  def handle_message(_,_), do: :ok
+  def handle_message(_, _, state), do: {:ok, state}
 
-  def handle_info({:message, text, channel}, slack) do
+  def handle_info({:message, text, channel}, slack, state) do
     IO.puts "Sending your message, captain!"
 
     send_message(text, channel, slack)
 
-    {:ok}
+    {:ok, state}
   end
-  def handle_info(_, _), do: :ok
+  def handle_info(_, _, state), do: {:ok, state}
 end
 ```
 
-To run this example, you'll also want to call `SlackRtm.start_link("token")`
-and run the project with `mix run --no-halt`.
+To run this example, you'll want to call `Slack.Bot.start_link(SlackRtm, [],
+"TOKEN_HERE")` and run the project with `mix run --no-halt`.
 
 You can send messages to channels using `send_message/3` which takes the message
 as the first argument, channel/user as the second, and the passed in `slack`
@@ -73,14 +72,14 @@ of  `bots`, `channels`, `groups`, `users`, and `ims` (direct message channels).
 [rtm.start]: https://api.slack.com/methods/rtm.start
 
 If you want to do things like trigger the sending of messages outside of your
-Slack handlers, you can leverage the `handle_info/2` callback to implement an
+Slack handlers, you can leverage the `handle_info/3` callback to implement an
 external API.
 
-This allows you to not just respond to Slack RTM events, but programmatically
-control Slack from your Elixir runtime:
+This allows you to both respond to Slack RTM events and programmatically control
+your bot from external events.
 
 ```elixir
-{:ok, rtm} = SlackRtm.start_link("token")
+{:ok, rtm} = Slack.Bot.start_link(SlackRtm, [], "token")
 send rtm, {:message, "External message", "#general"}
 #=> {:message, "External message", "#general"}
 #==> Sending your message, captain!

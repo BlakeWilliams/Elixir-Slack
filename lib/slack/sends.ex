@@ -66,8 +66,8 @@ defmodule Slack.Sends do
   @doc """
   Sends raw JSON to a given socket.
   """
-  def send_raw(json, %{socket: socket, client: client}) do
-    client.send({:text, json}, socket)
+  def send_raw(json, %{process: pid, client: client}) do
+    client.cast(pid, {:text, json})
   end
 
   defp open_im_channel(token, user_id, on_success, on_error) do

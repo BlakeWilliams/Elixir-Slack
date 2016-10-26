@@ -11,22 +11,31 @@ defmodule Slack.Bot do
   @doc """
   Connects to Slack and delegates events to `bot_handler`.
 
+  ## Options
+
+  * `keepalive` - How long to wait for the connection to respond before the client kills the connection.
+
   ## Example
 
   Slack.Bot.start_link(MyBot, [1,2,3], "abc-123")
   """
-  def start_link(bot_handler, initial_state, token, client \\ :websocket_client) do
+  def start_link(bot_handler, initial_state, token, options \\ %{}) do
+    options = Map.merge(%{
+      client: :websocket_client,
+      keepalive: 10_000,
+    }, options)
+
     case Slack.Rtm.start(token) do
       {:ok, rtm} ->
         state = %{
           bot_handler: bot_handler,
           rtm: rtm,
-          client: client,
+          client: options.client,
           token: token,
           initial_state: initial_state
         }
         url = String.to_char_list(rtm.url)
-        client.start_link(url, __MODULE__, state, [keepalive: 10_000])
+        options.client.start_link(url, __MODULE__, state, [keepalive: options.keepalive])
       {:error, %HTTPoison.Error{reason: :connect_timeout}} ->
         {:error, "Timed out while connecting to the Slack RTM API"}
       {:error, %HTTPoison.Error{reason: :nxdomain}} ->

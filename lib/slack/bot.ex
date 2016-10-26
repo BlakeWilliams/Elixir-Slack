@@ -23,6 +23,7 @@ defmodule Slack.Bot do
     options = Map.merge(%{
       client: :websocket_client,
       keepalive: 10_000,
+      name: nil
     }, options)
 
     case Slack.Rtm.start(token) do
@@ -34,8 +35,7 @@ defmodule Slack.Bot do
           token: token,
           initial_state: initial_state
         }
-        url = String.to_char_list(rtm.url)
-        options.client.start_link(url, __MODULE__, state, [keepalive: options.keepalive])
+        start_link_client(state, options)
       {:error, %HTTPoison.Error{reason: :connect_timeout}} ->
         {:error, "Timed out while connecting to the Slack RTM API"}
       {:error, %HTTPoison.Error{reason: :nxdomain}} ->
@@ -127,7 +127,21 @@ defmodule Slack.Bot do
 
     {:ok, %{state | slack: updated_slack, process_state: new_process_state}}
   end
+
   def websocket_handle(_, _conn, state), do: {:ok, state}
+
+  defp start_link_client(state, options) do
+    url = String.to_char_list(state.rtm.url)
+
+    {:ok, pid} = options.client.start_link(url, __MODULE__, state, [keepalive: options.keepalive])
+    cond do
+      options.name != nil ->
+        Process.register(pid, options.name)
+        {:ok, pid}
+      true ->
+        {:ok, pid}
+    end
+  end
 
   defp rtm_list_to_map(list) do
     Enum.reduce(list, %{}, fn (item, map) ->

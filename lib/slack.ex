@@ -16,14 +16,14 @@ defmodule Slack do
   defmodule Bot do
     use Slack
 
-    def handle_message(message = %{type: "message"}, slack, state) do
+    def handle_event(message = %{type: "message"}, slack, state) do
       if message.text == "Hi" do
         send_message("Hello to you too!", message.channel, slack)
       end
 
       {:ok, state}
     end
-    def handle_message(_, _, state), do: {:ok, state}
+    def handle_event(_, _, state), do: {:ok, state}
   end
 
   Slack.Bot.start_link(Bot, [], "API_TOKEN")
@@ -39,12 +39,12 @@ defmodule Slack do
   The message type is pattern matched against because the
   [Slack RTM API](https://api.slack.com/rtm) defines many different types of
   messages that we can receive. Because of this it's wise to write a catch-all
-  `handle_message/3` in your bots to prevent crashing.
+  `handle_event/3` in your bots to prevent crashing.
 
   ## Callbacks
 
   * `handle_connect(slack, state)` - called when connected to Slack.
-  * `handle_message(message, slack, state)` - called when a message is received.
+  * `handle_event(message, slack, state)` - called when a message is received.
   * `handle_close(reason, slack, state)` - called when websocket is closed before process is terminated.
   * `handle_info(message, slack, state)` - called when any other message is received in the process mailbox.
 
@@ -80,11 +80,11 @@ defmodule Slack do
 
 
       def handle_connect(_slack, state), do: {:ok, state}
-      def handle_message(_message, _slack, state), do: {:ok, state}
+      def handle_event(_message, _slack, state), do: {:ok, state}
       def handle_close(_reason, _slack, state), do: :close
       def handle_info(_message, _slack, state), do: {:ok, state}
 
-      defoverridable [handle_connect: 2, handle_message: 3, handle_close: 3, handle_info: 3]
+      defoverridable [handle_connect: 2, handle_event: 3, handle_close: 3, handle_info: 3]
     end
   end
 end

@@ -41,11 +41,11 @@ defmodule SlackRtm do
     {:ok, state}
   end
 
-  def handle_message(message = %{type: "message"}, slack, state) do
+  def handle_event(message = %{type: "message"}, slack, state) do
     send_message("I got a message!", message.channel, slack)
     {:ok, state}
   end
-  def handle_message(_, _, state), do: {:ok, state}
+  def handle_event(_, _, state), do: {:ok, state}
 
   def handle_info({:message, text, channel}, slack, state) do
     IO.puts "Sending your message, captain!"

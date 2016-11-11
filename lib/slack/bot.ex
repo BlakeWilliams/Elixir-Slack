@@ -95,18 +95,14 @@ defmodule Slack.Bot do
 
   @doc false
   def websocket_info(message, _connection, %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state) do
-    new_process_state = if Map.has_key?(message, :type) do
-      try do
-        {:ok, new_process_state} = bot_handler.handle_info(message, slack, process_state)
-        new_process_state
-      rescue
-        e -> handle_exception(e)
-      end
-    else
-      process_state
+    try do
+      {:ok, new_process_state} = bot_handler.handle_info(message, slack, process_state)
+      {:ok, %{state | process_state: new_process_state}}
+    rescue
+      e ->
+        handle_exception(e)
+        {:ok, state}
     end
-
-    {:ok, %{state | process_state: new_process_state}}
   end
 
   @doc false

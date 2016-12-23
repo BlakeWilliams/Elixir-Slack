@@ -27,7 +27,7 @@ defmodule Slack.Lookups do
   end
 
   @doc ~S"""
-  Turns a string like `"@CHANNEL_NAME"` into the ID that Slack understands
+  Turns a string like `"#CHANNEL_NAME"` into the ID that Slack understands
   (`"C…"`).
   """
   def lookup_channel_id("#" <> channel_name, slack) do

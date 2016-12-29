@@ -44,9 +44,21 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
         |> Keyword.merge(required_params)
         |> Keyword.put_new(:token, Application.get_env(:slack, :api_token))
 
+        # workaround for file uploads
+        post_params = if unquote(function_name) == :upload do
+          file = unquote(arguments) |> List.first
+          params = Enum.map(params, fn({key, value}) ->
+            {"", to_string(value), {"form-data", [{"name", key}]}, []}
+          end)
+
+          {:multipart, params ++ [{:file, file, []}]}
+        else
+          {:form, params}
+        end
+
         %{body: body} = HTTPoison.post!(
           "https://slack.com/api/#{unquote(doc.endpoint)}",
-          {:form, params}
+          post_params
         )
 
         JSX.decode!(body)

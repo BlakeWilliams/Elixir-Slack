@@ -110,26 +110,24 @@ defmodule Slack.Bot do
 
   @doc false
   def websocket_handle({:text, message}, _conn, %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state) do
-    message = prepare_message message
+    case prepare_message message do
+      message = %{type: _} ->
+        updated_slack = Slack.State.update(message, slack)
 
-    updated_slack = if Map.has_key?(message, :type) do
-      Slack.State.update(message, slack)
-    else
-      slack
+        new_process_state = try do
+            {:ok, new_process_state} = bot_handler.handle_event(message, slack, process_state)
+            new_process_state
+          rescue
+            e -> handle_exception(e)
+          end
+
+        {:ok, %{state | slack: updated_slack, process_state: new_process_state}}
+
+      confirmation = %{reply_to: _} ->
+        {:ok, state}  = bot_handler.handle_confirmation(confirmation, slack, state)
+
+      _ -> {:ok, %{state | slack: slack, process_state: process_state}}
     end
-
-    new_process_state = if Map.has_key?(message, :type) do
-      try do
-        {:ok, new_process_state} = bot_handler.handle_event(message, slack, process_state)
-        new_process_state
-      rescue
-        e -> handle_exception(e)
-      end
-    else
-      process_state
-    end
-
-    {:ok, %{state | slack: updated_slack, process_state: new_process_state}}
   end
 
   def websocket_handle(_, _conn, state), do: {:ok, state}

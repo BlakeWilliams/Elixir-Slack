@@ -57,4 +57,8 @@ defmodule Slack.SendsTest do
     result = Sends.send_ping([foo: :bar], %{process: nil, client: FakeWebsocketClient})
     assert result == {nil, ~s/{"foo":"bar","type":"ping"}/}
   end
+
+  test "handle_confirmation returns state by default" do
+    assert Bot.handle_confirmation(nil, nil, 1) == {:ok, 1}
+  end
 end

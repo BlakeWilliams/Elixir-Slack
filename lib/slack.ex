@@ -45,8 +45,11 @@ defmodule Slack do
 
   * `handle_connect(slack, state)` - called when connected to Slack.
   * `handle_event(message, slack, state)` - called when a message is received.
-  * `handle_close(reason, slack, state)` - called when websocket is closed before process is terminated.
-  * `handle_info(message, slack, state)` - called when any other message is received in the process mailbox.
+  * `handle_confirmation(confirmation, slack, state)` - called when a message
+     sent with an id has been confirmed as sent by Slack.
+  * `handle_close(reason, slack, state)` - called when websocket is closed.
+  * `handle_info(message, slack, state)` - called when any other message
+     is received in the process mailbox.
 
   ## Slack argument
 
@@ -81,10 +84,11 @@ defmodule Slack do
 
       def handle_connect(_slack, state), do: {:ok, state}
       def handle_event(_message, _slack, state), do: {:ok, state}
+      def handle_confirmation(_confirmation, _slack, state), do: {:ok, state}
       def handle_close(_reason, _slack, state), do: :close
       def handle_info(_message, _slack, state), do: {:ok, state}
 
-      defoverridable [handle_connect: 2, handle_event: 3, handle_close: 3, handle_info: 3]
+      defoverridable [handle_connect: 2, handle_event: 3, handle_confirmation: 3, handle_close: 3, handle_info: 3]
     end
   end
 end

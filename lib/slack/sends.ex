@@ -5,36 +5,55 @@ defmodule Slack.Sends do
   Sends `text` to `channel` for the given `slack` connection.  `channel` can be
   a string in the format of `"#CHANNEL_NAME"`, `"@USER_NAME"`, or any ID that
   Slack understands.
+
+  Can optionally provide an `id` to receive a message confirmation in the
+  handle_confirmation callback once Slack has successfully posted your message.
   """
-  def send_message(text, channel = "#" <> channel_name, slack) do
+  def send_message(text, receiver, id \\ nil, slack)
+
+  def send_message(text, channel = "#" <> channel_name, id, slack) do
     channel_id = Lookups.lookup_channel_id(channel, slack)
 
     if channel_id do
-      send_message(text, channel_id, slack)
+      send_message(text, channel_id, id, slack)
     else
       raise ArgumentError, "channel ##{channel_name} not found"
     end
   end
-  def send_message(text, user = "@" <> _user_name, slack) do
+
+  def send_message(text, user = "@" <> _user_name, id, slack) do
     direct_message_id = Lookups.lookup_direct_message_id(user, slack)
 
     if direct_message_id do
-      send_message(text, direct_message_id, slack)
+      send_message(text, direct_message_id, id, slack)
     else
       open_im_channel(
         slack.token,
         Lookups.lookup_user_id(user, slack),
-        fn id -> send_message(text, id, slack) end,
+        fn user_id -> send_message(text, user_id, id, slack) end,
         fn _reason -> :delivery_failed end
       )
     end
   end
-  def send_message(text, channel, slack) do
-    %{
+
+  def send_message(text, channel, nil, slack) do
+    send_message %{
       type: "message",
       text: text,
       channel: channel
-    }
+    }, slack
+  end
+  def send_message(text, channel, id, slack) do
+    send_message %{
+      id: id,
+      type: "message",
+      text: text,
+      channel: channel
+    }, slack
+  end
+
+  def send_message(message, slack) do
+    message
       |> JSX.encode!
       |> send_raw(slack)
   end

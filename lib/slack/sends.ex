@@ -21,6 +21,7 @@ defmodule Slack.Sends do
     end
   end
 
+
   def send_message(text, user = "@" <> _user_name, id, slack) do
     direct_message_id = Lookups.lookup_direct_message_id(user, slack)
 

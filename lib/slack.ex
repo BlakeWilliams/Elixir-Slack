@@ -81,7 +81,6 @@ defmodule Slack do
       import Slack.Lookups
       import Slack.Sends
 
-
       def handle_connect(_slack, state), do: {:ok, state}
       def handle_event(_message, _slack, state), do: {:ok, state}
       def handle_confirmation(_confirmation, _slack, state), do: {:ok, state}

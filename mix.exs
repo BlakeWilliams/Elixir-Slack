@@ -6,8 +6,8 @@ defmodule Slack.Mixfile do
      version: "0.9.2",
      elixir: "~> 1.2",
      name: "Slack",
-     deps: deps,
-     docs: docs,
+     deps: deps(),
+     docs: docs(),
      source_url: "https://github.com/BlakeWilliams/Elixir-Slack",
      description: "A Slack Real Time Messaging API client.",
      package: package]

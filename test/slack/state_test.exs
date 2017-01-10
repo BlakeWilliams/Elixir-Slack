@@ -5,7 +5,7 @@ defmodule Slack.StateTest do
   test "channel_joined sets is_member to true" do
     new_slack = State.update(
       %{type: "channel_joined", channel: %{id: "123", members: ["123456", "654321"]}},
-      slack
+      slack()
     )
 
     assert new_slack.channels["123"].is_member == true

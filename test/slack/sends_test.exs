@@ -55,6 +55,6 @@ defmodule Slack.SendsTest do
 
   test "send_ping with data sends ping + data to client" do
     result = Sends.send_ping([foo: :bar], %{process: nil, client: FakeWebsocketClient})
-    assert result == {nil, ~s/{"foo":"bar","type":"ping"}/}
+    assert result == {nil, ~s/{"type":"ping","foo":"bar"}/}
   end
 end

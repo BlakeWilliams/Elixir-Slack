@@ -5,7 +5,7 @@ defmodule Mix.Tasks.UpdateSlackApi do
   def run(_) do
     try do
       System.cmd("git", ["clone", "https://github.com/slackhq/slack-api-docs", "#{@dir}/slack-api-docs"])
-      files
+      files()
       |> filter_json
       |> copy_files
     after

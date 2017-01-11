@@ -10,7 +10,7 @@ defmodule Slack.Mixfile do
      docs: docs(),
      source_url: "https://github.com/BlakeWilliams/Elixir-Slack",
      description: "A Slack Real Time Messaging API client.",
-     package: package]
+     package: package()]
   end
 
   def application do

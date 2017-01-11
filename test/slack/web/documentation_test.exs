@@ -2,10 +2,10 @@ defmodule Slack.Web.DocumentationTest do
   use ExUnit.Case
   alias Slack.Web.Documentation
 
-  test "it returns a proper keyword list" do
-    doc = %Documentation{required_params: [:channel, :text]}
+  test "that Documentation.arguments_with_values/1 returns a proper keyword list" do
+    doc = %Documentation{required_params: [:channel]}
 
     argument_value_keyword_list = Documentation.arguments_with_values(doc)
-    assert argument_value_keyword_list === [text: {:text, [], nil}, channel: {:channel, [], nil}]
+    assert [channel: {:channel, [], nil}] == argument_value_keyword_list
   end
 end

@@ -29,7 +29,7 @@ defmodule Slack.Web.Documentation do
     documentation
     |> arguments
     |> Enum.reduce([], fn(var = {arg, _, _}, acc) ->
-      [{arg, var} | acc]
+      [{String.to_atom(to_string(arg)), var} | acc]
     end)
   end
 

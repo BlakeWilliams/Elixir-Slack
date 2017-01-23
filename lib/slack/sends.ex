@@ -54,9 +54,11 @@ defmodule Slack.Sends do
   @doc """
   Notifies slack that the current `slack` user is typing in `channel`.
   """
-  def send_ping(data \\ [], slack) do
-    [type: "ping"]
-      |> Keyword.merge(data)
+  def send_ping(data \\ %{}, slack) do
+    %{
+      type: "ping"
+    }
+      |> Map.merge(Map.new(data))
       |> JSX.encode!
       |> send_raw(slack)
   end

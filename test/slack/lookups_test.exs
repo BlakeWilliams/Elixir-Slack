@@ -27,6 +27,22 @@ defmodule Slack.LookupsTest do
     assert Lookups.lookup_channel_id("#channel", slack) == "C456"
   end
 
+  test "turns private #channel into a group identifier" do
+    slack = %{
+              channels: %{},
+              groups:   %{"G456" => %{name: "private", id: "G456"}}
+             }
+    assert Lookups.lookup_channel_id("#private", slack) == "G456"
+  end
+
+  test "turns unknown #channel into nil" do
+    slack = %{
+              channels: %{},
+              groups:   %{}
+             }
+    assert Lookups.lookup_channel_id("#unknown", slack) == nil
+  end
+
   test "turns a user identifier into @user" do
     slack = %{users: %{"U123" => %{name: "user", id: "U123"}}}
     assert Lookups.lookup_user_name("U123", slack) == "@user"
@@ -43,5 +59,13 @@ defmodule Slack.LookupsTest do
   test "turns a channel identifier into #channel" do
     slack = %{channels: %{"C456" => %{name: "channel", id: "C456"}}}
     assert Lookups.lookup_channel_name("C456", slack) == "#channel"
+  end
+
+  test "turns a private channel identifier into #channel" do
+    slack = %{
+              channels: %{},
+              groups:   %{"G456" => %{name: "channel", id: "G456"}}
+             }
+    assert Lookups.lookup_channel_name("G456", slack) == "#channel"
   end
 end

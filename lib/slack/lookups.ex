@@ -33,8 +33,8 @@ defmodule Slack.Lookups do
   """
   def lookup_channel_id("#" <> channel_name, slack) do
     channel = find_channel_by_name(slack.channels, channel_name)
-              || find_channel_by_name(slack.groups, channel_name)
-              || %{}
+      || find_channel_by_name(slack.groups, channel_name)
+      || %{}
     Map.get(channel, :id)
   end
 

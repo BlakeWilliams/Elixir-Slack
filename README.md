@@ -121,4 +121,13 @@ names = Slack.Web.Users.list(%{token: "TOKEN_HERE"})
 end)
 ```
 
+## Testing
+
+For integration tests, you can change the default Slack URL to your fake Slack
+server:
+
+```elixir
+config :slack, url: "http://localhost:8000"
+```
+
 [documentation]: http://hexdocs.pm/slack/

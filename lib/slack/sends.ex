@@ -71,8 +71,10 @@ defmodule Slack.Sends do
   end
 
   defp open_im_channel(token, user_id, on_success, on_error) do
+    url = Application.get_env(:slack, :url, "https://slack.com")
+
     im_open = HTTPoison.post(
-      "https://slack.com/api/im.open",
+      url <> "/api/im.open",
       {:form, [token: token, user: user_id]}
     )
     case im_open do

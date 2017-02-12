@@ -39,13 +39,15 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
       def unquote(function_name)(unquote_splicing(arguments), optional_params \\ %{}) do
         required_params = unquote(argument_value_keyword_list)
 
+        url = Application.get_env(:slack, :url, "https://slack.com")
+
         params = optional_params
         |> Map.to_list
         |> Keyword.merge(required_params)
         |> Keyword.put_new(:token, Application.get_env(:slack, :api_token))
 
         %{body: body} = HTTPoison.post!(
-          "https://slack.com/api/#{unquote(doc.endpoint)}",
+          "#{url}/api/#{unquote(doc.endpoint)}",
           params(unquote(function_name), params, unquote(arguments))
         )
 

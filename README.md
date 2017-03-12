@@ -23,7 +23,7 @@ def application do
 end
 
 def deps do
-  [{:slack, "~> 0.10.0"}]
+  [{:slack, "~> 0.11.0"}]
 end
 ```
 

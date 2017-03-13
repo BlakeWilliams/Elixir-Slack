@@ -16,20 +16,16 @@ defmodule Slack.Rtm do
   end
 
   defp handle_response({:ok, %HTTPoison.Response{body: body}}) do
-    with {:ok, json} <- JSX.decode(body, [{:labels, :atom}]),
-      %{ok: true} = json do
-        {:ok, json}
-    else
+    case JSX.decode(body, [{:labels, :atom}]) do
+      {:ok, %{ok: true} = json} -> {:ok, json}
+      {:ok, %{error: reason}} -> {:error, "Slack API returned an error `#{reason}.\n Response: #{body}"}
       {:error, reason} -> {:error, %JSX.DecodeError{reason: reason, string: body}}
-      %{error: reason} -> {:error, "Slack API returned an error `#{reason}.\n Response: #{body}"}
       _ -> {:error, "Invalid RTM response"}
     end
   end
-
-  defp handle_response({:error, _reason} = error), do: error
+  defp handle_response(error), do: error
 
   defp slack_url(token) do
     Application.get_env(:slack, :url, "https://slack.com") <> "/api/rtm.start?token=#{token}"
   end
-
 end

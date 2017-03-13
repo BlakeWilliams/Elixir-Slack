@@ -21,6 +21,7 @@ defmodule Slack.Rtm do
         {:ok, json}
     else
       {:error, reason} -> {:error, %JSX.DecodeError{reason: reason, string: body}}
+      %{error: reason} -> {:error, "Slack API returned an error `#{reason}.\n Response: #{body}"}
       _ -> {:error, "Invalid RTM response"}
     end
   end

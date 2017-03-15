@@ -8,8 +8,9 @@ defmodule Slack.Web do
 
   defp format_documentation(files) do
     Enum.reduce(files, %{}, fn(file, module_names) ->
-      json = File.read!("#{__DIR__}/docs/#{file}")
-      |> JSX.decode!
+      json =
+        File.read!("#{__DIR__}/docs/#{file}")
+        |> Poison.decode!()
 
       doc = Slack.Web.Documentation.new(json, file)
 
@@ -51,7 +52,7 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
           params(unquote(function_name), params, unquote(arguments))
         )
 
-        JSX.decode!(body)
+        Poison.decode!(body)
       end
 
       defp params(:upload, params, arguments) do

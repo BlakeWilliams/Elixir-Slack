@@ -48,7 +48,7 @@ defmodule Slack.Bot do
         {:error, "Timed out while connecting to the Slack RTM API"}
       {:error, %HTTPoison.Error{reason: :nxdomain}} ->
         {:error, "Could not connect to the Slack RTM API"}
-      {:error, %JSX.DecodeError{string: "You are sending too many requests. Please relax."}} ->
+      {:error, %Poison.DecodeError{string: "You are sending too many requests. Please relax."}} ->
         {:error, "Sent too many connection requests at once to the Slack RTM API."}
       {:error, error} ->
         {:error, error}
@@ -144,7 +144,7 @@ defmodule Slack.Bot do
     binstring
       |> :binary.split(<<0>>)
       |> List.first
-      |> JSX.decode!([{:labels, :atom}])
+      |> Poison.Parser.parse!(keys: :atoms)
   end
 
   defp handle_exception(e) do

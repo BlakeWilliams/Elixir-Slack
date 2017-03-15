@@ -22,7 +22,9 @@ defmodule Slack.Mixfile do
      {:exjsx, "~> 3.2.0"},
      {:websocket_client, "~> 1.1.0"},
      {:earmark, "~> 0.2.0", only: :dev},
-     {:ex_doc, "~> 0.12", only: :dev}]
+     {:ex_doc, "~> 0.12", only: :dev},
+     {:credo, "~> 0.5", only: [:dev, :test]}
+   ]
   end
 
   def docs do

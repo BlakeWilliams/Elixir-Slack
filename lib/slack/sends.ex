@@ -1,4 +1,5 @@
 defmodule Slack.Sends do
+  @moduledoc "Utility functions for sending slack messages"
   alias Slack.Lookups
 
   @doc """

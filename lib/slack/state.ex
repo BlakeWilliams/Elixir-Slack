@@ -1,4 +1,5 @@
 defmodule Slack.State do
+  @moduledoc "Slack state"
   @behaviour Access
 
   def fetch(client, key)

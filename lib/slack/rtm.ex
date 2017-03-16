@@ -16,7 +16,7 @@ defmodule Slack.Rtm do
   end
 
   defp handle_response({:ok, %HTTPoison.Response{body: body}}) do
-    case Poison.decode(body, keys: :atoms) do
+    case Poison.Parser.parse(body, keys: :atoms) do
       {:ok, %{ok: true} = json} -> {:ok, json}
       {:ok, %{error: reason}} -> {:error, "Slack API returned an error `#{reason}.\n Response: #{body}"}
       {:error, reason} -> {:error, %Poison.DecodeError{reason: reason, string: body}}

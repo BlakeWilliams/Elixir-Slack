@@ -1,11 +1,13 @@
 defmodule Slack.Lookups do
+  @moduledoc "Utility functions for looking up slack state informatin"
+
   @doc ~S"""
   Turns a string like `"@USER_NAME"` into the ID that Slack understands (`"U…"`).
   """
   def lookup_user_id("@" <> user_name, slack) do
     slack.users
     |> Map.values
-    |> Enum.find(%{ }, fn user -> user.name == user_name end)
+    |> Enum.find(%{}, fn user -> user.name == user_name end)
     |> Map.get(:id)
   end
 
@@ -22,7 +24,7 @@ defmodule Slack.Lookups do
   def lookup_direct_message_id(user_id, slack) do
     slack.ims
     |> Map.values
-    |> Enum.find(%{ }, fn direct_message -> direct_message.user == user_id end)
+    |> Enum.find(%{}, fn direct_message -> direct_message.user == user_id end)
     |> Map.get(:id)
   end
 

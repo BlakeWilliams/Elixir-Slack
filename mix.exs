@@ -14,13 +14,13 @@ defmodule Slack.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :httpoison, :hackney, :exjsx, :crypto, :websocket_client]]
+    [applications: [:logger, :httpoison, :hackney, :crypto, :websocket_client]]
   end
 
   defp deps do
     [{:httpoison, "~> 0.11"},
-     {:exjsx, "~> 3.2.0"},
      {:websocket_client, "~> 1.1.0"},
+     {:poison, "~> 3.0"},
      {:earmark, "~> 0.2.0", only: :dev},
      {:ex_doc, "~> 0.12", only: :dev},
      {:credo, "~> 0.5", only: [:dev, :test]}

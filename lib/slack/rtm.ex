@@ -1,8 +1,8 @@
-defmodule JSX.DecodeError do
+defmodule Poison.DecodeError do
   defexception [:reason, :string]
 
-  def message(%JSX.DecodeError{reason: reason, string: string}) do
-    "JSX could not decode string for reason: `:#{reason}`, string given:\n#{string}"
+  def message(%Poison.DecodeError{reason: reason, string: string}) do
+    "Poison could not decode string for reason: `:#{reason}`, string given:\n#{string}"
   end
 end
 
@@ -16,10 +16,10 @@ defmodule Slack.Rtm do
   end
 
   defp handle_response({:ok, %HTTPoison.Response{body: body}}) do
-    case JSX.decode(body, [{:labels, :atom}]) do
+    case Poison.Parser.parse(body, keys: :atoms) do
       {:ok, %{ok: true} = json} -> {:ok, json}
       {:ok, %{error: reason}} -> {:error, "Slack API returned an error `#{reason}.\n Response: #{body}"}
-      {:error, reason} -> {:error, %JSX.DecodeError{reason: reason, string: body}}
+      {:error, reason} -> {:error, %Poison.DecodeError{reason: reason, string: body}}
       _ -> {:error, "Invalid RTM response"}
     end
   end

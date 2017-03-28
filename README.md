@@ -1,5 +1,6 @@
 [![Build
 Status](https://api.travis-ci.org/BlakeWilliams/Elixir-Slack.svg?branch=master)](https://travis-ci.org/BlakeWilliams/Elixir-Slack)
+[![Deps Status](https://beta.hexfaktor.org/badge/all/github/BlakeWilliams/Elixir-Slack.svg)](https://beta.hexfaktor.org/github/BlakeWilliams/Elixir-Slack)
 
 # Elixir-Slack
 

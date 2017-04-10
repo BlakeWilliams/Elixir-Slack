@@ -54,16 +54,16 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
 
         Poison.Parser.parse!(body)
       end
-
-      defp params(:upload, params, arguments) do
-        file = arguments |> List.first
-        params = Enum.map(params, fn({key, value}) ->
-          {"", to_string(value), {"form-data", [{"name", key}]}, []}
-        end)
-
-        {:multipart, params ++ [{:file, file, []}]}
-      end
-      defp params(_, params, _), do: {:form, params}
     end)
+
+    defp params(:upload, params, arguments) do
+      file = arguments |> List.first
+      params = Enum.map(params, fn({key, value}) ->
+        {"", to_string(value), {"form-data", [{"name", key}]}, []}
+      end)
+
+      {:multipart, params ++ [{:file, file, []}]}
+    end
+    defp params(_, params, _), do: {:form, params}
   end
 end)

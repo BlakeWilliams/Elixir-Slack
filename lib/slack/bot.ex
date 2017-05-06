@@ -26,7 +26,8 @@ defmodule Slack.Bot do
       name: nil
     }, options)
 
-    case Slack.Rtm.start(token) do
+    rtm_module = Application.get_env(:slack, :rtm_module, Slack.Rtm)
+    case rtm_module.start(token) do
       {:ok, rtm} ->
         state = %{
           bot_handler: bot_handler,

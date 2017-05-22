@@ -1,0 +1,44 @@
+{
+	"desc": "Use this method to set a user's profile information, including name, email, current status, and other attributes.",
+
+	"args": {
+		"user": {
+			"required"	: false,
+			"example"   : "U1234567890",
+			"desc"		  : "ID of user to change. This argument may only be specified by team admins on paid teams."
+		},
+    "profile": {
+      "required"  : false,
+      "type"      : "map",
+      "example"   : "{ first_name: \"John\", ...}",
+      "desc"      : "Collection of key:value pairs presented as a URL-encoded JSON hash."
+		},
+    "name": {
+      "required"  : false,
+      "type"      : "string",
+      "example"   : "first_name",
+      "desc"      : "Name of a single key to set. Usable only if profile is not passed."
+		},
+    "value": {
+      "required"  : false,
+      "type"      : "string",
+      "example"   : "John",
+      "desc"      : "Value to set a single key to. Usable only if profile is not passed."
+    }
+	},
+
+	"errors": {
+		"reserved_name": "First or Last name are reserved.",
+		"invalid_profile": "Profile object passed in is not valid JSON (make sure it is URL encoded!).",
+		"profile_set_failed": "Failed to set user profile.",
+		"not_admin": "Only admins can update the profile of another user.",
+		"not_app_admin": "Only team owners and selected members can update the profile of a bot user.",
+		"cannot_update_admin_user": "Only a primary owner can update the profile of an admin.",
+		"not_authed": "No authentication token provided.",
+		"invalid_auth": "Invalid authentication token.",
+		"account_inactive": "Authentication token is for a deleted user or team.",
+		"user_is_bot": "This method cannot be called by a bot user.",
+		"invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of common decency. This includes very long names and names with non-alphanumeric characters other than `_`.",
+		"team_added_to_org": "The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete."
+	}
+}

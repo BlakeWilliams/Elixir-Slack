@@ -38,7 +38,7 @@ defmodule Slack.Bot do
 
         url = String.to_char_list(state.rtm.url)
         {:ok, pid} = options.client.start_link(url, __MODULE__, state, [keepalive: options.keepalive])
-
+        Process.link(pid)
         if options.name != nil do
           Process.register(pid, options.name)
         end

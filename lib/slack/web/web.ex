@@ -46,6 +46,7 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
         |> Map.to_list
         |> Keyword.merge(required_params)
         |> Keyword.put_new(:token, Application.get_env(:slack, :api_token))
+        |> Enum.reject(fn {k, v} -> v == nil end)
 
         %{body: body} = HTTPoison.post!(
           "#{url}/api/#{unquote(doc.endpoint)}",

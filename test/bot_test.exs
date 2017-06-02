@@ -17,12 +17,10 @@ defmodule Slack.BotTest do
   }
 
   test "init formats rtm results properly" do
-    rtm = @rtm
-
     {:reconnect, %{slack: slack, bot_handler: bot_handler}}
       = Slack.Bot.init(%{
           bot_handler: Bot,
-          rtm: rtm,
+          rtm: @rtm,
           client: FakeWebsocketClient,
           token: "ABC",
           initial_state: nil,

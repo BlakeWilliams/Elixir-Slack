@@ -36,20 +36,20 @@ defmodule Slack.BotTest do
     assert slack.ims      == %{"123" => %{id: "123"}}
   end
 
-  defmodule Slack.Rtm.Stub do
+  defmodule Stubs.Slack.Rtm do
     def start(_token) do
       {:ok, %{url: "http://www.example.com"}}
     end
   end
 
-  defmodule Slack.WebsocketClient do
+  defmodule Stubs.Slack.WebsocketClient do
     def start_link(_url, _module, _state, _options) do
       {:ok, self()}
     end
   end
 
   test "can configure the RTM module" do
-    Application.put_env(:slack, :rtm_module, Slack.Rtm.Stub)
-    assert {:ok, _pid} = :"Elixir.Slack.Bot".start_link(Bot, %{}, "token", %{client: Slack.WebsocketClient})
+    Application.put_env(:slack, :rtm_module, Stubs.Slack.Rtm)
+    assert {:ok, _pid} = Slack.Bot.start_link(Bot, %{}, "token", %{client: Stubs.Slack.WebsocketClient})
   end
 end

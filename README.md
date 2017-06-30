@@ -13,13 +13,13 @@ new [bot integration].
 
 ## Installing
 
-Add Slack to your `mix.exs` `application` and `dependencies` functions.
+Add Slack to your `mix.exs` `dependencies` function.
 
 [websocket_client]: https://github.com/jeremyong/websocket_client
 
 ```elixir
 def application do
-  [applications: [:logger, :slack]]
+  [extra_applications: [:logger]]
 end
 
 def deps do

@@ -13,4 +13,4 @@
   "socket": {:git, "git://github.com/meh/elixir-socket.git", "ec03c935565dbe4708d6b594ef57d6de17a93592", []},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.1", "28a4d65b7f59893bc2c7de786dec1e1555bd742d336043fe644ae956c3497fbe", [:make, :rebar], []},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5", "2e73e068cd6393526f9fa6d399353d7c9477d6886ba005f323b592d389fb47be", [:make], []},
-  "websocket_client": {:hex, :websocket_client, "1.1.0", "c1ac9162a2286d3ca747417b1717090e762becba1f9f0bde359cb0318b066636", [:rebar3], []}}
+  "websocket_client": {:hex, :websocket_client, "1.2.4", "14ec1ca4b6d247b44ccd9a80af8f6ca98328070f6c1d52a5cb00bc9d939d63b8", [:rebar3], []}}

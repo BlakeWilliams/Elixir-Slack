@@ -45,7 +45,7 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
         params = optional_params
         |> Map.to_list
         |> Keyword.merge(required_params)
-        |> Keyword.put_new(:token, Application.get_env(:slack, :api_token))
+        |> Keyword.put_new(:token, get_token(optional_params))
         |> Enum.reject(fn {_, v} -> v == nil end)
 
         %{body: body} = HTTPoison.post!(
@@ -56,6 +56,9 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
         Poison.Parser.parse!(body)
       end
     end)
+
+    defp get_token(%{token: token}), do: token
+    defp get_token(_), do: Application.get_env(:slack, :api_token)
 
     defp params(:upload, params, arguments) do
       file = arguments |> List.first

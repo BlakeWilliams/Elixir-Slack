@@ -57,8 +57,8 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
       end
     end)
 
-    def get_token(%{token: token}), do: token
-    def get_token(_), do: Application.get_env(:slack, :api_token)
+    defp get_token(%{token: token}) when is_binary(token), do: token
+    defp get_token(_), do: Application.get_env(:slack, :api_token)
 
     defp params(:upload, params, arguments) do
       file = arguments |> List.first

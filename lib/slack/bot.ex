@@ -83,6 +83,10 @@ defmodule Slack.Bot do
   end
 
   @doc false
+  def ondisconnect({:error, :keepalive_timeout}, state) do
+    {:reconnect, state}
+  end
+
   def ondisconnect(reason, %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state) do
     try do
       bot_handler.handle_close(reason, slack, process_state)

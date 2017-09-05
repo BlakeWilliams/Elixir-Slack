@@ -16,6 +16,10 @@ defmodule Slack.Sends do
       raise ArgumentError, "channel ##{channel_name} not found"
     end
   end
+  def send_message(text, user_id = "U" <> _user_id, slack) do
+    user_name = Slack.Lookups.lookup_user_name(user_id, slack)
+    send_message(text, user_name, slack)
+  end
   def send_message(text, user = "@" <> _user_name, slack) do
     direct_message_id = Lookups.lookup_direct_message_id(user, slack)
 

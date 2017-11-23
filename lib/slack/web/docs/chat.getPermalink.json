@@ -1,0 +1,24 @@
+{
+  "desc": "Retrieve a permalink URL for a specific extant message.",
+
+  "args": {
+    "channel": {
+      "type": "channel",
+      "required": true,
+      "desc": "The ID of the conversation or channel containing the message."
+    },
+    "message_ts": {
+      "required": true,
+      "example": "1405894322.002768",
+      "desc": "A message's ts value, uniquely identifying it within a channel."
+    },
+    "token": {
+      "example": "xxxx-xxxxxxxxx-xxxx"
+    }
+  },
+
+  "errors": {
+    "message_not_found": "No message exists with the requested timestamp.",
+    "channel_not_found": "Value passed for `channel` was invalid."
+  }
+}

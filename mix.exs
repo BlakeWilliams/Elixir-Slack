@@ -23,7 +23,8 @@ defmodule Slack.Mixfile do
      {:poison, "~> 3.0"},
      {:earmark, "~> 0.2.0", only: :dev},
      {:ex_doc, "~> 0.12", only: :dev},
-     {:credo, "~> 0.5", only: [:dev, :test]}
+     {:credo, "~> 0.5", only: [:dev, :test]},
+     {:bypass, "~> 0.8", only: :test}
    ]
   end
 

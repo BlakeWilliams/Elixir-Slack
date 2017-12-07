@@ -24,7 +24,8 @@ defmodule Slack.State do
     :channels,
     :groups,
     :users,
-    :ims
+    :ims,
+    :slack_url
   ]
 
   @doc """

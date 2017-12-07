@@ -70,7 +70,8 @@ defmodule Slack.Bot do
       channels: rtm_list_to_map(rtm.channels),
       groups: rtm_list_to_map(rtm.groups),
       users: rtm_list_to_map(rtm.users),
-      ims: rtm_list_to_map(rtm.ims)
+      ims: rtm_list_to_map(rtm.ims),
+      slack_url: figure_web_api_url()
     }
 
     {:reconnect, %{slack: slack, bot_handler: bot_handler, process_state: initial_state}}
@@ -157,5 +158,9 @@ defmodule Slack.Bot do
     Logger.error(message)
     System.stacktrace |> Exception.format_stacktrace |> Logger.error
     raise message
+  end
+
+  defp figure_web_api_url() do
+    Application.get_env(:slack, :url, "https://slack.com")
   end
 end

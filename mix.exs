@@ -10,7 +10,8 @@ defmodule Slack.Mixfile do
      docs: docs(),
      source_url: "https://github.com/BlakeWilliams/Elixir-Slack",
      description: "A Slack Real Time Messaging API client.",
-     package: package()]
+     package: package(),
+     elixirc_paths: elixirc_paths(Mix.env)]
   end
 
   def application do
@@ -39,4 +40,7 @@ defmodule Slack.Mixfile do
         "Github": "https://github.com/BlakeWilliams/Elixir-Slack",
         "Documentation": "http://hexdocs.pm/slack/"}}
   end
+
+  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
+  defp elixirc_paths(_),     do: ["lib", "web"]
 end

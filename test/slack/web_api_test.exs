@@ -17,6 +17,14 @@ defmodule Slack.WebApiTest do
       Slack.WebApi.form_post!(slack(bypass), "test.method", [some: "thing"])
     end
 
+    test "returns parsed response body", %{bypass: bypass} do
+      Bypass.expect bypass, fn conn ->
+        Plug.Conn.resp(conn, 200, ~s<{ "ok": true }>)
+      end
+
+      assert {:ok, %{"ok" => true }} == Slack.WebApi.form_post!(slack(bypass), "test.method", [some: "thing"])
+    end
+
     test "raises exception on non-ok response", %{bypass: bypass} do
       Bypass.expect bypass, fn conn ->
         Plug.Conn.resp(conn, 400, ~s<{ "ok": false }>)

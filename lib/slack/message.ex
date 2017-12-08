@@ -60,7 +60,7 @@ defmodule Slack.Message do
   """
   @spec permalink(Slack.t, __MODULE__.t) :: String.t
   def permalink(slack, message) do
-    {:ok, resp_body} = @web_api.form_post!(
+    resp_body = @web_api.form_post!(
       slack,
       "chat.getPermalink",
       message_ts: message.ts,

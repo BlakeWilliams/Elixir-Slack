@@ -5,12 +5,10 @@ defmodule Slack.FakeWebApi do
     ts = Keyword.fetch!(form_data, :message_ts)
     channel_id = Keyword.fetch!(form_data, :channel)
 
-    {:ok,
-     %{
-       "ok" => true,
-       "channel" => channel_id,
-       "permalink" => ~s<http://example.com/archives/#{channel_id}/#{ts}>
-     }
+    %{
+      "ok" => true,
+      "channel" => channel_id,
+      "permalink" => ~s<http://example.com/archives/#{channel_id}/#{ts}>
     }
   end
 

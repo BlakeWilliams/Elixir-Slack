@@ -22,7 +22,7 @@ defmodule Slack.WebApiTest do
         Plug.Conn.resp(conn, 200, ~s<{ "ok": true }>)
       end
 
-      assert {:ok, %{"ok" => true }} == Slack.WebApi.form_post!(slack(bypass), "test.method", [some: "thing"])
+      assert %{"ok" => true } == Slack.WebApi.form_post!(slack(bypass), "test.method", [some: "thing"])
     end
 
     test "raises exception on non-ok response", %{bypass: bypass} do

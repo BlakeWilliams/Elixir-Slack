@@ -18,7 +18,7 @@ defmodule Slack.WebApi do
   @doc """
   Make a form encoded request to the web API.
   """
-  @spec form_post!(Slack.t, String.t, Keyword.t) :: {:ok, parsed_response_body} | no_return()
+  @spec form_post!(Slack.t, String.t, Keyword.t) :: parsed_response_body | no_return()
   def form_post!(slack, api_method, form_data) do
     url = "#{slack.slack_url}/api/#{api_method}"
 
@@ -27,7 +27,7 @@ defmodule Slack.WebApi do
     parsed = Poison.decode!(body)
 
     if Map.fetch!(parsed, "ok") do
-      {:ok, parsed}
+      parsed
     else
       code = Map.get(parsed, "error", "code_missing")
       raise Slack.WebApi.Error, message: "#{code} failure POSTing to <#{url}> (form data: #{inspect(form_data)})", code: code

@@ -35,6 +35,7 @@ callback methods.
 ```elixir
 defmodule SlackRtm do
   use Slack
+  alias Slack.Message
 
   def handle_connect(slack, state) do
     IO.puts "Connected as #{slack.me.name}"
@@ -42,7 +43,9 @@ defmodule SlackRtm do
   end
 
   def handle_event(message = %{type: "message"}, slack, state) do
-    send_message("I got a message!", message.channel, slack)
+    msg = Message.new_from_event(slack, message)
+
+    send_message("I got a message! #{Message.permalink(slack, msg)}", message.channel, slack)
     {:ok, state}
   end
   def handle_event(_, _, state), do: {:ok, state}

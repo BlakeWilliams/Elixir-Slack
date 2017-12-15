@@ -7,23 +7,18 @@ defmodule Slack.Message do
 
   @web_api Application.get_env(:slack, :web_api, Slack.WebApi)
 
-  @typedoc """
-  Represents a single message in slack.
-  """
-  @opaque t :: %__MODULE__{}
   defstruct [:channel, :sender, :ts, :text]
 
-  @typep msg_event :: %{
-    channel: String.t,
-    user:    String.t,
-    ts:      String.t,
-    text:    String.t
-  }
-
   @doc """
-  Build a new message representation.
+  Returns a new `%Slack.Message{}` representation a message.
+
+  opts - order doesn't matter
+    channel - a `%Slack.Channel{}` representing the channel in which this message
+              is posted
+    sender - a `%Slack.User{}` representing the user who posted this message
+    ts - an opaque id of message as a string
+    text - the message as a string
   """
-  @spec new([channel: Channel.t, sender: User.t, ts: String.t, text: String.t]) :: __MODULE__.t
   def new(opts) do
     try do
       %__MODULE__{
@@ -40,9 +35,11 @@ defmodule Slack.Message do
   end
 
   @doc """
-  Build a new message representation from a parsed `message` event.
+  Returns a new `%Slack.Message{}` representation a message.
+
+  slack - a `%Slack.State{}` that is the current connection information
+  msg_event - a map containing the `message` event to interpret
   """
-  @spec new_from_event(Slack.t, msg_event) :: __MODULE__.t
   def new_from_event(slack, event) do
     channel = Channel.new_from_id(slack, Map.fetch!(event, :channel))
     sender  = User.new_from_id(slack, Map.fetch!(event, :user))
@@ -56,9 +53,11 @@ defmodule Slack.Message do
   end
 
   @doc """
-  Returns a permalink for the message.
+  Returns a permalink, as a string, for the message.
+
+  slack - a `%Slack.State{}` that is the current connection information
+  message - a `%Slack.Message{}` whose permalink you want
   """
-  @spec permalink(Slack.t, __MODULE__.t) :: String.t
   def permalink(slack, message) do
     resp_body = @web_api.form_post!(
       slack,

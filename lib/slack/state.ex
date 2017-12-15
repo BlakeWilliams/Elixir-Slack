@@ -29,9 +29,11 @@ defmodule Slack.State do
   ]
 
   @doc """
-  Pattern matches against messages and returns updated Slack state.
+  Returns an updated `%Slack.State{}` based on the event provided
+
+  event - a slack event as passed to `Slack.Bot`
+  slack - a `%Slack.State{}` that is the current connection information
   """
-  @spec update(Map, Map) :: {Symbol, Map}
   def update(%{type: "channel_created", channel: channel}, slack) do
     put_in(slack, [:channels, channel.id], channel)
   end

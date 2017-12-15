@@ -4,16 +4,15 @@ defmodule Slack.Channel do
   """
   alias Slack.Lookups
 
-  @typedoc """
-  Represents a channel in slack.
-  """
-  @opaque t :: %__MODULE__{}
   defstruct [:id, :name]
 
   @doc """
-  Build a new channel representation.
+  Returns a new `%Slack.Channel{}`.
+
+  opts - order doesn't matter
+    id - opaque id, as a string, of the channel
+    name - human readable name of channel
   """
-  @spec new([id: String.t, name: String.t]) :: __MODULE__.t | no_return()
   def new(opts) do
     try do
       %__MODULE__{
@@ -28,9 +27,11 @@ defmodule Slack.Channel do
   end
 
   @doc """
-  Build new channel representation from a channel id.
+  Returns a new `%Slack.Channel()`.
+
+  slack - a `%Slack.State{}` that is the current connection information
+  channel_id - the opaque id, as a string, of the channel
   """
-  @spec new_from_id(Slack.t, String.t) :: __MODULE__.t | no_return()
   def new_from_id(slack, channel_id) do
     try do
       %__MODULE__{

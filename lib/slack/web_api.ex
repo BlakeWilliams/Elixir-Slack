@@ -3,22 +3,15 @@ defmodule Slack.WebApi do
   Provides access to Slack's Web API.
   """
 
-  @typedoc """
-  Parsed JSON response body from API request.
-  """
-  @type parsed_response_body :: %{
-    required(String.t) => nil
-                          | boolean()
-                          | float()
-                          | String.t
-                          | List.t
-                          | parsed_response_body
-  }
-
   @doc """
-  Make a form encoded request to the web API.
+  Returns a parsed JSON response from the slack web API.
+
+  slack - a `%Slack.State{}` that is the current connection information
+  api_method - the name of the api method to call
+  form_data - a keyword list of the form data to send
+
+  Raises `%Slack.WebApi.Error{}` if the request is unsuccessful.
   """
-  @spec form_post!(Slack.t, String.t, Keyword.t) :: parsed_response_body | no_return()
   def form_post!(slack, api_method, form_data) do
     url = "#{slack.slack_url}/api/#{api_method}"
 

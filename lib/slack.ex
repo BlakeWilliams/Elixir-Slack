@@ -72,22 +72,6 @@ defmodule Slack do
   [Slack API types]: https://api.slack.com/types
   """
 
-  @typedoc"""
-  Represents a user's connection to the Slack APIs.
-
-  * me - The current bot/users information stored as a map of properties.
-  * team - The current team's information stored as a map of properties.
-  * bots - Stored as a map with id's as keys.
-  * channels - Stored as a map with id's as keys.
-  * groups - Stored as a map with id's as keys.
-  * users - Stored as a map with id's as keys.
-  * ims (direct message channels) - Stored as a map with id's as keys.
-  * socket - The connection to Slack.
-  * client - The client that makes calls to
-  """
-  @type t :: %Slack.State{}
-
-
   defmacro __using__(_) do
     quote do
       import Slack

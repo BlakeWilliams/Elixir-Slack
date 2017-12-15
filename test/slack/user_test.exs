@@ -4,11 +4,11 @@ defmodule Slack.UserTest do
 
   describe "new/1" do
     test "returns user struct" do
-      assert user? User.new(id: "C024BE91L", name: "My user")
+      assert %User{} = User.new(id: "C024BE91L", name: "My user")
     end
 
     test "handles different arg orders" do
-      assert User.new(name: "My user", id: "C024BE91L")
+      assert %User{} = User.new(name: "My user", id: "C024BE91L")
     end
 
     test "raises exception on missing options" do
@@ -18,23 +18,22 @@ defmodule Slack.UserTest do
 
   describe "new_from_id/2" do
     test "looks user up" do
-      assert user?(User.new_from_id(slack(), "Umyuserid"))
+      assert {:ok, %User{}} = User.new_from_id(slack(), "Umyuserid")
     end
 
     test "looks bots up" do
-      assert user?(User.new_from_id(slack(), "Bmybotid"))
+      assert {:ok, %User{}} = User.new_from_id(slack(), "Bmybotid")
     end
 
     test "raises argument error for invalid user ids" do
-      assert_raise ArgumentError, fn -> User.new_from_id(slack(), "Ubogusid") end
+      assert {:error, ""<>_} = User.new_from_id(slack(), "Ubogusid")
     end
 
   end
 
-  # Background & support
-  # ----
+  ### Background & support
 
-  def slack() do
+  defp slack() do
     %Slack.State{
       users: %{
         "Umyuserid" => %{name: "My user"},
@@ -44,9 +43,5 @@ defmodule Slack.UserTest do
       }
 
     }
-  end
-
-  def user?(thing) do
-    User = thing.__struct__
   end
 end

@@ -1,7 +1,7 @@
 
 defmodule Slack.MessageTest do
   use ExUnit.Case
-  alias Slack.{Message,Channel,FakeWebApi}
+  alias Slack.{Message, Channel, FakeWebApi}
 
   setup do
     FakeWebApi.start_link
@@ -11,11 +11,11 @@ defmodule Slack.MessageTest do
 
   describe "new/1" do
     test "returns message struct" do
-      assert Message == Message.new(channel: channel(), sender: user(), ts: "1355517523.000005", text: "My message").__struct__
+      assert %Message{} = Message.new(channel: channel(), sender: user(), ts: "1355517523.000005", text: "My message")
     end
 
     test "handles different arg orders" do
-      assert Message.new(text: "My message", channel: channel(), ts: "1355517523.000005", sender: user())
+      assert %Message{} = Message.new(text: "My message", channel: channel(), ts: "1355517523.000005", sender: user())
     end
 
     test "raises exception on missing options" do
@@ -33,15 +33,15 @@ defmodule Slack.MessageTest do
         text: "My message"
       }
 
-      assert message? Message.new_from_event(slack(), message_event)
+      assert {:ok, %Message{}} = Message.new_from_event(slack(), message_event)
     end
   end
 
   describe "permalink/2" do
-    test "returns url" do
+    test "returns {ok, url}" do
       msg = Message.new(channel: channel(), sender: user(), ts: "1355517523.000005", text: "My message")
 
-      assert "http://example.com/archives/Ctestchannel/1355517523.000005" ==
+      assert {:ok, "http://example.com/archives/Ctestchannel/1355517523.000005"} ==
         Message.permalink(slack(), msg)
     end
 
@@ -49,21 +49,21 @@ defmodule Slack.MessageTest do
       msg = Message.new(channel: channel(), sender: user(), ts: "1355517523.000005", text: "My message")
       Message.permalink(slack(), msg)
 
-      assert api_method_called("chat.getPermalink")
+      assert called_api_method?("chat.getPermalink")
     end
 
     test "passes message timestamp argument" do
       msg = Message.new(channel: channel(), sender: user(), ts: "1355517523.000005", text: "My message")
       Message.permalink(slack(), msg)
 
-      assert passed_api_argument(:message_ts, "1355517523.000005")
+      assert passed_api_argument?(:message_ts, "1355517523.000005")
     end
 
     test "passes channel argument" do
       msg = Message.new(channel: channel(), sender: user(), ts: "1355517523.000005", text: "My message")
       Message.permalink(slack(), msg)
 
-      assert passed_api_argument(:channel, "Ctestchannel")
+      assert passed_api_argument?(:channel, "Ctestchannel")
     end
 
   end
@@ -90,18 +90,14 @@ defmodule Slack.MessageTest do
     }
   end
 
-  defp message?(thing) do
-    Message == thing.__struct__
-  end
-
-  defp api_method_called(api_method) do
+  defp called_api_method?(api_method) do
     api_method ==
       FakeWebApi.calls
       |> Enum.at(0)
       |> Map.fetch!(:api_method)
   end
 
-  def passed_api_argument(name, value) do
+  def passed_api_argument?(name, value) do
     FakeWebApi.calls
     |> Enum.at(0)
     |> Map.fetch!(:form_data)

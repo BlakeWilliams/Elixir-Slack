@@ -4,31 +4,30 @@ defmodule Slack.WebApi do
   """
 
   @doc """
-  Returns a parsed JSON response from the slack web API.
+
+  Returns a `{:ok, %{}}` or `{:error, ""<>_}`. The second element of
+  the ok tuple is the parsed JSON response from the slack web API.
 
   slack - a `%Slack.State{}` that is the current connection information
   api_method - the name of the api method to call
   form_data - a keyword list of the form data to send
-
-  Raises `%Slack.WebApi.Error{}` if the request is unsuccessful.
   """
-  def form_post!(slack, api_method, form_data) do
+  def form_post(slack, api_method, form_data) do
     url = "#{slack.slack_url}/api/#{api_method}"
 
-    %{body: body} = HTTPoison.post!(url, {:form, [{:token, slack.token} | form_data]})
+    with full_form_data <- [{:token, slack.token} | form_data],
+         {:ok, %{body: body}} <- HTTPoison.post(url, {:form, full_form_data}),
+         {:ok, parsed} <- Poison.decode(body),
+         %{"ok" => true} <- parsed
+    do
+      {:ok, parsed}
 
-    parsed = Poison.decode!(body)
-
-    if Map.fetch!(parsed, "ok") do
-      parsed
     else
-      code = Map.get(parsed, "error", "code_missing")
-      raise Slack.WebApi.Error, message: "#{code} failure POSTing to <#{url}> (form data: #{inspect(form_data)})", code: code
+      %{"ok" => false, "error" => err_code} -> {:error, "Slack rejected the request because #{err_code}"}
+      e = {:error, ""<>_} -> e
+      {:error, ex = %{__exception__: true}} -> {:error, Exception.message(ex)}
+      wat -> raise("unexpected value: #{inspect(wat)}")
     end
   end
 
-end
-
-defmodule Slack.WebApi.Error do
-  defexception [:message, :code]
 end

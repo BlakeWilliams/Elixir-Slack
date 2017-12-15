@@ -14,15 +14,17 @@ defmodule Slack.Channel do
     name - human readable name of channel
   """
   def new(opts) do
-    try do
+    with {:ok, id} <- get_arg(opts, :id),
+         {:ok, name} <- get_arg(opts, :name)
+    do
       %__MODULE__{
-        id: Keyword.fetch!(opts, :id),
-        name: Keyword.fetch!(opts, :name)
+        id: id,
+        name: name
       }
 
-    rescue
-      err in KeyError -> raise(ArgumentError, Exception.message(err))
-      err             -> reraise(err, System.stacktrace)
+    else
+      {:error, msg} -> raise(ArgumentError, msg)
+      wat -> raise("unexpected value: #{inspect(wat)}")
     end
   end
 
@@ -33,15 +35,29 @@ defmodule Slack.Channel do
   channel_id - the opaque id, as a string, of the channel
   """
   def new_from_id(slack, channel_id) do
-    try do
-      %__MODULE__{
-        id: channel_id,
-        name: Lookups.lookup_channel_name(channel_id, slack)
-      }
+    with {:ok, name} <- lookup_name(slack, channel_id)
+    do
+      {:ok, new(id: channel_id, name: name)}
+    else
+      e = {:error, ""<>_} -> e
+      wat -> raise("unexpected value: #{inspect(wat)}")
+    end
+  end
 
+  defp get_arg(keyword, key) do
+    case Keyword.fetch(keyword, key) do
+      r = {:ok, _} -> r
+      :error -> {:error, "Missing argument: #{key}"}
+    end
+  end
+
+  defp lookup_name(slack, channel_id) do
+    try do
+      {:ok, Lookups.lookup_channel_name(channel_id, slack)}
     rescue
-      _err in UndefinedFunctionError -> raise(ArgumentError, "No such channel: #{channel_id}")
+      _err in UndefinedFunctionError -> {:error, "No such channel: #{channel_id}"}
       err -> reraise(err, System.stacktrace)
     end
   end
+
 end

@@ -4,7 +4,7 @@ defmodule Slack.ChannelTest do
 
   describe "new/1" do
     test "returns channel struct" do
-      assert Channel == Channel.new(id: "C024BE91L", name: "My channel").__struct__
+      assert %Channel{} = Channel.new(id: "C024BE91L", name: "My channel")
     end
 
     test "handles different arg orders" do
@@ -18,11 +18,11 @@ defmodule Slack.ChannelTest do
 
   describe "new_from_id/2" do
     test "looks channel up" do
-      assert channel?(Channel.new_from_id(slack(), "Cmychannelid"))
+      assert {:ok, %Channel{}} = Channel.new_from_id(slack(), "Cmychannelid")
     end
 
-    test "raises argument error for invalid channel ids" do
-      assert_raise ArgumentError, fn -> Channel.new_from_id(slack(), "Cbogusid") end
+    test "returns error tuple for invalid channel ids" do
+      assert {:error, ""<>_} = Channel.new_from_id(slack(), "Cbogusid")
     end
 
   end
@@ -30,15 +30,11 @@ defmodule Slack.ChannelTest do
   # Background & support
   # ----
 
-  def slack() do
+  defp slack() do
     %Slack.State{
       channels: %{
         "Cmychannelid" => %{name: "My channel"}
       }
     }
-  end
-
-  def channel?(thing) do
-    Channel = thing.__struct__
   end
 end

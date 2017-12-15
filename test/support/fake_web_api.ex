@@ -1,15 +1,15 @@
 defmodule Slack.FakeWebApi do
-  def form_post!(_slack, api_method = "chat.getPermalink", form_data) do
+  def form_post(_slack, api_method = "chat.getPermalink", form_data) do
     called(api_method, form_data)
 
     ts = Keyword.fetch!(form_data, :message_ts)
     channel_id = Keyword.fetch!(form_data, :channel)
 
-    %{
-      "ok" => true,
-      "channel" => channel_id,
-      "permalink" => ~s<http://example.com/archives/#{channel_id}/#{ts}>
-    }
+    {:ok, %{
+        "ok" => true,
+        "channel" => channel_id,
+        "permalink" => ~s<http://example.com/archives/#{channel_id}/#{ts}>
+     } }
   end
 
   # call tracking

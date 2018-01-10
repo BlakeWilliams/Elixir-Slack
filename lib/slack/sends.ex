@@ -69,6 +69,18 @@ defmodule Slack.Sends do
   end
 
   @doc """
+  Subscribe to presence notifications for the user IDs in `ids`.
+  """
+  def subscribe_presence(ids \\ [], slack) do
+    %{
+      type: "presence_sub",
+      ids: ids
+    }
+      |> Poison.encode!()
+      |> send_raw(slack)
+  end
+
+  @doc """
   Sends raw JSON to a given socket.
   """
   def send_raw(json, %{process: pid, client: client}) do

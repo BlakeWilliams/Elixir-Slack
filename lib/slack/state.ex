@@ -86,11 +86,13 @@ defmodule Slack.State do
     put_in(slack, [:users, user, :presence], presence)
   end
 
-  Enum.map(["team_join", "user_change"], fn (type) ->
-    def update(%{type: unquote(type), user: user}, slack) do
-      put_in(slack, [:users, user.id], user)
-    end
-  end)
+  def update(%{type: "team_join", user: user}, slack) do
+    put_in(slack, [:users, user.id], user)
+  end
+
+  def update(%{type: "user_change", user: user}, slack) do
+    put_in(slack, [:users, user.id], Map.merge(slack.users[user.id], user))
+  end
 
   Enum.map(["bot_added", "bot_changed"], fn (type) ->
     def update(%{type: unquote(type), bot: bot}, slack) do

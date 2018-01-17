@@ -78,11 +78,12 @@ defmodule Slack.StateTest do
 
   test "user_change updates user" do
     new_slack = State.update(
-      %{type: "team_join", user: %{id: "123", name: "bar"}},
+      %{type: "user_change", user: %{id: "123", name: "bar"}},
       slack()
     )
 
     assert new_slack.users["123"].name == "bar"
+    assert new_slack.users["123"].presence == "active"
   end
 
   test "bot_added adds bot to bots" do
@@ -98,7 +99,7 @@ defmodule Slack.StateTest do
 
   test "bot_changed updates bot in bots" do
     new_slack = State.update(
-      %{type: "bot_added", bot: %{id: "123", name: "new"}},
+      %{type: "bot_changed", bot: %{id: "123", name: "new"}},
       slack()
     )
 

@@ -68,4 +68,14 @@ defmodule Slack.SendsTest do
     result = Sends.send_ping(%{foo: :bar}, %{process: nil, client: FakeWebsocketClient})
     assert result == {nil, ~s/{"type":"ping","foo":"bar"}/}
   end
+
+  test "subscribe_presence sends presence subscription message to client" do
+    result = Sends.subscribe_presence(["a_user_id"], %{process: nil, client: FakeWebsocketClient})
+    assert result == {nil, ~s/{"type":"presence_sub","ids":["a_user_id"]}/}
+  end
+
+  test "subscribe_presence without ids sends presence subscription message to client" do
+    result = Sends.subscribe_presence(%{process: nil, client: FakeWebsocketClient})
+    assert result == {nil, ~s/{"type":"presence_sub","ids":[]}/}
+  end
 end

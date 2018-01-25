@@ -133,6 +133,16 @@ defmodule Slack.StateTest do
     assert new_slack.users["123"].presence == "testing"
   end
 
+  test "bulk presence_change message should update users" do
+    new_slack = State.update(
+      %{presence: "testing", type: "presence_change", users: ["123", "U2"]},
+      slack()
+    )
+
+    assert new_slack.users["123"].presence == "testing"
+    assert new_slack.users["U2"].presence == "testing"
+  end
+
   test "group_joined event should add group" do
     new_slack = State.update(
       %{type: "group_joined", channel: %{id: "G123", members: ["U123", "U456"]}},
@@ -198,6 +208,10 @@ defmodule Slack.StateTest do
         "123" => %{
           name: "Bar",
           presence: "active"
+        },
+        "U2" => %{
+          name: "Baz",
+          presence: "away"
         }
       },
       groups: %{

@@ -86,6 +86,12 @@ defmodule Slack.State do
     put_in(slack, [:users, user, :presence], presence)
   end
 
+  def update(%{type: "presence_change", users: users, presence: presence}, slack) do
+    Enum.reduce(users, slack, fn(user, acc) ->
+      put_in(acc, [:users, user, :presence], presence)
+    end)
+  end
+
   def update(%{type: "team_join", user: user}, slack) do
     put_in(slack, [:users, user.id], user)
   end

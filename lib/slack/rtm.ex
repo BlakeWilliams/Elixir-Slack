@@ -26,6 +26,6 @@ defmodule Slack.Rtm do
   defp handle_response(error), do: error
 
   defp slack_url(token) do
-    Application.get_env(:slack, :url, "https://slack.com") <> "/api/rtm.start?token=#{token}"
+    Application.get_env(:slack, :url, "https://slack.com") <> "/api/rtm.start?token=#{token}&batch_presence_aware=true&presence_sub=true"
   end
 end

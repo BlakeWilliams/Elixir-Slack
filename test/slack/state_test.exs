@@ -190,6 +190,32 @@ defmodule Slack.StateTest do
     assert new_slack.ims == %{"C456" => channel}
   end
 
+  test "user_change merges an existing user" do
+    user = %{id: "123", presence: "away", nickname: "Baz"}
+    new_slack = State.update(
+      %{type: "user_change", user: user},
+      slack()
+    )
+    assert new_slack.users["123"] == %{
+      id: "123",
+      name: "Bar",
+      presence: "away",
+      nickname: "Baz"
+    }
+  end
+  test "user_change adds a new user" do
+    user = %{id: "345", presence: "active", name: "Bar"}
+    new_slack = State.update(
+      %{type: "user_change", user: user},
+      slack()
+    )
+    assert new_slack.users["345"] == %{
+      id: "345",
+      name: "Bar",
+      presence: "active"
+    }
+  end
+
   defp slack do
     %{
       channels: %{

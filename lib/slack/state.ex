@@ -97,7 +97,7 @@ defmodule Slack.State do
   end
 
   def update(%{type: "user_change", user: user}, slack) do
-    put_in(slack, [:users, user.id], Map.merge(slack.users[user.id], user))
+    update_in(slack, [:users, Access.key(user.id, %{})], &Map.merge(&1, user))
   end
 
   Enum.map(["bot_added", "bot_changed"], fn (type) ->

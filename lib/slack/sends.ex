@@ -30,7 +30,7 @@ defmodule Slack.Sends do
         slack.token,
         Lookups.lookup_user_id(user, slack),
         fn id -> send_message(text, id, slack) end,
-        fn _reason -> :delivery_failed end
+        fn reason -> reason end
       )
     end
   end
@@ -98,7 +98,7 @@ defmodule Slack.Sends do
       {:ok, response} ->
         case Poison.Parser.parse!(response.body, keys: :atoms) do
           %{ok: true, channel: %{id: id}} -> on_success.(id)
-          _ -> on_error.()
+          e = %{error: error_message} -> on_error.(e)
         end
       {:error, reason} -> on_error.(reason)
     end

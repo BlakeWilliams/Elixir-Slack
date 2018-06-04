@@ -3,13 +3,13 @@ defmodule Slack.LookupsTest do
   alias Slack.Lookups
 
   test "turns @user into a user identifier" do
-    slack = %{users: %{"U123" => %{name: "user", id: "U123"}}}
+    slack = %{users: %{"U123" => %{name: "user", id: "U123", profile: %{display_name: "user"}}}}
     assert Lookups.lookup_user_id("@user", slack) == "U123"
   end
 
   test "turns @user into direct message identifier, if the channel exists" do
     slack = %{
-      users: %{"U123" => %{name: "user", id: "U123"}},
+      users: %{"U123" => %{name: "user", id: "U123", profile: %{display_name: "user"}}},
       ims: %{"D789" => %{user: "U123", id: "D789"}}
     }
     assert Lookups.lookup_direct_message_id("@user", slack) == "D789"
@@ -44,13 +44,13 @@ defmodule Slack.LookupsTest do
   end
 
   test "turns a user identifier into @user" do
-    slack = %{users: %{"U123" => %{name: "user", id: "U123"}}}
+    slack = %{users: %{"U123" => %{name: "user", id: "U123", profile: %{display_name: "user"}}}}
     assert Lookups.lookup_user_name("U123", slack) == "@user"
   end
 
   test "turns a direct message identifier into @user" do
     slack = %{
-      users: %{"U123" => %{name: "user", id: "U123"}},
+      users: %{"U123" => %{name: "user", id: "U123", profile: %{display_name: "user"}}},
       ims: %{"D789" => %{user: "U123", id: "D789"}}
     }
     assert Lookups.lookup_user_name("D789", slack) == "@user"

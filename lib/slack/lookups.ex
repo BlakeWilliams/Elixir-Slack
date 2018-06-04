@@ -7,7 +7,7 @@ defmodule Slack.Lookups do
   def lookup_user_id("@" <> user_name, slack) do
     slack.users
     |> Map.values
-    |> Enum.find(%{}, fn user -> user.name == user_name or user.profile.display_name == user_name end)
+    |> Enum.find(%{}, fn user -> user.name == user_name || user.profile.display_name == user_name end)
     |> Map.get(:id)
   end
 

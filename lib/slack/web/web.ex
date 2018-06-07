@@ -43,19 +43,21 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
         url = Application.get_env(:slack, :url, "https://slack.com")
 
         params = optional_params
-        |> Map.to_list
+        |> Map.to_list()
         |> Keyword.merge(required_params)
         |> Keyword.put_new(:token, get_token(optional_params))
         |> Enum.reject(fn {_, v} -> v == nil end)
 
-        %{body: body} = HTTPoison.post!(
+        perform!(
           "#{url}/api/#{unquote(doc.endpoint)}",
           params(unquote(function_name), params, unquote(arguments))
         )
-
-        Poison.Parser.parse!(body)
       end
     end)
+
+    defp perform!(url, body) do
+      Application.get_env(:slack, :web_http_client, Slack.Web.Client).post!(url, body)
+    end
 
     defp get_token(%{token: token}), do: token
     defp get_token(_), do: Application.get_env(:slack, :api_token)

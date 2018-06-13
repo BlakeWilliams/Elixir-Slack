@@ -56,14 +56,14 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
     end)
 
     defp perform!(url, body) do
-      Application.get_env(:slack, :web_http_client, Slack.Web.Client).post!(url, body)
+      Application.get_env(:slack, :web_http_client, Slack.Web.DefaultClient).post!(url, body)
     end
 
     defp get_token(%{token: token}), do: token
     defp get_token(_), do: Application.get_env(:slack, :api_token)
 
     defp params(:upload, params, arguments) do
-      file = arguments |> List.first
+      file = List.first(arguments)
       params = Enum.map(params, fn({key, value}) ->
         {"", to_string(value), {"form-data", [{"name", key}]}, []}
       end)

@@ -1,28 +1,16 @@
 defmodule Slack.Web.Client do
   @moduledoc """
-  Default http client used for all requests to web API.
-
-  All Slack RPC method calls are delivered via post and are dangerous by
-  default, raising on any HTTP response that doesn't contain a body field.
-
-  Parsed body data is returned unwrapped to the caller.
-
-  Additional error handling or response wrapping can be controlled as needed
-  by configuring a custom client module.
-
-  ```
-  config :slack, :web_http_client, YourApp.CustomClient
-  ```
+  Defines a custom client for making calls to Slack Web API.
   """
 
-  def post!(url, body) do
-    url
-    |> HTTPoison.post!(body, [], opts())
-    |> Map.fetch!(:body)
-    |> Poison.Parser.parse!()
-  end
+  @type url :: String.t()
+  @type form_body :: {:form, Keyword.t()}
+  @type multipart_form_body :: {:multipart, nonempty_list(tuple())}
+  @type body :: form_body() | multipart_form_body()
 
-  defp opts do
-    Application.get_env(:slack, :web_http_client_opts, [])
-  end
+  @doc """
+  Return value is passed directly to caller of generated Web API
+  module/functions. Can be any term.
+  """
+  @callback post!(url :: url, body :: body) :: term()
 end

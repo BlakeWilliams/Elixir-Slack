@@ -41,7 +41,7 @@ defmodule Slack.Bot do
           initial_state: initial_state
         }
 
-        url = String.to_char_list(state.rtm.url)
+        url = String.to_charlist(state.rtm.url)
         {:ok, pid} = options.client.start_link(url, __MODULE__, state, [keepalive: options.keepalive])
 
         if options.name != nil do

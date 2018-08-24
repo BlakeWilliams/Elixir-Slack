@@ -16,6 +16,15 @@ defmodule Slack.Sends do
       raise ArgumentError, "channel ##{channel_name} not found"
     end
   end
+  def send_message(text, channel = "#" <> channel_name, slack, thread) do
+    channel_id = Lookups.lookup_channel_id(channel, slack)
+
+    if channel_id do
+      send_message(text, channel_id, slack, thread)
+    else
+      raise ArgumentError, "channel ##{channel_name} not found"
+    end
+  end
   def send_message(text, user_id = "U" <> _user_id, slack) do
     user_name = Slack.Lookups.lookup_user_name(user_id, slack)
     send_message(text, user_name, slack)
@@ -39,6 +48,16 @@ defmodule Slack.Sends do
       type: "message",
       text: text,
       channel: channel
+    }
+      |> Poison.encode!()
+      |> send_raw(slack)
+  end
+  def send_message(text, channel, slack, thread) do
+    %{
+      type: "message",
+      text: text,
+      channel: channel,
+      thread_ts: thread
     }
       |> Poison.encode!()
       |> send_raw(slack)

@@ -99,6 +99,7 @@ defmodule Slack.Sends do
         case Poison.Parser.parse!(response.body, keys: :atoms) do
           %{ok: true, channel: %{id: id}} -> on_success.(id)
           e = %{error: error_message} -> on_error.(e)
+          e = {:error, reason} -> on_error.(reason)
         end
       {:error, reason} -> on_error.(reason)
     end

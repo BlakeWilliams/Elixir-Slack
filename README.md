@@ -131,7 +131,7 @@ custom error handling as needed.
 config :slack, :web_http_client, YourApp.CustomClient
 ```
 
-All Web API calls from documenation-generated modules/functions will call `post!/2` with the generated url
+All Web API calls from documentation-generated modules/functions will call `post!/2` with the generated url
 and body passed as arguments.
 
 In the case where you only need to control the options passed to HTTPoison/hackney, the default client accepts

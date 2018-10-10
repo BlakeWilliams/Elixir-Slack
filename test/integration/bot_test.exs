@@ -8,20 +8,21 @@ defmodule Slack.Integration.BotTest do
       send_message(String.reverse(text), message.channel, slack)
       {:ok, state}
     end
+
     def handle_event(_, _, state), do: {:ok, state}
   end
 
   setup_all do
     Slack.FakeSlack.start_link()
 
-    on_exit fn ->
+    on_exit(fn ->
       Slack.FakeSlack.stop()
-    end
+    end)
   end
 
   test "can connect and respond" do
     Application.put_env(:slack, :test_pid, self())
-    {:ok, _pid} =  Slack.Bot.start_link(Bot, [], "xyz")
+    {:ok, _pid} = Slack.Bot.start_link(Bot, [], "xyz")
 
     assert authenticated_with_token?("xyz")
 
@@ -56,6 +57,6 @@ defmodule Slack.Integration.BotTest do
   end
 
   defp send_message_to_client(pid, message) do
-    send pid, Poison.encode!(%{type: "message", text: message, channel: "C0123abc"})
+    send(pid, Poison.encode!(%{type: "message", text: message, channel: "C0123abc"}))
   end
 end

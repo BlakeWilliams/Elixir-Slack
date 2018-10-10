@@ -7,7 +7,7 @@ defmodule Slack.Web do
   end
 
   defp format_documentation(files) do
-    Enum.reduce(files, %{}, fn(file, module_names) ->
+    Enum.reduce(files, %{}, fn file, module_names ->
       json =
         File.read!("#{__DIR__}/docs/#{file}")
         |> Poison.Parser.parse!()
@@ -23,12 +23,12 @@ end
 
 alias Slack.Web.Documentation
 
-Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
-  module_name = module_name |> Macro.camelize
+Enum.each(Slack.Web.get_documentation(), fn {module_name, functions} ->
+  module_name = module_name |> Macro.camelize()
   module = Module.concat(Slack.Web, module_name)
 
   defmodule module do
-    Enum.each(functions, fn(doc) ->
+    Enum.each(functions, fn doc ->
       function_name = doc.function
 
       arguments = Documentation.arguments(doc)
@@ -42,11 +42,12 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
 
         url = Application.get_env(:slack, :url, "https://slack.com")
 
-        params = optional_params
-        |> Map.to_list()
-        |> Keyword.merge(required_params)
-        |> Keyword.put_new(:token, get_token(optional_params))
-        |> Enum.reject(fn {_, v} -> v == nil end)
+        params =
+          optional_params
+          |> Map.to_list()
+          |> Keyword.merge(required_params)
+          |> Keyword.put_new(:token, get_token(optional_params))
+          |> Enum.reject(fn {_, v} -> v == nil end)
 
         perform!(
           "#{url}/api/#{unquote(doc.endpoint)}",
@@ -64,12 +65,15 @@ Enum.each(Slack.Web.get_documentation, fn({module_name, functions}) ->
 
     defp params(:upload, params, arguments) do
       file = List.first(arguments)
-      params = Enum.map(params, fn({key, value}) ->
-        {"", to_string(value), {"form-data", [{"name", key}]}, []}
-      end)
+
+      params =
+        Enum.map(params, fn {key, value} ->
+          {"", to_string(value), {"form-data", [{"name", key}]}, []}
+        end)
 
       {:multipart, params ++ [{:file, file, []}]}
     end
+
     defp params(_, params, _), do: {:form, params}
   end
 end)

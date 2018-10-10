@@ -28,6 +28,7 @@ defmodule Slack.SendsTest do
       client: FakeWebsocketClient,
       channels: %{"C456" => %{name: "channel", id: "C456"}}
     }
+
     result = Sends.send_message("hello", "#channel", slack)
     assert result == {nil, ~s/{"type":"message","text":"hello","channel":"C456"}/}
   end
@@ -39,6 +40,7 @@ defmodule Slack.SendsTest do
       users: %{"U123" => %{name: "user", id: "U123"}},
       ims: %{"D789" => %{user: "U123", id: "D789"}}
     }
+
     result = Sends.send_message("hello", "@user", slack)
     assert result == {nil, ~s/{"type":"message","text":"hello","channel":"D789"}/}
   end
@@ -50,6 +52,7 @@ defmodule Slack.SendsTest do
       users: %{"U123" => %{name: "user", id: "U123"}},
       ims: %{"D789" => %{user: "U123", id: "D789"}}
     }
+
     result = Sends.send_message("hello", "U123", slack)
     assert result == {nil, ~s/{"type":"message","text":"hello","channel":"D789"}/}
   end

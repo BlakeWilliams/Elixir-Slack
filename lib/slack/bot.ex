@@ -19,18 +19,23 @@ defmodule Slack.Bot do
   ## Example
 
   {:ok, pid} = Slack.Bot.start_link(MyBot, [1,2,3], "abc-123", %{name: :slack_bot})
-  
+
   :sys.get_state(:slack_bot)
-  
+
   """
   def start_link(bot_handler, initial_state, token, options \\ %{}) do
-    options = Map.merge(%{
-      client: :websocket_client,
-      keepalive: 10_000,
-      name: nil
-    }, options)
+    options =
+      Map.merge(
+        %{
+          client: :websocket_client,
+          keepalive: 10_000,
+          name: nil
+        },
+        options
+      )
 
     rtm_module = Application.get_env(:slack, :rtm_module, Slack.Rtm)
+
     case rtm_module.start(token) do
       {:ok, rtm} ->
         state = %{
@@ -42,19 +47,25 @@ defmodule Slack.Bot do
         }
 
         url = String.to_charlist(state.rtm.url)
-        {:ok, pid} = options.client.start_link(url, __MODULE__, state, [keepalive: options.keepalive])
+
+        {:ok, pid} =
+          options.client.start_link(url, __MODULE__, state, keepalive: options.keepalive)
 
         if options.name != nil do
           Process.register(pid, options.name)
         end
 
         {:ok, pid}
+
       {:error, %HTTPoison.Error{reason: :connect_timeout}} ->
         {:error, "Timed out while connecting to the Slack RTM API"}
+
       {:error, %HTTPoison.Error{reason: :nxdomain}} ->
         {:error, "Could not connect to the Slack RTM API"}
+
       {:error, %Slack.JsonDecodeError{string: "You are sending too many requests. Please relax."}} ->
         {:error, "Sent too many connection requests at once to the Slack RTM API."}
+
       {:error, error} ->
         {:error, error}
     end
@@ -63,7 +74,13 @@ defmodule Slack.Bot do
   # websocket_client API
 
   @doc false
-  def init(%{bot_handler: bot_handler, rtm: rtm, client: client, token: token, initial_state: initial_state}) do
+  def init(%{
+        bot_handler: bot_handler,
+        rtm: rtm,
+        client: client,
+        token: token,
+        initial_state: initial_state
+      }) do
     slack = %Slack.State{
       process: self(),
       client: client,
@@ -81,7 +98,10 @@ defmodule Slack.Bot do
   end
 
   @doc false
-  def onconnect(_websocket_request, %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state) do
+  def onconnect(
+        _websocket_request,
+        %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state
+      ) do
     {:ok, new_process_state} = bot_handler.handle_connect(slack, process_state)
     {:ok, %{state | process_state: new_process_state}}
   end
@@ -91,7 +111,10 @@ defmodule Slack.Bot do
     {:reconnect, state}
   end
 
-  def ondisconnect(reason, %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state) do
+  def ondisconnect(
+        reason,
+        %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state
+      ) do
     try do
       bot_handler.handle_close(reason, slack, process_state)
       {:close, reason, state}
@@ -103,7 +126,11 @@ defmodule Slack.Bot do
   end
 
   @doc false
-  def websocket_info(message, _connection, %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state) do
+  def websocket_info(
+        message,
+        _connection,
+        %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state
+      ) do
     try do
       {:ok, new_process_state} = bot_handler.handle_info(message, slack, process_state)
       {:ok, %{state | process_state: new_process_state}}
@@ -118,25 +145,31 @@ defmodule Slack.Bot do
   def websocket_terminate(_reason, _conn, _state), do: :ok
 
   @doc false
-  def websocket_handle({:text, message}, _conn, %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state) do
-    message = prepare_message message
+  def websocket_handle(
+        {:text, message},
+        _conn,
+        %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state
+      ) do
+    message = prepare_message(message)
 
-    updated_slack = if Map.has_key?(message, :type) do
-      Slack.State.update(message, slack)
-    else
-      slack
-    end
-
-    new_process_state = if Map.has_key?(message, :type) do
-      try do
-        {:ok, new_process_state} = bot_handler.handle_event(message, slack, process_state)
-        new_process_state
-      rescue
-        e -> handle_exception(e)
+    updated_slack =
+      if Map.has_key?(message, :type) do
+        Slack.State.update(message, slack)
+      else
+        slack
       end
-    else
-      process_state
-    end
+
+    new_process_state =
+      if Map.has_key?(message, :type) do
+        try do
+          {:ok, new_process_state} = bot_handler.handle_event(message, slack, process_state)
+          new_process_state
+        rescue
+          e -> handle_exception(e)
+        end
+      else
+        process_state
+      end
 
     {:ok, %{state | slack: updated_slack, process_state: new_process_state}}
   end
@@ -144,22 +177,22 @@ defmodule Slack.Bot do
   def websocket_handle(_, _conn, state), do: {:ok, state}
 
   defp rtm_list_to_map(list) do
-    Enum.reduce(list, %{}, fn (item, map) ->
+    Enum.reduce(list, %{}, fn item, map ->
       Map.put(map, item.id, item)
     end)
   end
 
   defp prepare_message(binstring) do
     binstring
-      |> :binary.split(<<0>>)
-      |> List.first
-      |> Poison.Parser.parse!(keys: :atoms)
+    |> :binary.split(<<0>>)
+    |> List.first()
+    |> Poison.Parser.parse!(keys: :atoms)
   end
 
   defp handle_exception(e) do
     message = Exception.message(e)
     Logger.error(message)
-    System.stacktrace |> Exception.format_stacktrace |> Logger.error
+    System.stacktrace() |> Exception.format_stacktrace() |> Logger.error()
     raise message
   end
 end

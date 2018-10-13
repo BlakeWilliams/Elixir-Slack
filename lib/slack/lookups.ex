@@ -6,8 +6,10 @@ defmodule Slack.Lookups do
   """
   def lookup_user_id("@" <> user_name, slack) do
     slack.users
-    |> Map.values
-    |> Enum.find(%{}, fn user -> user.name == user_name || user.profile.display_name == user_name end)
+    |> Map.values()
+    |> Enum.find(%{}, fn user ->
+      user.name == user_name || user.profile.display_name == user_name
+    end)
     |> Map.get(:id)
   end
 
@@ -21,9 +23,10 @@ defmodule Slack.Lookups do
     |> lookup_user_id(slack)
     |> lookup_direct_message_id(slack)
   end
+
   def lookup_direct_message_id(user_id, slack) do
     slack.ims
-    |> Map.values
+    |> Map.values()
     |> Enum.find(%{}, fn direct_message -> direct_message.user == user_id end)
     |> Map.get(:id)
   end
@@ -34,9 +37,10 @@ defmodule Slack.Lookups do
   (`"G…"`) if a group/private channel.
   """
   def lookup_channel_id("#" <> channel_name, slack) do
-    channel = find_channel_by_name(slack.channels, channel_name)
-      || find_channel_by_name(slack.groups, channel_name)
-      || %{}
+    channel =
+      find_channel_by_name(slack.channels, channel_name) ||
+        find_channel_by_name(slack.groups, channel_name) || %{}
+
     Map.get(channel, :id)
   end
 
@@ -47,9 +51,11 @@ defmodule Slack.Lookups do
   def lookup_user_name(direct_message_id = "D" <> _id, slack) do
     lookup_user_name(slack.ims[direct_message_id].user, slack)
   end
+
   def lookup_user_name(user_id = "U" <> _id, slack) do
     "@" <> slack.users[user_id].name
   end
+
   def lookup_user_name(bot_id = "B" <> _id, slack) do
     "@" <> slack.bots[bot_id].name
   end

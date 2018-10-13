@@ -1,60 +1,74 @@
 defmodule Slack.Web.Documentation do
   @moduledoc false
 
-  defstruct [:endpoint, :module, :function, :desc, :required_params,
-    :optional_params, :errors, :raw]
+  defstruct [
+    :endpoint,
+    :module,
+    :function,
+    :desc,
+    :required_params,
+    :optional_params,
+    :errors,
+    :raw
+  ]
 
   def new(documentation, file_name) do
-    [module_name, function_name] = String.replace(file_name, ".json", "")
-    |> String.split(".", parts: 2)
+    [module_name, function_name] =
+      String.replace(file_name, ".json", "")
+      |> String.split(".", parts: 2)
 
     %__MODULE__{
       module: module_name,
       endpoint: "#{module_name}.#{function_name}",
-      function: function_name |> Macro.underscore |> String.to_atom,
+      function: function_name |> Macro.underscore() |> String.to_atom(),
       desc: documentation["desc"],
       required_params: get_required_params(documentation),
       optional_params: get_optional_params(documentation),
       errors: documentation["errors"],
-      raw: documentation,
+      raw: documentation
     }
   end
 
   def arguments(documentation) do
     documentation.required_params
-    |> Enum.map(&(Macro.var(&1, nil)))
+    |> Enum.map(&Macro.var(&1, nil))
   end
 
   def arguments_with_values(documentation) do
     documentation
     |> arguments
-    |> Enum.reduce([], fn(var = {arg, _, _}, acc) ->
+    |> Enum.reduce([], fn var = {arg, _, _}, acc ->
       [{arg, var} | acc]
     end)
   end
 
   def to_doc_string(documentation) do
-    Enum.join([
-      documentation.desc,
-      required_params_docs(documentation),
-      optional_params_docs(documentation),
-      errors_docs(documentation),
-    ], "\n")
+    Enum.join(
+      [
+        documentation.desc,
+        required_params_docs(documentation),
+        optional_params_docs(documentation),
+        errors_docs(documentation)
+      ],
+      "\n"
+    )
   end
 
   defp required_params_docs(%__MODULE__{required_params: []}), do: ""
+
   defp required_params_docs(documentation) do
     get_param_docs_for(documentation, :required_params, "Required Params")
   end
 
   defp optional_params_docs(%__MODULE__{optional_params: []}), do: ""
+
   defp optional_params_docs(documentation) do
     get_param_docs_for(documentation, :optional_params, "Optional Params")
   end
 
   defp get_param_docs_for(documentation, field, title) do
     Map.get(documentation, field)
-    |> Enum.reduce("\n#{title}\n", fn(param, doc) ->
+    |> Enum.reduce("\n#{title}\n", fn param, doc ->
       meta = get_in(documentation.raw, ["args", to_string(param)])
       doc <> "* `#{param}` - #{meta["desc"]} #{example(meta)}\n"
     end)
@@ -63,12 +77,14 @@ defmodule Slack.Web.Documentation do
   def example(%{"example" => example}) do
     "ex: `#{example}`"
   end
+
   def example(_meta), do: ""
 
   defp errors_docs(%__MODULE__{errors: nil}), do: ""
+
   defp errors_docs(%__MODULE__{errors: errors}) do
     errors
-    |> Enum.reduce("\nErrors the API can return:\n", fn({error, desc}, doc) ->
+    |> Enum.reduce("\nErrors the API can return:\n", fn {error, desc}, doc ->
       doc <> "* `#{error}` - #{desc}\n"
     end)
   end
@@ -78,17 +94,18 @@ defmodule Slack.Web.Documentation do
 
   defp get_params_with_required(%{"args" => args}, required) do
     args
-    |> Enum.filter(fn({_, meta}) ->
+    |> Enum.filter(fn {_, meta} ->
       if required do
         meta["required"]
       else
         !meta["required"]
       end
     end)
-    |> Enum.map(fn({name, _meta}) ->
-      name |> String.to_atom
+    |> Enum.map(fn {name, _meta} ->
+      name |> String.to_atom()
     end)
   end
+
   defp get_params_with_required(_json, _required) do
     []
   end

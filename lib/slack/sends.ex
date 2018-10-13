@@ -16,10 +16,12 @@ defmodule Slack.Sends do
       raise ArgumentError, "channel ##{channel_name} not found"
     end
   end
+
   def send_message(text, user_id = "U" <> _user_id, slack) do
     user_name = Slack.Lookups.lookup_user_name(user_id, slack)
     send_message(text, user_name, slack)
   end
+
   def send_message(text, user = "@" <> _user_name, slack) do
     direct_message_id = Lookups.lookup_direct_message_id(user, slack)
 
@@ -34,14 +36,15 @@ defmodule Slack.Sends do
       )
     end
   end
+
   def send_message(text, channel, slack) do
     %{
       type: "message",
       text: text,
       channel: channel
     }
-      |> Poison.encode!()
-      |> send_raw(slack)
+    |> Poison.encode!()
+    |> send_raw(slack)
   end
 
   @doc """
@@ -52,8 +55,8 @@ defmodule Slack.Sends do
       type: "typing",
       channel: channel
     }
-      |> Poison.encode!()
-      |> send_raw(slack)
+    |> Poison.encode!()
+    |> send_raw(slack)
   end
 
   @doc """
@@ -63,9 +66,9 @@ defmodule Slack.Sends do
     %{
       type: "ping"
     }
-      |> Map.merge(Map.new(data))
-      |> Poison.encode!()
-      |> send_raw(slack)
+    |> Map.merge(Map.new(data))
+    |> Poison.encode!()
+    |> send_raw(slack)
   end
 
   @doc """
@@ -76,8 +79,8 @@ defmodule Slack.Sends do
       type: "presence_sub",
       ids: ids
     }
-      |> Poison.encode!()
-      |> send_raw(slack)
+    |> Poison.encode!()
+    |> send_raw(slack)
   end
 
   @doc """
@@ -90,17 +93,21 @@ defmodule Slack.Sends do
   defp open_im_channel(token, user_id, on_success, on_error) do
     url = Application.get_env(:slack, :url, "https://slack.com")
 
-    im_open = HTTPoison.post(
-      url <> "/api/im.open",
-      {:form, [token: token, user: user_id]}
-    )
+    im_open =
+      HTTPoison.post(
+        url <> "/api/im.open",
+        {:form, [token: token, user: user_id]}
+      )
+
     case im_open do
       {:ok, response} ->
         case Poison.Parser.parse!(response.body, keys: :atoms) do
           %{ok: true, channel: %{id: id}} -> on_success.(id)
           e = %{error: error_message} -> on_error.(e)
         end
-      {:error, reason} -> on_error.(reason)
+
+      {:error, reason} ->
+        on_error.(reason)
     end
   end
 end

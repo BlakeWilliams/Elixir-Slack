@@ -37,7 +37,7 @@ defmodule Slack.BotTest do
   end
 
   defmodule Stubs.Slack.Rtm do
-    def start(_token) do
+    def connect(_token) do
       {:ok, %{url: "http://www.example.com"}}
     end
   end

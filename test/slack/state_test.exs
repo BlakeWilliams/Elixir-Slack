@@ -170,6 +170,22 @@ defmodule Slack.StateTest do
     assert new_slack.groups["G123"].members == ["U123", "U456"]
   end
 
+  test "group_topic message should change topic" do
+    new_slack =
+      State.update(
+        %{
+          type: "message",
+          subtype: "group_topic",
+          channel: "G000",
+          user: "U000",
+          topic: "NewTopic"
+        },
+        slack()
+      )
+
+    assert new_slack.groups["G000"][:topic][:value] == "NewTopic"
+  end
+
   test "group_join message should add user to member list" do
     new_slack =
       State.update(

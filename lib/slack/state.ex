@@ -54,10 +54,21 @@ defmodule Slack.State do
   end
 
   def update(
+        %{type: "message", subtype: "channel_topic", channel: channel, user: user, topic: topic},
+        slack
+      ) do
+    put_in(slack, [:channels, channel, :topic], %{
+      creator: user,
+      last_set: System.system_time(:second),
+      value: topic
+    })
+  end
+
+  def update(
         %{type: "message", subtype: "group_topic", channel: channel, user: user, topic: topic},
         slack
       ) do
-    put_in(slack, [:groups, Access.key(channel), :topic], %{
+    put_in(slack, [:groups, channel, :topic], %{
       creator: user,
       last_set: System.system_time(:second),
       value: topic

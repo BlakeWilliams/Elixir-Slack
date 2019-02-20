@@ -186,6 +186,22 @@ defmodule Slack.StateTest do
     assert new_slack.groups["G000"][:topic][:value] == "NewTopic"
   end
 
+  test "channel_topic message should change topic" do
+    new_slack =
+      State.update(
+        %{
+          type: "message",
+          subtype: "channel_topic",
+          channel: "123",
+          user: "U000",
+          topic: "NewTopic"
+        },
+        slack()
+      )
+
+    assert new_slack.channels["123"][:topic][:value] == "NewTopic"
+  end
+
   test "group_join message should add user to member list" do
     new_slack =
       State.update(
@@ -269,7 +285,8 @@ defmodule Slack.StateTest do
           name: "foo",
           is_member: nil,
           is_archived: nil,
-          members: ["U123"]
+          members: ["U123"],
+          topic: %{value: "topic"}
         }
       },
       team: %{
@@ -288,7 +305,8 @@ defmodule Slack.StateTest do
       groups: %{
         "G000" => %{
           name: "secret-group",
-          members: ["U111", "U222"]
+          members: ["U111", "U222"],
+          topic: %{value: "topic"}
         }
       },
       bots: %{

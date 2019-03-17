@@ -3,11 +3,11 @@ defmodule Slack do
   Slack is a genserver-ish interface for working with the Slack real time
   messaging API through a Websocket connection.
 
-  To use this module you'll need a valid Slack API token. You can find your
-  personal token on the [Slack Web API] page, or you can add a new
-  [bot integration].
+  To use this module you'll need a need a Slack API token which can be retrieved
+  by following the [Token Generation Instructions] or by creating a new [bot
+  integration].
 
-  [Slack Web API]: https://api.slack.com/web
+  [Token Generation Instructions]: https://hexdocs.pm/slack/token_generation_instructions.html
   [bot integration]: https://api.slack.com/bot-users
 
   ## Example

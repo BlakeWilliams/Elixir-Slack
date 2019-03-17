@@ -36,7 +36,11 @@ defmodule Slack.Mixfile do
   end
 
   def docs do
-    [{:main, Slack}]
+    [
+      {:main, "README"},
+      {:extra_section, "GUIDES"},
+      {:extras, ["token_generation_instructions.md"]}
+    ]
   end
 
   defp package do

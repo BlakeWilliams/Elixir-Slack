@@ -37,9 +37,10 @@ defmodule Slack.Mixfile do
 
   def docs do
     [
-      {:main, "README"},
+      {:main, Slack},
+      {:assets, "guides/assets"},
       {:extra_section, "GUIDES"},
-      {:extras, ["token_generation_instructions.md"]}
+      {:extras, ["guides/token_generation_instructions.md"]}
     ]
   end
 

@@ -1,0 +1,15 @@
+{
+	"desc": "Retrieve a single user by looking them up by their registered email address. Requires `users:read.email`.",
+
+	"args": {
+		"email": {
+			"type"		: "string",
+			"required"	: true,
+			"desc"		: "User's email address"
+		}
+	},
+
+	"errors": {
+		"user_not_found"	: "Value passed for `user` was invalid."
+	}
+}

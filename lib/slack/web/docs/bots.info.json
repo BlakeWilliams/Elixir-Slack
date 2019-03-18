@@ -1,0 +1,15 @@
+{
+  "desc": "Gets information about a bot user.",
+  "args": {
+    "token": {
+      "example" : "xxxx-xxxxxxxxx-xxxx",
+      "required": true,
+      "desc"    : "Authentication token bearing required scopes."
+    },
+    "bot": {
+      "example" : "B12345678",
+      "required": false,
+      "desc"    : "Bot user to get info on"
+    }
+  }
+}

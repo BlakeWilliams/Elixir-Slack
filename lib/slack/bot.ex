@@ -87,11 +87,11 @@ defmodule Slack.Bot do
       token: token,
       me: rtm.self,
       team: rtm.team,
-      bots: rtm_list_to_map(rtm.bots),
-      channels: rtm_list_to_map(rtm.channels),
-      groups: rtm_list_to_map(rtm.groups),
-      users: rtm_list_to_map(rtm.users),
-      ims: rtm_list_to_map(rtm.ims)
+      bots: rtm_list_to_map(Slack.Web.Bots.info(%{token: token}) |> Map.get("bot")),
+      channels: rtm_list_to_map(Slack.Web.Channels.list(%{token: token}) |> Map.get("channels")),
+      groups: rtm_list_to_map(Slack.Web.Groups.list(%{token: token}) |> Map.get("groups")),
+      users: rtm_list_to_map(Slack.Web.Users.list(%{token: token}) |> Map.get("members")),
+      ims: rtm_list_to_map(Slack.Web.Im.list(%{token: token}) |> Map.get("ims"))
     }
 
     {:reconnect, %{slack: slack, bot_handler: bot_handler, process_state: initial_state}}

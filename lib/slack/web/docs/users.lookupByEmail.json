@@ -10,6 +10,7 @@
 	},
 
 	"errors": {
-		"user_not_found"	: "Value passed for `user` was invalid."
+		"user_not_found"	: "Value passed for `user` was invalid.",
+		"missing_scope"		: "The token used is not granted the specific scope permissions required to complete this request. Need: `users:read.email`."
 	}
 }

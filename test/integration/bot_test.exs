@@ -26,9 +26,9 @@ defmodule Slack.Integration.BotTest do
     with_mocks([
       {Bots, [], [info: fn _token -> %{"bot" => %{id: "123"}} end]},
       {Channels, [], [list: fn _token -> %{"channels" => [%{id: "123"}]} end]},
-      {Groups, [], [list: fn _token -> %{"groups" =>  [%{id: "123"}]} end]},
-      {Im, [], [list: fn _token -> %{"ims" =>  [%{id: "123"}]} end]},
-      {Users, [], [list: fn _token -> %{"members" =>  [%{id: "123"}]} end]}
+      {Groups, [], [list: fn _token -> %{"groups" => [%{id: "123"}]} end]},
+      {Im, [], [list: fn _token -> %{"ims" => [%{id: "123"}]} end]},
+      {Users, [], [list: fn _token -> %{"members" => [%{id: "123"}]} end]}
     ]) do
       Application.put_env(:slack, :test_pid, self())
       {:ok, _pid} = Slack.Bot.start_link(Bot, [], "xyz")

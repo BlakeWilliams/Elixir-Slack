@@ -17,9 +17,9 @@ defmodule Slack.BotTest do
     with_mocks([
       {Bots, [], [info: fn _token -> %{"bot" => %{id: "123"}} end]},
       {Channels, [], [list: fn _token -> %{"channels" => [%{id: "123"}]} end]},
-      {Groups, [], [list: fn _token -> %{"groups" =>  [%{id: "123"}]} end]},
-      {Im, [], [list: fn _token -> %{"ims" =>  [%{id: "123"}]} end]},
-      {Users, [], [list: fn _token -> %{"members" =>  [%{id: "123"}]} end]}
+      {Groups, [], [list: fn _token -> %{"groups" => [%{id: "123"}]} end]},
+      {Im, [], [list: fn _token -> %{"ims" => [%{id: "123"}]} end]},
+      {Users, [], [list: fn _token -> %{"members" => [%{id: "123"}]} end]}
     ]) do
       {:reconnect, %{slack: slack, bot_handler: bot_handler}} =
         Slack.Bot.init(%{

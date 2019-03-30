@@ -1,5 +1,12 @@
 defmodule Slack.Lookups do
-  @moduledoc "Utility functions for looking up slack state informatin"
+  require Logger
+
+  @username_warning """
+  Referencing "@USER_NAME" is deprecated, and should not be used.
+  For more information see https://api.slack.com/changelog/2017-09-the-one-about-usernames
+  """
+
+  @moduledoc "Utility functions for looking up slack state information"
 
   @doc ~S"""
   Turns a string like `"@USER_NAME"` into the ID that Slack understands (`"U…"`).
@@ -8,6 +15,7 @@ defmodule Slack.Lookups do
   For more information see https://api.slack.com/changelog/2017-09-the-one-about-usernames
   """
   def lookup_user_id("@" <> user_name, slack) do
+    Logger.warn(@username_warning)
     slack.users
     |> Map.values()
     |> Enum.find(%{}, fn user ->
@@ -70,6 +78,7 @@ defmodule Slack.Lookups do
   end
 
   def lookup_user_name(bot_id = "B" <> _id, slack) do
+    Logger.warn(@username_warning)
     "@" <> slack.bots[bot_id].name
   end
 
@@ -92,6 +101,7 @@ defmodule Slack.Lookups do
   end
 
   defp find_username_by_id(user_id, slack) do
+    Logger.warn(@username_warning)
     "@" <> slack.users[user_id].name
   end
 end

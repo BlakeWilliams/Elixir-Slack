@@ -62,11 +62,11 @@ defmodule Slack.Lookups do
   end
 
   def lookup_user_name(user_id = "U" <> _id, slack) do
-    find_user_by_name(user_id, slack)
+    find_username_by_id(user_id, slack)
   end
 
   def lookup_user_name(user_id = "W" <> _id, slack) do
-    find_user_by_name(user_id, slack)
+    find_username_by_id(user_id, slack)
   end
 
   def lookup_user_name(bot_id = "B" <> _id, slack) do
@@ -91,7 +91,7 @@ defmodule Slack.Lookups do
     Enum.find_value(nested_map, fn {_id, map} -> if map.name == name, do: map, else: nil end)
   end
 
-  defp find_user_by_name(user_id, slack) do
+  defp find_username_by_id(user_id, slack) do
     "@" <> slack.users[user_id].name
   end
 end

@@ -4,11 +4,12 @@ Status](https://api.travis-ci.org/BlakeWilliams/Elixir-Slack.svg?branch=master)]
 # Elixir-Slack
 
 This is a Slack [Real Time Messaging API] client for Elixir.  You'll need a
-Slack API token which can be retrieved from the [Web API page] or by creating a
+Slack API token which can be retrieved by following the [Token Generation
+Instructions] or by creating a
 new [bot integration].
 
 [Real time Messaging API]: https://api.slack.com/rtm
-[Web API page]: https://api.slack.com/web
+[Token Generation Instructions]: https://hexdocs.pm/slack/token_generation_instructions.html
 [bot integration]: https://my.slack.com/services/new/bot
 
 ## Installing

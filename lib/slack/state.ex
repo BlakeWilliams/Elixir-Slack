@@ -59,7 +59,7 @@ defmodule Slack.State do
       ) do
     put_in(slack, [:channels, channel, :topic], %{
       creator: user,
-      last_set: System.system_time(:second),
+      last_set: System.system_time(:seconds),
       value: topic
     })
   end
@@ -70,7 +70,7 @@ defmodule Slack.State do
       ) do
     put_in(slack, [:groups, channel, :topic], %{
       creator: user,
-      last_set: System.system_time(:second),
+      last_set: System.system_time(:seconds),
       value: topic
     })
   end

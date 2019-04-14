@@ -138,7 +138,7 @@ and body passed as arguments.
 In the case where you only need to control the options passed to HTTPoison/hackney, the default client accepts
 a keyword list as an additional configuration parameter. Note that this is ignored if configuring a custom client.
 
-See [HTTPoison docs](https://hexdocs.pm/httpoison/HTTPoison.html#request/5) for a list of avilable options.
+See [HTTPoison docs](https://hexdocs.pm/httpoison/HTTPoison.html#request/5) for a list of available options.
 
 ```elixir
 config :slack, :web_http_client_opts, [timeout: 10_000, recv_timeout: 10_000]

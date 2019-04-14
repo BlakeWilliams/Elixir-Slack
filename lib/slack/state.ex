@@ -53,6 +53,28 @@ defmodule Slack.State do
     update_in(slack, [:groups, channel, :members], &Enum.uniq([user | &1]))
   end
 
+  def update(
+        %{type: "message", subtype: "channel_topic", channel: channel, user: user, topic: topic},
+        slack
+      ) do
+    put_in(slack, [:channels, channel, :topic], %{
+      creator: user,
+      last_set: System.system_time(:second),
+      value: topic
+    })
+  end
+
+  def update(
+        %{type: "message", subtype: "group_topic", channel: channel, user: user, topic: topic},
+        slack
+      ) do
+    put_in(slack, [:groups, channel, :topic], %{
+      creator: user,
+      last_set: System.system_time(:second),
+      value: topic
+    })
+  end
+
   def update(%{type: "channel_left", channel: channel_id}, slack) do
     put_in(slack, [:channels, channel_id, :is_member], false)
   end

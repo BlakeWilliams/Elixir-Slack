@@ -5,7 +5,7 @@ defmodule Slack.FakeSlack.Router do
   plug(:match)
   plug(:dispatch)
 
-  get "/api/rtm.connect" do
+  get "/api/rtm.start" do
     conn = fetch_query_params(conn)
 
     pid = Application.get_env(:slack, :test_pid)

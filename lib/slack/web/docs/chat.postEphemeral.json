@@ -1,0 +1,48 @@
+{
+	"desc": "Sends an ephemeral message to a channel.",
+
+	"args": {
+		"channel": {
+			"type"		: "channel",
+			"required"	: true,
+			"desc"		: "Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name. See [below](#channels) for more details."
+		},
+		"text": {
+			"required"	: true,
+			"example"	: "Hello world",
+			"desc"		: "Text of the message to send. See below for an explanation of [formatting](#formatting)."
+		},
+    "user": {
+			"type"		: "user",
+			"required"	: true,
+			"desc"		: "`id` of the user who will receive the ephemeral message. The user should be in the channel specified by the `channel` argument."
+		},
+		"parse": {
+			"example"	: "full",
+			"desc"		: "Change how messages are treated. Defaults to `none`. See [below](#formatting)."
+		},
+		"link_names": {
+			"example"	: "1",
+			"desc"		: "Find and link channel names and usernames."
+		},
+		"attachments": {
+			"example"	: "[{\"pretext\": \"pre-hello\", \"text\": \"text-world\"}]",
+			"desc"		: "Structured message attachments."
+		},
+		"as_user": {
+			"required"	: false,
+			"example"	: "true",
+			"desc"		: "Pass true to post the message as the authed user, instead of as a bot. Defaults to false. See [authorship](#authorship) below."
+		}
+	},
+
+	"errors": {
+
+		"channel_not_found"	: "Value passed for `channel` was invalid.",
+		"user_not_in_channel"	: "Cannot post user messages to a channel they are not in.",
+		"is_archived"		: "Channel has been archived.",
+		"msg_too_long"		: "Message text is too long",
+		"no_text"		: "No message text provided",
+		"rate_limited"      : "Application has posted too many messages, [read the Rate Limit documentation](/docs/rate-limits) for more information"
+	}
+}

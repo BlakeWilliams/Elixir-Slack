@@ -57,6 +57,18 @@ defmodule Slack.SendsTest do
     assert result == {nil, ~s/{"type":"message","text":"hello","channel":"D789"}/}
   end
 
+  test "send_message understands user ids (Wxxx)" do
+    slack = %{
+      process: nil,
+      client: FakeWebsocketClient,
+      users: %{"W123" => %{name: "user", id: "W123"}},
+      ims: %{"D789" => %{user: "W123", id: "D789"}}
+    }
+
+    result = Sends.send_message("hello", "W123", slack)
+    assert result == {nil, ~s/{"type":"message","text":"hello","channel":"D789"}/}
+  end
+
   test "indicate_typing sends typing notification to client" do
     result = Sends.indicate_typing("channel", %{process: nil, client: FakeWebsocketClient})
     assert result == {nil, ~s/{"type":"typing","channel":"channel"}/}

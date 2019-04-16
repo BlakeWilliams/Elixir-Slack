@@ -1,10 +1,21 @@
 defmodule Slack.Lookups do
-  @moduledoc "Utility functions for looking up slack state informatin"
+  require Logger
+
+  @username_warning """
+  Referencing "@USER_NAME" is deprecated, and should not be used.
+  For more information see https://api.slack.com/changelog/2017-09-the-one-about-usernames
+  """
+
+  @moduledoc "Utility functions for looking up slack state information"
 
   @doc ~S"""
   Turns a string like `"@USER_NAME"` into the ID that Slack understands (`"U…"`).
+
+  NOTE: Referencing `"@USER_NAME"` is deprecated, and should not be used.
+  For more information see https://api.slack.com/changelog/2017-09-the-one-about-usernames
   """
   def lookup_user_id("@" <> user_name, slack) do
+    Logger.warn(@username_warning)
     slack.users
     |> Map.values()
     |> Enum.find(%{}, fn user ->
@@ -17,6 +28,9 @@ defmodule Slack.Lookups do
   Turns a string like `"@USER_NAME"` or a user ID (`"U…"`) into the ID for the
   direct message channel of that user (`"D…"`).  `nil` is returned if a direct
   message channel has not yet been opened.
+
+  NOTE: Referencing `"@USER_NAME"` is deprecated, and should not be used.
+  For more information see https://api.slack.com/changelog/2017-09-the-one-about-usernames
   """
   def lookup_direct_message_id(user = "@" <> _user_name, slack) do
     user
@@ -47,16 +61,24 @@ defmodule Slack.Lookups do
   @doc ~S"""
   Turns a Slack user ID (`"U…"`), direct message ID (`"D…"`), or bot ID (`"B…"`)
   into a string in the format "@USER_NAME".
+
+  NOTE: Referencing `"@USER_NAME"` is deprecated, and should not be used.
+  For more information see https://api.slack.com/changelog/2017-09-the-one-about-usernames
   """
   def lookup_user_name(direct_message_id = "D" <> _id, slack) do
     lookup_user_name(slack.ims[direct_message_id].user, slack)
   end
 
   def lookup_user_name(user_id = "U" <> _id, slack) do
-    "@" <> slack.users[user_id].name
+    find_username_by_id(user_id, slack)
+  end
+
+  def lookup_user_name(user_id = "W" <> _id, slack) do
+    find_username_by_id(user_id, slack)
   end
 
   def lookup_user_name(bot_id = "B" <> _id, slack) do
+    Logger.warn(@username_warning)
     "@" <> slack.bots[bot_id].name
   end
 
@@ -76,5 +98,10 @@ defmodule Slack.Lookups do
 
   defp find_channel_by_name(nested_map, name) do
     Enum.find_value(nested_map, fn {_id, map} -> if map.name == name, do: map, else: nil end)
+  end
+
+  defp find_username_by_id(user_id, slack) do
+    Logger.warn(@username_warning)
+    "@" <> slack.users[user_id].name
   end
 end

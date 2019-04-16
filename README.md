@@ -23,8 +23,25 @@ def application do
 end
 
 def deps do
-  [{:slack, "~> 0.14.0"}]
+  [{:slack, "~> 1.0.0"}]
 end
+```
+
+## Upgrading from 0.x to 1.0
+
+The newest version of the Slack client introduces breaking changes with regards to starting and connecting to the Real Time Messaging API. `rtm.start` is now [deprecated](https://api.slack.com/methods/rtm.start) and has since been replaced with [`rtm.connect`](https://api.slack.com/methods/rtm.connect). **This has removed the list of  `bots`, `channels`, `groups`, `users`, and `ims` that are normally returned from `rtm.start`**. Additionally, these lists are now rate-limited. In order to achieve relative parity to the old way of doing things, you'll need to make one change in your code:
+
+### Make additional calls to the Slack API fo grab bots, channels, groups, users, and IMs
+
+Wherever you grab the passed in `slack` state, add in additional calls to populate these lists:
+
+```elixir
+slack
+|> Map.put(:bots, Slack.Web.Bots.info(%{token: token}) |> Map.get("bot"))
+|> Map.put(:channels, Slack.Web.Channels.list(%{token: token}) |> Map.get("channels"))
+|> Map.put(:groups, Slack.Web.Groups.list(%{token: token}) |> Map.get("groups"))
+|> Map.put(:ims, Slack.Web.Im.list(%{token: token}) |> Map.get("ims"))
+|> Map.put(:users, Slack.Web.Users.list(%{token: token}) |> Map.get("members"))
 ```
 
 ## RTM (Bot) Usage
@@ -66,10 +83,9 @@ as the first argument, channel/user as the second, and the passed in `slack`
 state as the third.
 
 The passed in `slack` state holds the current user properties as `me`, team
-properties as `team`, the current websocket connection as `socket`, and a list
-of  `bots`, `channels`, `groups`, `users`, and `ims` (direct message channels).
+properties as `team`, and the current websocket connection as `socket`.
 
-[rtm.start]: https://api.slack.com/methods/rtm.start
+[rtm.connect]: https://api.slack.com/methods/rtm.connect
 
 If you want to do things like trigger the sending of messages outside of your
 Slack handlers, you can leverage the `handle_info/3` callback to implement an
@@ -142,7 +158,6 @@ See [HTTPoison docs](https://hexdocs.pm/httpoison/HTTPoison.html#request/5) for 
 ```elixir
 config :slack, :web_http_client_opts, [timeout: 10_000, recv_timeout: 10_000]
 ```
-
 
 ## Testing
 

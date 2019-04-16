@@ -1,12 +1,6 @@
 {
 	"desc": "Starts a Real Time Messaging session.",
-
 	"args": {
-    "token": {
-      "type": "string",
-      "required": true,
-      "desc": "Authentication token bearing required scopes."
-    },
     "batch_presence_aware": {
       "type": "int",
       "required": false,

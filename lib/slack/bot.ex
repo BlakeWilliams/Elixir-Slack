@@ -1,6 +1,5 @@
 defmodule Slack.Bot do
   require Logger
-  alias Slack.Web.{Bots, Channels, Groups, Im, Users}
 
   @behaviour :websocket_client
 
@@ -87,11 +86,6 @@ defmodule Slack.Bot do
       })
 
   """
-  @since "0.17.0"
-  @deprecated """
-  `rtm.start` is replaced with `rtm.connect` and will no longer receive bots, channels, groups, users, or IMs.
-  In future versions these will no longer be provided on initialization.
-  """
   def init(%{
         bot_handler: bot_handler,
         rtm: rtm,
@@ -104,12 +98,7 @@ defmodule Slack.Bot do
       client: client,
       token: token,
       me: rtm.self,
-      team: rtm.team,
-      bots: bot_to_map(Bots.info(%{token: token}) |> Map.get("bot")),
-      channels: rtm_list_to_map(Channels.list(%{token: token}) |> Map.get("channels")),
-      groups: rtm_list_to_map(Groups.list(%{token: token}) |> Map.get("groups")),
-      users: rtm_list_to_map(Users.list(%{token: token}) |> Map.get("members")),
-      ims: rtm_list_to_map(Im.list(%{token: token}) |> Map.get("ims"))
+      team: rtm.team
     }
 
     {:reconnect, %{slack: slack, bot_handler: bot_handler, process_state: initial_state}}
@@ -193,16 +182,6 @@ defmodule Slack.Bot do
   end
 
   def websocket_handle(_, _conn, state), do: {:ok, state}
-
-  defp bot_to_map(bot) do
-    %{"#{bot.id}" => bot}
-  end
-
-  defp rtm_list_to_map(list) do
-    Enum.reduce(list, %{}, fn item, map ->
-      Map.put(map, item.id, item)
-    end)
-  end
 
   defp prepare_message(binstring) do
     binstring

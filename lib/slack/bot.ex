@@ -36,7 +36,7 @@ defmodule Slack.Bot do
 
     rtm_module = Application.get_env(:slack, :rtm_module, Slack.Rtm)
 
-    case rtm_module.connect(token) do
+    case rtm_module.start(token) do
       {:ok, rtm} ->
         state = %{
           bot_handler: bot_handler,
@@ -74,6 +74,11 @@ defmodule Slack.Bot do
   # websocket_client API
 
   @doc false
+  @since "0.19.0"
+  @deprecated """
+  `rtm.start` is replaced with `rtm.connect` and will no longer receive bots, channels, groups, users, or IMs.
+  In future versions these will no longer be provided on initialization.
+  """
   def init(%{
         bot_handler: bot_handler,
         rtm: rtm,

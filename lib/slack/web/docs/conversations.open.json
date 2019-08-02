@@ -1,0 +1,45 @@
+{
+    "args": {
+        "channel": {
+            "desc": "Resume a conversation by supplying an im or mpim's ID. Or provide the users field instead.",
+            "required": false,
+            "type": "channel"
+        },
+        "return_im": {
+            "desc": "Boolean, indicates you want the full IM channel definition in the response.",
+            "required": false
+        },
+        "users": {
+            "desc": "Comma separated lists of users. If only one user is included, this creates a 1:1 DM. The ordering of the users is preserved whenever a multi-person direct message is returned. Supply a channel when not supplying users.",
+            "required": false
+        }
+    },
+    "desc": "This Conversations API method opens a multi-person direct message or just a 1:1 direct message.",
+    "errors": {
+        "account_inactive": "Authentication token is for a deleted user or workspace.",
+        "channel_not_found": "Value passed for channel was invalid.",
+        "ekm_access_denied": "Administrators have suspended the ability to post a message.",
+        "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+        "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+        "invalid_arguments": "The method was called with invalid arguments.",
+        "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
+        "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.",
+        "invalid_form_data": "The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+        "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.",
+        "method_not_supported_for_channel_type": "This type of conversation cannot be used with this method.",
+        "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+        "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+        "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+        "not_authed": "No authentication token provided.",
+        "not_enough_users": "Needs at least 2 users to open",
+        "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+        "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+        "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+        "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed.",
+        "too_many_users": "Needs at most 8 users to open",
+        "user_disabled": "A specified user has been disabled.",
+        "user_not_found": "Value(s) passed for users was invalid.",
+        "user_not_visible": "The calling user is restricted from seeing the requested user.",
+        "users_list_not_supplied": "Missing users in request"
+    }
+}

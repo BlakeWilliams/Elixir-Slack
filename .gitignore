@@ -6,3 +6,6 @@ erl_crash.dump
 
 .idea
 *.iml
+.elixir_ls
+
+.DS_Store

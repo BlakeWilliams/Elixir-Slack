@@ -102,13 +102,12 @@ defmodule Slack.Sends do
   end
 
   defp open_im_channel(token, user_id, on_success, on_error) do
-    url = Application.get_env(:slack, :url, "https://slack.com")
-
     im_open =
-      HTTPoison.post(
-        url <> "/api/im.open",
-        {:form, [token: token, user: user_id]}
-      )
+      with url <- Application.get_env(:slack, :url, "https://slack.com") <> "/api/im.open",
+           headers <- {:form, [token: token, user: user_id]},
+           options <- Application.get_env(:slack, :web_http_client_opts, []) do
+        HTTPoison.post(url, headers, options)
+      end
 
     case im_open do
       {:ok, response} ->

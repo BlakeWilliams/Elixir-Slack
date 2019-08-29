@@ -8,5 +8,5 @@ defmodule Slack.CommandHandler.EcoCommandHandler do
   @behaviour Slack.CommandHandler
 
   @impl Slack.CommandHandler
-  def handle_command(command), do: Message.new(%{text: command.text})
+  def handle_command(command, _opts), do: Message.new(%{text: command.text})
 end

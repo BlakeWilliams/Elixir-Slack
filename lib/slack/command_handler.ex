@@ -21,9 +21,9 @@ defmodule Slack.CommandHandler do
   * `handler`: A module that handles the command that matches the `command` name.
   """
   @type t :: %__MODULE__{
-    command: String.t(),
-    handler: module()
-  }
+          command: String.t(),
+          handler: module()
+        }
 
   @enforce_keys [:command, :handler]
   defstruct [:command, :handler]

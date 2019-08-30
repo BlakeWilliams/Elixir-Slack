@@ -19,14 +19,16 @@ defmodule Slack.CommandHandler do
 
   * `command`: is the value of the command input from the Slack interface.
   * `handler`: A module that handles the command that matches the `command` name.
+  * `opts`: Options are used for custom configuration that your handler would need.
   """
   @type t :: %__MODULE__{
           command: String.t(),
-          handler: module()
+          handler: module(),
+          opts: keyword()
         }
 
   @enforce_keys [:command, :handler]
-  defstruct [:command, :handler]
+  defstruct [:command, :handler, :opts]
 
   @doc """
   Creates a Slack Command Handler.
@@ -62,6 +64,6 @@ defmodule Slack.CommandHandler do
   defp run_command_handler(nil, _command), do: ""
 
   defp run_command_handler(command_handler, command) do
-    command_handler.handler.handle_command(command)
+    command_handler.handler.handle_command(command, command_handler.opts)
   end
 end

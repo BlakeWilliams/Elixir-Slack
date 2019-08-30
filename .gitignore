@@ -3,6 +3,7 @@
 /doc
 erl_crash.dump
 *.ez
+/cover
 
 .idea
 *.iml

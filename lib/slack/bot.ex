@@ -74,7 +74,6 @@ defmodule Slack.Bot do
   # websocket_client API
 
   @doc false
-  @since "0.19.0"
   @deprecated """
   `rtm.start` is replaced with `rtm.connect` and will no longer receive bots, channels, groups, users, or IMs.
   In future versions these will no longer be provided on initialization.

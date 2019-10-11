@@ -74,7 +74,7 @@ defmodule Slack.StateTest do
   end
 
   test "team_join adds user to users" do
-    user_length = Map.size(slack().users)
+    user_length = map_size(slack().users)
 
     new_slack =
       State.update(
@@ -82,7 +82,7 @@ defmodule Slack.StateTest do
         slack()
       )
 
-    assert Map.size(new_slack.users) == user_length + 1
+    assert map_size(new_slack.users) == user_length + 1
   end
 
   test "user_change updates user" do
@@ -97,7 +97,7 @@ defmodule Slack.StateTest do
   end
 
   test "bot_added adds bot to bots" do
-    bot_length = Map.size(slack().bots)
+    bot_length = map_size(slack().bots)
 
     new_slack =
       State.update(
@@ -105,7 +105,7 @@ defmodule Slack.StateTest do
         slack()
       )
 
-    assert Map.size(new_slack.bots) == bot_length + 1
+    assert map_size(new_slack.bots) == bot_length + 1
   end
 
   test "bot_changed updates bot in bots" do

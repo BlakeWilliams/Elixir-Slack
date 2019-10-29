@@ -1,14 +1,11 @@
 language: elixir
 matrix:
   include:
-    - otp_release: 19.3
-      elixir: 1.4.0
-      env: MIX_ENV=test
     - otp_release: 20.3
       elixir: 1.6.6
       env: MIX_ENV=test
     - otp_release: 22.0
-      elixir: 1.9.1
+      elixir: 1.9.2
       env: MIX_ENV=test
 after_success:
   - mix coveralls.travis

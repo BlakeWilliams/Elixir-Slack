@@ -22,7 +22,7 @@ defmodule Slack.Web.DefaultClient do
     url
     |> HTTPoison.post!(body, [], opts())
     |> Map.fetch!(:body)
-    |> Poison.Parser.parse!()
+    |> Poison.Parser.parse!(%{})
   end
 
   defp opts do

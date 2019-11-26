@@ -22,19 +22,20 @@ defmodule Slack.Rtm do
   end
 
   defp handle_response({:ok, %HTTPoison.Response{body: body}}) do
-    case Poison.Parser.parse(body, keys: :atoms) do
-      {:ok, %{ok: true} = json} ->
+    case Poison.Parser.parse!(body, %{keys: :atoms}) do
+      %{ok: true} = json ->
         {:ok, json}
 
-      {:ok, %{error: reason}} ->
+      %{error: reason} ->
         {:error, "Slack API returned an error `#{reason}.\n Response: #{body}"}
-
-      {:error, reason} ->
-        {:error, %Slack.JsonDecodeError{reason: reason, string: body}}
 
       _ ->
         {:error, "Invalid RTM response"}
     end
+  rescue
+    error in Poison.ParseError ->
+      %Poison.ParseError{pos: _, value: reason, rest: _} = error
+      {:error, %Slack.JsonDecodeError{reason: reason, string: body}}
   end
 
   defp handle_response(error), do: error

@@ -12,9 +12,13 @@ defmodule Slack.Rtm do
   @moduledoc false
 
   def start(token) do
-    slack_url(token)
-    |> HTTPoison.get()
-    |> handle_response()
+    with url <- slack_url(token),
+         headers <- [],
+         options <- Application.get_env(:slack, :web_http_client_opts, []) do
+      url
+      |> HTTPoison.get(headers, options)
+      |> handle_response()
+    end
   end
 
   defp handle_response({:ok, %HTTPoison.Response{body: body}}) do

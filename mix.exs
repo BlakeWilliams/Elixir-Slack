@@ -5,7 +5,7 @@ defmodule Slack.Mixfile do
     [
       app: :slack,
       version: "1.0.0",
-      elixir: "~> 1.2",
+      elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env()),
       name: "Slack",
       deps: deps(),
@@ -20,7 +20,9 @@ defmodule Slack.Mixfile do
   defp elixirc_paths(_), do: ["lib"]
 
   def application do
-    [applications: [:logger, :httpoison, :hackney, :crypto, :websocket_client]]
+    [
+      extra_applications: [:logger]
+    ]
   end
 
   defp deps do

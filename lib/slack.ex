@@ -3,11 +3,11 @@ defmodule Slack do
   Slack is a genserver-ish interface for working with the Slack real time
   messaging API through a Websocket connection.
 
-  To use this module you'll need a valid Slack API token. You can find your
-  personal token on the [Slack Web API] page, or you can add a new
-  [bot integration].
+  To use this module you'll need a need a Slack API token which can be retrieved
+  by following the [Token Generation Instructions] or by creating a new [bot
+  integration].
 
-  [Slack Web API]: https://api.slack.com/web
+  [Token Generation Instructions]: https://hexdocs.pm/slack/token_generation_instructions.html
   [bot integration]: https://api.slack.com/bot-users
 
   ## Example
@@ -78,13 +78,12 @@ defmodule Slack do
       import Slack.Lookups
       import Slack.Sends
 
-
       def handle_connect(_slack, state), do: {:ok, state}
       def handle_event(_message, _slack, state), do: {:ok, state}
       def handle_close(_reason, _slack, state), do: :close
       def handle_info(_message, _slack, state), do: {:ok, state}
 
-      defoverridable [handle_connect: 2, handle_event: 3, handle_close: 3, handle_info: 3]
+      defoverridable handle_connect: 2, handle_event: 3, handle_close: 3, handle_info: 3
     end
   end
 end

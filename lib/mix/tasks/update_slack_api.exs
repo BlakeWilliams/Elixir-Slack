@@ -2,11 +2,16 @@ defmodule Mix.Tasks.UpdateSlackApi do
   @moduledoc "Updates Slack API documentation files for generating API code"
 
   use Mix.Task
-  @dir System.tmp_dir
+  @dir System.tmp_dir()
 
   def run(_) do
     try do
-      System.cmd("git", ["clone", "https://github.com/slackhq/slack-api-docs", "#{@dir}/slack-api-docs"])
+      System.cmd("git", [
+        "clone",
+        "https://github.com/slackhq/slack-api-docs",
+        "#{@dir}/slack-api-docs"
+      ])
+
       list_files()
       |> filter_json
       |> copy_files
@@ -20,14 +25,15 @@ defmodule Mix.Tasks.UpdateSlackApi do
   end
 
   defp filter_json(files) do
-    Enum.filter(files, fn(file) ->
+    Enum.filter(files, fn file ->
       String.ends_with?(file, "json")
     end)
   end
 
   defp copy_files(files) do
     File.mkdir_p!("lib/slack/web/docs")
-    Enum.map(files, fn(file) ->
+
+    Enum.map(files, fn file ->
       origin = "#{@dir}slack-api-docs/methods/#{file}"
       dest = "lib/slack/web/docs/#{file}"
       File.cp!(origin, dest)

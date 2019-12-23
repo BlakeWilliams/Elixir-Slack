@@ -2,14 +2,14 @@ defmodule Slack.FakeSlack.Router do
   use Plug.Router
   import Plug.Conn
 
-  plug :match
-  plug :dispatch
+  plug(:match)
+  plug(:dispatch)
 
   get "/api/rtm.start" do
     conn = fetch_query_params(conn)
 
     pid = Application.get_env(:slack, :test_pid)
-    send pid, {:token, conn.query_params["token"]}
+    send(pid, {:token, conn.query_params["token"]})
 
     response = ~S(
       {

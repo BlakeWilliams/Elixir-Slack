@@ -4,11 +4,12 @@ Status](https://api.travis-ci.org/BlakeWilliams/Elixir-Slack.svg?branch=master)]
 # Elixir-Slack
 
 This is a Slack [Real Time Messaging API] client for Elixir.  You'll need a
-Slack API token which can be retrieved from the [Web API page] or by creating a
+Slack API token which can be retrieved by following the [Token Generation
+Instructions] or by creating a
 new [bot integration].
 
 [Real time Messaging API]: https://api.slack.com/rtm
-[Web API page]: https://api.slack.com/web
+[Token Generation Instructions]: https://hexdocs.pm/slack/token_generation_instructions.html
 [bot integration]: https://my.slack.com/services/new/bot
 
 ## Installing
@@ -23,7 +24,7 @@ def application do
 end
 
 def deps do
-  [{:slack, "~> 0.14.0"}]
+  [{:slack, "~> 0.19.0"}]
 end
 ```
 
@@ -131,13 +132,13 @@ custom error handling as needed.
 config :slack, :web_http_client, YourApp.CustomClient
 ```
 
-All Web API calls from documenation-generated modules/functions will call `post!/2` with the generated url
+All Web API calls from documentation-generated modules/functions will call `post!/2` with the generated url
 and body passed as arguments.
 
 In the case where you only need to control the options passed to HTTPoison/hackney, the default client accepts
 a keyword list as an additional configuration parameter. Note that this is ignored if configuring a custom client.
 
-See [HTTPoison docs](https://hexdocs.pm/httpoison/HTTPoison.html#request/5) for a list of avilable options.
+See [HTTPoison docs](https://hexdocs.pm/httpoison/HTTPoison.html#request/5) for a list of available options.
 
 ```elixir
 config :slack, :web_http_client_opts, [timeout: 10_000, recv_timeout: 10_000]

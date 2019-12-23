@@ -17,23 +17,23 @@ defmodule Slack.BotTest do
   }
 
   test "init formats rtm results properly" do
-    {:reconnect, %{slack: slack, bot_handler: bot_handler}}
-      = Slack.Bot.init(%{
-          bot_handler: Bot,
-          rtm: @rtm,
-          client: FakeWebsocketClient,
-          token: "ABC",
-          initial_state: nil,
-        })
+    {:reconnect, %{slack: slack, bot_handler: bot_handler}} =
+      Slack.Bot.init(%{
+        bot_handler: Bot,
+        rtm: @rtm,
+        client: FakeWebsocketClient,
+        token: "ABC",
+        initial_state: nil
+      })
 
     assert bot_handler == Bot
     assert slack.me.name == "fake"
     assert slack.team.name == "Foo"
-    assert slack.bots     == %{"123" => %{id: "123"}}
+    assert slack.bots == %{"123" => %{id: "123"}}
     assert slack.channels == %{"123" => %{id: "123"}}
-    assert slack.groups   == %{"123" => %{id: "123"}}
-    assert slack.users    == %{"123" => %{id: "123"}}
-    assert slack.ims      == %{"123" => %{id: "123"}}
+    assert slack.groups == %{"123" => %{id: "123"}}
+    assert slack.users == %{"123" => %{id: "123"}}
+    assert slack.ims == %{"123" => %{id: "123"}}
   end
 
   defmodule Stubs.Slack.Rtm do
@@ -52,7 +52,9 @@ defmodule Slack.BotTest do
     original_slack_rtm = Application.get_env(:slack, :rtm_module, Slack.Rtm)
 
     Application.put_env(:slack, :rtm_module, Stubs.Slack.Rtm)
-    assert {:ok, _pid} = Slack.Bot.start_link(Bot, %{}, "token", %{client: Stubs.Slack.WebsocketClient})
+
+    assert {:ok, _pid} =
+             Slack.Bot.start_link(Bot, %{}, "token", %{client: Stubs.Slack.WebsocketClient})
 
     Application.put_env(:slack, :rtm_module, original_slack_rtm)
   end

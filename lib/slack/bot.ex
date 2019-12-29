@@ -71,19 +71,10 @@ defmodule Slack.Bot do
     end
   end
 
-  @doc """
-  Initializes an Erlang `websocket_client`, providing it the state of the Slack workspace.
-
-  ## Example
-
-  {:reconnect, %{slack: slack, bot_handler: bot_handler}} =
-      Slack.Bot.init(%{
-        bot_handler: Bot,
-        rtm: @rtm,
-        client: FakeWebsocketClient,
-        token: "ABC",
-        initial_state: nil
-      })
+  @doc false
+  @deprecated """
+  `rtm.start` is replaced with `rtm.connect` and will no longer receive bots, channels, groups, users, or IMs.
+  In future versions these will no longer be provided on initialization.
   """
   def init(%{
         bot_handler: bot_handler,
@@ -186,7 +177,7 @@ defmodule Slack.Bot do
     binstring
     |> :binary.split(<<0>>)
     |> List.first()
-    |> Poison.Parser.parse!(keys: :atoms)
+    |> Poison.Parser.parse!(%{keys: :atoms})
   end
 
   defp handle_exception(e) do

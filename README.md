@@ -32,7 +32,7 @@ end
 
 The newest version of the Slack client introduces breaking changes with regards to starting and connecting to the Real Time Messaging API. `rtm.start` is now [deprecated](https://api.slack.com/methods/rtm.start) and has since been replaced with [`rtm.connect`](https://api.slack.com/methods/rtm.connect). **This has removed the list of  `bots`, `channels`, `groups`, `users`, and `ims` that are normally returned from `rtm.start`**. Additionally, these lists are now rate-limited. In order to achieve relative parity to the old way of doing things, you'll need to make one change in your code:
 
-### Make additional calls to the Slack API fo grab bots, channels, groups, users, and IMs
+### Make additional calls to the Slack API to fetch bots, channels, groups, users, and IMs
 
 Wherever you grab the passed in `slack` state, add in additional calls to populate these lists:
 

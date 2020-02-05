@@ -31,7 +31,7 @@ defmodule Slack.Bot do
           keepalive: 10_000,
           name: nil
         },
-        options
+        Map.new(options)
       )
 
     rtm_module = Application.get_env(:slack, :rtm_module, Slack.Rtm)

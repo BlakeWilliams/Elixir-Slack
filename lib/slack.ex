@@ -83,7 +83,23 @@ defmodule Slack do
       def handle_close(_reason, _slack, state), do: :close
       def handle_info(_message, _slack, state), do: {:ok, state}
 
-      defoverridable handle_connect: 2, handle_event: 3, handle_close: 3, handle_info: 3
+      def child_spec(_opts) do
+        %{
+          id: __MODULE__,
+          start: {__MODULE__, :start_link, []},
+          type: :worker,
+          restart: :permanent,
+          shutdown: 500
+        }
+      end
+
+      defoverridable [
+        handle_connect: 2,
+        handle_event: 3,
+        handle_close: 3,
+        handle_info: 3,
+        child_spec: 1
+      ]
     end
   end
 end

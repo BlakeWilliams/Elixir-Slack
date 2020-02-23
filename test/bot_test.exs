@@ -8,12 +8,7 @@ defmodule Slack.BotTest do
   @rtm %{
     url: "http://example.com",
     self: %{name: "fake"},
-    team: %{name: "Foo"},
-    bots: [%{id: "123"}],
-    channels: [%{id: "123"}],
-    groups: [%{id: "123"}],
-    users: [%{id: "123"}],
-    ims: [%{id: "123"}]
+    team: %{name: "Foo"}
   }
 
   test "init formats rtm results properly" do
@@ -29,11 +24,6 @@ defmodule Slack.BotTest do
     assert bot_handler == Bot
     assert slack.me.name == "fake"
     assert slack.team.name == "Foo"
-    assert slack.bots == %{"123" => %{id: "123"}}
-    assert slack.channels == %{"123" => %{id: "123"}}
-    assert slack.groups == %{"123" => %{id: "123"}}
-    assert slack.users == %{"123" => %{id: "123"}}
-    assert slack.ims == %{"123" => %{id: "123"}}
   end
 
   defmodule Stubs.Slack.Rtm do

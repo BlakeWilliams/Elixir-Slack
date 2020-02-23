@@ -71,8 +71,6 @@ defmodule Slack.Bot do
     end
   end
 
-  # websocket_client API
-
   @doc false
   @deprecated """
   `rtm.start` is replaced with `rtm.connect` and will no longer receive bots, channels, groups, users, or IMs.
@@ -90,12 +88,7 @@ defmodule Slack.Bot do
       client: client,
       token: token,
       me: rtm.self,
-      team: rtm.team,
-      bots: rtm_list_to_map(rtm.bots),
-      channels: rtm_list_to_map(rtm.channels),
-      groups: rtm_list_to_map(rtm.groups),
-      users: rtm_list_to_map(rtm.users),
-      ims: rtm_list_to_map(rtm.ims)
+      team: rtm.team
     }
 
     {:reconnect, %{slack: slack, bot_handler: bot_handler, process_state: initial_state}}
@@ -179,12 +172,6 @@ defmodule Slack.Bot do
   end
 
   def websocket_handle(_, _conn, state), do: {:ok, state}
-
-  defp rtm_list_to_map(list) do
-    Enum.reduce(list, %{}, fn item, map ->
-      Map.put(map, item.id, item)
-    end)
-  end
 
   defp prepare_message(binstring) do
     binstring

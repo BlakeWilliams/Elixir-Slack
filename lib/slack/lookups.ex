@@ -16,6 +16,7 @@ defmodule Slack.Lookups do
   """
   def lookup_user_id("@" <> user_name, slack) do
     Logger.warn(@username_warning)
+
     slack.users
     |> Map.values()
     |> Enum.find(%{}, fn user ->

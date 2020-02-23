@@ -1,0 +1,17 @@
+{
+  "desc": "Revokes a token.",
+
+  "args": {
+    "test": {
+      "required": false,
+      "example": true,
+      "desc": "Setting this parameter to 1 triggers a testing mode where the specified token will not actually be revoked."
+    }
+  },
+
+  "errors": {
+    "not_bearer_token": "Incompatible token type provided",
+    "not_authed": "No authentication token provided.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request."
+  }
+}

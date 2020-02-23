@@ -29,7 +29,7 @@ defmodule Slack.Sends do
       raise ArgumentError, "channel ##{channel_name} not found"
     end
   end
-  
+
   def send_message(text, user_id = "U" <> _user_id, slack) do
     send_message_to_user(text, user_id, slack)
   end
@@ -52,7 +52,7 @@ defmodule Slack.Sends do
     |> Poison.encode!()
     |> send_raw(slack)
   end
-  
+
   def send_message(text, channel, slack, thread) do
     %{
       type: "message",
@@ -60,8 +60,8 @@ defmodule Slack.Sends do
       channel: channel,
       thread_ts: thread
     }
-      |> Poison.encode!()
-      |> send_raw(slack)
+    |> Poison.encode!()
+    |> send_raw(slack)
   end
 
   @doc """
@@ -126,7 +126,8 @@ defmodule Slack.Sends do
     im_open =
       with url <- Application.get_env(:slack, :url, "https://slack.com") <> "/api/im.open",
            headers <- {:form, [token: token, user: user_id]},
-           options <- Application.get_env(:slack, :web_http_client_opts, []) do
+           options <-
+             Application.get_env(:slack, :web_http_client_opts, [{"Content-Type", "utf-8"}]) do
         HTTPoison.post(url, headers, options)
       end
 

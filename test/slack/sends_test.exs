@@ -56,7 +56,7 @@ defmodule Slack.SendsTest do
     result = Sends.send_message("hello", "U123", slack)
     assert result == {nil, ~s/{"type":"message","text":"hello","channel":"D789"}/}
   end
-  
+
   test "send_message understands user ids (Wxxx)" do
     slack = %{
       process: nil,

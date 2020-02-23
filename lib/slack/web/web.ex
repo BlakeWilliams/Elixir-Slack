@@ -24,8 +24,11 @@ end
 alias Slack.Web.Documentation
 
 Enum.each(Slack.Web.get_documentation(), fn {module_name, functions} ->
-  module_name = module_name |> Macro.camelize()
-  module = Module.concat(Slack.Web, module_name)
+  module =
+    module_name
+    |> String.split(".")
+    |> Enum.map(&Macro.camelize/1)
+    |> Enum.reduce(Slack.Web, &Module.concat(&2, &1))
 
   defmodule module do
     Enum.each(functions, fn doc ->

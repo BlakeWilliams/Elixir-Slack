@@ -13,13 +13,13 @@ defmodule Slack.Web.Documentation do
   ]
 
   def new(documentation, file_name) do
-    [module_name, function_name] =
-      String.replace(file_name, ".json", "")
-      |> String.split(".", parts: 2)
+    endpoint = String.replace(file_name, ".json", "")
+
+    {module_name, function_name} = parse_endpoint(endpoint)
 
     %__MODULE__{
       module: module_name,
-      endpoint: "#{module_name}.#{function_name}",
+      endpoint: endpoint,
       function: function_name |> Macro.underscore() |> String.to_atom(),
       desc: documentation["desc"],
       required_params: get_required_params(documentation),
@@ -108,5 +108,17 @@ defmodule Slack.Web.Documentation do
 
   defp get_params_with_required(_json, _required) do
     []
+  end
+
+  @spec parse_endpoint(String.t()) :: {String.t(), String.t()}
+  defp parse_endpoint(endpoint) do
+    {module_name, function_name} =
+      endpoint
+      |> String.graphemes()
+      |> Enum.reverse()
+      |> Enum.find_index(&(&1 == "."))
+      |> (&(String.split_at(endpoint, -&1))).()
+
+    {String.replace_suffix(module_name, ".", ""), function_name}
   end
 end

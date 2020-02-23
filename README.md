@@ -24,11 +24,11 @@ def application do
 end
 
 def deps do
-  [{:slack, "~> 1.0.0"}]
+  [{:slack, "~> 0.20.0"}]
 end
 ```
 
-## Upgrading from 0.x to 1.0
+## Upgrading from 0.x to 0.20
 
 The newest version of the Slack client introduces breaking changes with regards to starting and connecting to the Real Time Messaging API. `rtm.start` is now [deprecated](https://api.slack.com/methods/rtm.start) and has since been replaced with [`rtm.connect`](https://api.slack.com/methods/rtm.connect). **This has removed the list of  `bots`, `channels`, `groups`, `users`, and `ims` that are normally returned from `rtm.start`**. Additionally, these lists are now rate-limited. In order to achieve relative parity to the old way of doing things, you'll need to make one change in your code:
 

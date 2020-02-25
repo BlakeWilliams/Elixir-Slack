@@ -117,6 +117,7 @@ defmodule Slack.Bot do
       {:close, reason, state}
     rescue
       e ->
+        Logger.error(__STACKTRACE__)
         handle_exception(e)
         {:close, reason, state}
     end
@@ -133,6 +134,7 @@ defmodule Slack.Bot do
       {:ok, %{state | process_state: new_process_state}}
     rescue
       e ->
+        Logger.error(__STACKTRACE__)
         handle_exception(e)
         {:ok, state}
     end
@@ -162,7 +164,9 @@ defmodule Slack.Bot do
           {:ok, new_process_state} = bot_handler.handle_event(message, slack, process_state)
           new_process_state
         rescue
-          e -> handle_exception(e)
+          e ->
+            Logger.error(__STACKTRACE__)
+            handle_exception(e)
         end
       else
         process_state
@@ -183,7 +187,6 @@ defmodule Slack.Bot do
   defp handle_exception(e) do
     message = Exception.message(e)
     Logger.error(message)
-    System.stacktrace() |> Exception.format_stacktrace() |> Logger.error()
     raise message
   end
 end

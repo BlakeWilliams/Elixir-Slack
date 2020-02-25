@@ -4,18 +4,18 @@
   "args": {
     "token": {
       "required": true,
-      "example" : "xxxx-xxxxxxxxx-xxxx",
-      "desc"    : "Authentication token bearing required scopes."
+      "example": "xxxx-xxxxxxxxx-xxxx",
+      "desc": "Authentication token bearing required scopes."
     },
     "trigger_id": {
       "required": true,
-      "example" : "12345.98765.abcd2358fdea",
-      "desc"    : "Exchange a trigger to post to the user."
+      "example": "12345.98765.abcd2358fdea",
+      "desc": "Exchange a trigger to post to the user."
     },
     "view": {
       "required": true,
-      "example" : "Ar12345",
-      "desc"    : "A view payload. This must be a JSON-encoded string."
+      "example": "Ar12345",
+      "desc": "A view payload. This must be a JSON-encoded string."
     }
   },
 

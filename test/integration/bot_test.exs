@@ -57,6 +57,6 @@ defmodule Slack.Integration.BotTest do
   end
 
   defp send_message_to_client(pid, message) do
-    send(pid, Poison.encode!(%{type: "message", text: message, channel: "C0123abc"}))
+    send(pid, Jason.encode!(%{type: "message", text: message, channel: "C0123abc"}))
   end
 end

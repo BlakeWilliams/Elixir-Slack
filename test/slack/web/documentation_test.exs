@@ -38,7 +38,7 @@ defmodule Slack.Web.DocumentationTest do
       file_content =
         "#{__DIR__}/../../../lib/slack/web/docs/oauth.v2.access.json"
         |> File.read!()
-        |> Poison.Parser.parse!(%{})
+        |> Jason.decode!(%{})
 
       doc = Documentation.new(file_content, "oauth.v2.access.json")
 

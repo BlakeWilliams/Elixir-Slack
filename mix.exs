@@ -4,7 +4,7 @@ defmodule Slack.Mixfile do
   def project do
     [
       app: :slack,
-      version: "0.22.0",
+      version: "0.23.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       name: "Slack",
@@ -29,7 +29,7 @@ defmodule Slack.Mixfile do
     [
       {:httpoison, "~> 1.2"},
       {:websocket_client, "~> 1.2.4"},
-      {:poison, "~> 4.0"},
+      {:jason, "~> 1.1"},
       {:ex_doc, "~> 0.19", only: :dev},
       {:credo, "~> 0.5", only: [:dev, :test]},
       {:plug, "~> 1.6", only: :test},

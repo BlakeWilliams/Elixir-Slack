@@ -39,7 +39,7 @@ defmodule Slack.Sends do
       text: text,
       channel: channel
     }
-    |> Poison.encode!()
+    |> Jason.encode!()
     |> send_raw(slack)
   end
 
@@ -60,7 +60,7 @@ defmodule Slack.Sends do
       channel: channel,
       thread_ts: thread
     }
-    |> Poison.encode!()
+    |> Jason.encode!()
     |> send_raw(slack)
   end
 
@@ -72,7 +72,7 @@ defmodule Slack.Sends do
       type: "typing",
       channel: channel
     }
-    |> Poison.encode!()
+    |> Jason.encode!()
     |> send_raw(slack)
   end
 
@@ -84,7 +84,7 @@ defmodule Slack.Sends do
       type: "ping"
     }
     |> Map.merge(Map.new(data))
-    |> Poison.encode!()
+    |> Jason.encode!()
     |> send_raw(slack)
   end
 
@@ -96,7 +96,7 @@ defmodule Slack.Sends do
       type: "presence_sub",
       ids: ids
     }
-    |> Poison.encode!()
+    |> Jason.encode!()
     |> send_raw(slack)
   end
 
@@ -133,7 +133,7 @@ defmodule Slack.Sends do
 
     case im_open do
       {:ok, response} ->
-        case Poison.Parser.parse!(response.body, %{keys: :atoms}) do
+        case Jason.decode!(response.body, keys: :atoms) do
           %{ok: true, channel: %{id: id}} -> on_success.(id)
           e = %{error: _error_message} -> on_error.(e)
         end

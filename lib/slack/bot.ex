@@ -181,7 +181,7 @@ defmodule Slack.Bot do
     binstring
     |> :binary.split(<<0>>)
     |> List.first()
-    |> Poison.Parser.parse!(%{keys: :atoms})
+    |> Jason.decode!(keys: :atoms)
   end
 
   defp handle_exception(e) do

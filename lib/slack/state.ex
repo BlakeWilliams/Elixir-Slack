@@ -53,27 +53,6 @@ defmodule Slack.State do
     put_in(slack, [:groups, channel.id], channel)
   end
 
-  def update(
-        %{type: "message", subtype: "channel_topic", channel: channel, user: user, topic: topic},
-        slack
-      ) do
-    put_in(slack, [:channels, channel, :topic], %{
-      creator: user,
-      last_set: System.system_time(:second),
-      value: topic
-    })
-  end
-
-  def update(
-        %{type: "message", subtype: "group_topic", channel: channel, user: user, topic: topic},
-        slack
-      ) do
-    put_in(slack, [:groups, channel, :topic], %{
-      creator: user,
-      last_set: System.system_time(:second),
-      value: topic
-    })
-  end
 
   def update(%{type: "channel_left", channel: channel_id}, slack) do
     put_in(slack, [:channels, channel_id, :is_member], false)
@@ -96,6 +75,17 @@ defmodule Slack.State do
 
     def update(%{type: unquote(type <> "_unarchive"), channel: channel}, slack) do
       put_in(slack, [unquote(plural_atom), safe_map_getter(channel), :is_archived], false)
+    end
+
+    def update(
+          %{type: "message", subtype: unquote(type <> "_topic"), channel: channel, user: user, topic: topic},
+          slack
+        ) do
+      put_in(slack, [unquote(plural_atom), safe_map_getter(channel), :topic], %{
+        creator: user,
+        last_set: System.system_time(:second),
+        value: topic
+      })
     end
 
     def update(

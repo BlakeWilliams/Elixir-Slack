@@ -45,14 +45,6 @@ defmodule Slack.State do
     put_in(slack, [:groups, channel.id], channel)
   end
 
-  def update(%{type: "message", subtype: "channel_join", channel: channel, user: user}, slack) do
-    put_in(slack, [:channels, channel, :members], [user | slack[:channels][channel][:members]])
-  end
-
-  def update(%{type: "message", subtype: "group_join", channel: channel, user: user}, slack) do
-    update_in(slack, [:groups, channel, :members], &Enum.uniq([user | &1]))
-  end
-
   def update(
         %{type: "message", subtype: "channel_topic", channel: channel, user: user, topic: topic},
         slack
@@ -96,6 +88,13 @@ defmodule Slack.State do
 
     def update(%{type: unquote(type <> "_unarchive"), channel: channel}, slack) do
       put_in(slack, [unquote(plural_atom), channel, :is_archived], false)
+    end
+
+    def update(
+          %{type: "message", subtype: unquote(type <> "_join"), channel: channel, user: user},
+          slack
+        ) do
+      update_in(slack, [unquote(plural_atom), channel, :members], &Enum.uniq([user | &1]))
     end
 
     def update(

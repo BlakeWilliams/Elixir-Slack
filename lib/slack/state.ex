@@ -27,6 +27,14 @@ defmodule Slack.State do
     ims: %{}
   ]
 
+  defp safe_map_getter(key) do
+    Access.key(key, %{})
+  end
+
+  defp safe_list_getter(key) do
+    Access.key(key, [])
+  end
+
   @doc """
   Pattern matches against messages and returns updated Slack state.
   """
@@ -79,29 +87,29 @@ defmodule Slack.State do
     plural_atom = String.to_atom(type <> "s")
 
     def update(%{type: unquote(type <> "_rename"), channel: channel}, slack) do
-      put_in(slack, [unquote(plural_atom), channel.id, :name], channel.name)
+      put_in(slack, [unquote(plural_atom), safe_map_getter(channel.id), :name], channel.name)
     end
 
     def update(%{type: unquote(type <> "_archive"), channel: channel}, slack) do
-      put_in(slack, [unquote(plural_atom), channel, :is_archived], true)
+      put_in(slack, [unquote(plural_atom), safe_map_getter(channel), :is_archived], true)
     end
 
     def update(%{type: unquote(type <> "_unarchive"), channel: channel}, slack) do
-      put_in(slack, [unquote(plural_atom), channel, :is_archived], false)
+      put_in(slack, [unquote(plural_atom), safe_map_getter(channel), :is_archived], false)
     end
 
     def update(
           %{type: "message", subtype: unquote(type <> "_join"), channel: channel, user: user},
           slack
         ) do
-      update_in(slack, [unquote(plural_atom), channel, :members], &Enum.uniq([user | &1]))
+      update_in(slack, [unquote(plural_atom), safe_map_getter(channel), safe_list_getter(:members)], &Enum.uniq([user | &1]))
     end
 
     def update(
           %{type: "message", subtype: unquote(type <> "_leave"), channel: channel, user: user},
           slack
         ) do
-      update_in(slack, [unquote(plural_atom), channel, :members], &(&1 -- [user]))
+      update_in(slack, [unquote(plural_atom), safe_map_getter(channel), safe_list_getter(:members)], &(&1 -- [user]))
     end
   end)
 

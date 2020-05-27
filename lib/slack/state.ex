@@ -20,11 +20,11 @@ defmodule Slack.State do
     :token,
     :me,
     :team,
-    :bots,
-    :channels,
-    :groups,
-    :users,
-    :ims
+    bots: %{},
+    channels: %{},
+    groups: %{},
+    users: %{},
+    ims: %{}
   ]
 
   @doc """

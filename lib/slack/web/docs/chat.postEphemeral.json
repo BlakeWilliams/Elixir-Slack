@@ -12,7 +12,7 @@
 			"example"	: "Hello world",
 			"desc"		: "Text of the message to send. See below for an explanation of [formatting](#formatting)."
 		},
-    "user": {
+                "user": {
 			"type"		: "user",
 			"required"	: true,
 			"desc"		: "`id` of the user who will receive the ephemeral message. The user should be in the channel specified by the `channel` argument."
@@ -33,6 +33,11 @@
 			"required"	: false,
 			"example"	: "true",
 			"desc"		: "Pass true to post the message as the authed user, instead of as a bot. Defaults to false. See [authorship](#authorship) below."
+		},
+                "blocks": {
+                        "required"      : false,
+			"example"	: "[{\"type\": \"section\", \"text\": {\"type\": \"plain_text\", \"text\": \"Hello world\"}}]",
+			"desc"		: "A JSON-based array of structured blocks, presented as a URL-encoded string"
 		}
 	},
 

@@ -24,6 +24,11 @@
 			"example"	: "[{\"pretext\": \"pre-hello\", \"text\": \"text-world\"}]",
 			"desc"		: "Structured message attachments."
 		},
+                "blocks": {
+                        "required"      : false,
+			"example"	: "[{\"type\": \"section\", \"text\": {\"type\": \"plain_text\", \"text\": \"Hello world\"}}]",
+			"desc"		: "A JSON-based array of structured blocks, presented as a URL-encoded string"
+		},
 		"unfurl_links": {
 			"example"	: "true",
 			"desc"		: "Pass true to enable unfurling of primarily text-based content."

@@ -2,11 +2,6 @@
   "desc": "Approve an app for installation on a workspace.",
 
   "args": {
-    "token": {
-      "required"  : true,
-      "example" : "xxxx-xxxxxxxxx-xxxx",
-      "desc"    : "Authentication token bearing required scopes."
-    },
     "app_id": {
       "required"  : false,
       "example" : "A12345",

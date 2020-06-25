@@ -19,7 +19,7 @@ jobs:
       uses: actions/setup-elixir@v1
       with:
         elixir-version: ${{matrix.elixir}} # Define the elixir version [required]
-        otp-version: ${{matrix.otp} # Define the OTP version [required]
+        otp-version: ${{matrix.otp}} # Define the OTP version [required]
     - name: Install Dependencies
       run: mix deps.get
     - name: Run Tests

@@ -11,9 +11,6 @@
       "required": true,
       "example": "1405894322.002768",
       "desc": "A message's ts value, uniquely identifying it within a channel."
-    },
-    "token": {
-      "example": "xxxx-xxxxxxxxx-xxxx"
     }
   },
 

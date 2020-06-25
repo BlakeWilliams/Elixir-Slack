@@ -2,11 +2,6 @@
   "desc": "Push a view onto the stack of a root view.",
 
   "args": {
-    "token": {
-      "required": true,
-      "example": "xxxx-xxxxxxxxx-xxxx",
-      "desc": "Authentication token bearing required scopes."
-    },
     "trigger_id": {
       "required": true,
       "example": "12345.98765.abcd2358fdea",

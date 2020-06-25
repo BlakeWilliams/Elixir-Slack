@@ -2,11 +2,6 @@
   "desc": "Initiates a public or private channel-based conversation.",
 
   "args": {
-    "token": {
-      "required"  : true,
-      "example" : "xxxx-xxxxxxxxx-xxxx",
-      "desc"    : "Authentication token bearing required scopes."
-    },
     "name": {
       "required"  : true,
       "example" : "mychannel",

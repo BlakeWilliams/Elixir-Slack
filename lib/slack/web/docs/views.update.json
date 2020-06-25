@@ -2,11 +2,6 @@
   "desc": "Update an existing view.",
 
   "args": {
-    "token": {
-      "required": true,
-      "example": "xxxx-xxxxxxxxx-xxxx",
-      "desc": "Authentication token bearing required scopes."
-    },
     "view": {
       "required": true,
       "example": "Ar12345",

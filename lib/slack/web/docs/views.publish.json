@@ -2,11 +2,6 @@
   "desc": "Publish a static view for a User.",
 
   "args": {
-    "token": {
-      "required": true,
-      "example": "xxxx-xxxxxxxxx-xxxx",
-      "desc": "Authentication token bearing required scopes."
-    },
     "user_id": {
       "required": true,
       "example": "U0BPQUNTA",

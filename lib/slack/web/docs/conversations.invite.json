@@ -2,11 +2,6 @@
   "desc": "Invites users to a channel.",
 
   "args": {
-    "token": {
-      "required"  : true,
-      "example" : "xxxx-xxxxxxxxx-xxxx",
-      "desc"    : "Authentication token bearing required scopes."
-    },
     "channel": {
       "required"  : true,
       "example" : "C1234567890",

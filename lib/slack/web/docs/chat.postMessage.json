@@ -29,6 +29,11 @@
 			"example"	: "[{\"type\": \"section\", \"text\": {\"type\": \"plain_text\", \"text\": \"Hello world\"}}]",
 			"desc"		: "A JSON-based array of structured blocks, presented as a URL-encoded string"
 		},
+		"thread_ts": {
+                        "required"      : false,
+			"example"	: "1234567890.123456",
+			"desc"		: "Provide another message's ts value to make this message a reply. Avoid using a reply's ts value; use its parent instead."
+		},
 		"unfurl_links": {
 			"example"	: "true",
 			"desc"		: "Pass true to enable unfurling of primarily text-based content."

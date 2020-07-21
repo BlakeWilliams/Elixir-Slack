@@ -13,9 +13,9 @@
 			"desc"		: "Channel containing the message to be updated."
 		},
 		"text": {
-			"required"	: true,
+			"required"	: false,
 			"example"	: "Hello world",
-			"desc"		: "New text for the message, using the [default formatting rules](/docs/formatting)."
+			"desc"		: "New text for the message, using the default formatting rules. It's not required when presenting blocks or attachments."
 		},
 		"attachments": {
 			"example"	: "[{\"pretext\": \"pre-hello\", \"text\": \"text-world\"}]",
@@ -35,6 +35,11 @@
 			"required"	: false,
 			"example"	: "true",
 			"desc"		: "Pass true to update the message as the authed user. [Bot users](/bot-users) in this context are considered authed users."
+		},
+		"blocks": {
+			"required" : false,
+			"example" : "[{\"type\": \"section\", \"text\": {\"type\": \"plain_text\", \"text\": \"Hello world\"}}]",
+			"desc": "A JSON-based array of structured blocks, presented as a URL-encoded string. If you don't include this field, the message's previous `blocks` will be retained. To remove previous `blocks`, include an empty array for this field."
 		}
 	},
 

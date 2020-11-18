@@ -45,7 +45,7 @@ defmodule Slack.State do
 
   def update(%{type: "channel_joined", channel: channel}, slack) do
     slack
-    |> put_in([:channels, channel.id, :members], channel.members)
+    |> put_in([:channels, channel.id], channel)
     |> put_in([:channels, channel.id, :is_member], true)
   end
 

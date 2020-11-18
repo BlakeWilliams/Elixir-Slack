@@ -34,15 +34,23 @@ The newest version of the Slack client introduces breaking changes with regards 
 
 ### Make additional calls to the Slack API to fetch bots, channels, groups, users, and IMs
 
-Wherever you grab the passed in `slack` state, add in additional calls to populate these lists:
+Wherever you grab the passed in `slack` state, add in additional calls to populate these lists.
+
+For example, to initialize the bot with the list of channels, fetch them in your `handle_connect` callback:
 
 ```elixir
-slack
-|> Map.put(:bots, Slack.Web.Bots.info(%{token: token}) |> Map.get("bot"))
-|> Map.put(:channels, Slack.Web.Channels.list(%{token: token}) |> Map.get("channels"))
-|> Map.put(:groups, Slack.Web.Groups.list(%{token: token}) |> Map.get("groups"))
-|> Map.put(:ims, Slack.Web.Im.list(%{token: token}) |> Map.get("ims"))
-|> Map.put(:users, Slack.Web.Users.list(%{token: token}) |> Map.get("members"))
+def handle_connect(slack, state) do
+  channels =
+    Slack.Web.Channels.list(%{token: slack.token})
+    |> Map.get(:channels)
+    |> Map.new(&{&1.id, &1})
+
+  slack =
+    slack
+    |> Map.put(:channels, channels)
+
+  {:ok, {slack, state}}
+end
 ```
 
 ## RTM (Bot) Usage

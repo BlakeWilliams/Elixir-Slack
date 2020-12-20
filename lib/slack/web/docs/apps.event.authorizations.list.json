@@ -1,15 +1,11 @@
 {
   "desc": "Returns a list of authorizations for the given event",
   "args": {
-    "token": {
-      "description": "App-Level Authentication token. Requires scope: `authorizations:read`",
-      "required": true,
-      "type": "string"
-    },
     "event_context": {
-      "description": "The `event-context` which is extracted from an Event payload"
+      "description": "The `event-context` which is extracted from an Event payload",
       "required": true,
-      "type": "string"
+      "type": "string",
+      "example": "1-message-THG2FF18C-D02CT1XJJJ"
     },
     "cursor": {
       "required": false,
@@ -19,7 +15,7 @@
     "limit": {
       "required": false,
       "type": "integer",
-      "desc": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached. Must be an integer no larger than 1000.",
+      "desc": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached. Must be an integer no larger than 1000."
     }
   },
   "response": {

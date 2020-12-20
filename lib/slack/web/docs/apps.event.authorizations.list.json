@@ -7,16 +7,19 @@
       "type": "string"
     },
     "event_context": {
+      "description": "The `event-context` which is extracted from an Event payload"
       "required": true,
       "type": "string"
     },
     "cursor": {
       "required": false,
-      "type": "string"
+      "type": "string",
+      "desc": "Paginate through collections of data by setting the cursor parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See pagination for more detail."
     },
     "limit": {
       "required": false,
-      "type": "integer"
+      "type": "integer",
+      "desc": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached. Must be an integer no larger than 1000.",
     }
   },
   "response": {

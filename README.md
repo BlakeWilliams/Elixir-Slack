@@ -1,12 +1,15 @@
-[![Build
-Status](https://api.travis-ci.org/BlakeWilliams/Elixir-Slack.svg?branch=master)](https://travis-ci.org/BlakeWilliams/Elixir-Slack)
-
 # Elixir-Slack
+
+[![Elixir CI](https://github.com/BlakeWilliams/Elixir-Slack/actions/workflows/elixir.yml/badge.svg)](https://github.com/BlakeWilliams/Elixir-Slack/actions/workflows/elixir.yml)
+[![Module Version](https://img.shields.io/hexpm/v/slack.svg)](https://hex.pm/packages/slack)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/slack/)
+[![Total Download](https://img.shields.io/hexpm/dt/slack.svg)](https://hex.pm/packages/slack)
+[![License](https://img.shields.io/hexpm/l/slack.svg)](https://github.com/BlakeWilliams/Elixir-Slack/blob/master/LICENSE.md)
+[![Last Updated](https://img.shields.io/github/last-commit/BlakeWilliams/Elixir-Slack.svg)](https://github.com/BlakeWilliams/Elixir-Slack/commits/master)
 
 This is a Slack [Real Time Messaging API] client for Elixir.  You'll need a
 Slack API token which can be retrieved by following the [Token Generation
-Instructions] or by creating a
-new [bot integration].
+Instructions] or by creating a new [bot integration].
 
 [Real time Messaging API]: https://api.slack.com/rtm
 [Token Generation Instructions]: https://hexdocs.pm/slack/token_generation_instructions.html
@@ -14,17 +17,21 @@ new [bot integration].
 
 ## Installing
 
-Add Slack to your `mix.exs` `dependencies` function.
+Add `:slack` to your `mix.exs` `dependencies` function:
 
 [websocket_client]: https://github.com/jeremyong/websocket_client
 
 ```elixir
 def application do
-  [extra_applications: [:logger]]
+  [
+    extra_applications: [:logger]
+  ]
 end
 
 def deps do
-  [{:slack, "~> 0.23.6"}]
+  [
+    {:slack, "~> 0.23.6"}
+  ]
 end
 ```
 
@@ -45,7 +52,7 @@ slack
 |> Map.put(:users, Slack.Web.Users.list(%{token: token}) |> Map.get("members"))
 ```
 
-## RTM (Bot) Usage
+## Real Time Messaging (RTM) Bot Usage
 
 Define a module that uses the Slack behaviour and defines the appropriate
 callback methods.
@@ -170,3 +177,9 @@ config :slack, url: "http://localhost:8000"
 ```
 
 [documentation]: http://hexdocs.pm/slack/
+
+## Copyright and License
+
+Copyright (c) 2014 Blake Williams
+
+Source code is released under [the MIT license](./LICENSE.md).

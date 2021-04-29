@@ -10,9 +10,10 @@ defmodule Slack.Web.DefaultClient do
   Additional error handling or response wrapping can be controlled as needed
   by configuring a custom client module.
 
-  ```
-  config :slack, :web_http_client, YourApp.CustomClient
-  ```
+  ## Examples
+
+      config :slack, :web_http_client, YourApp.CustomClient
+
   """
 
   @behaviour Slack.Web.Client

@@ -10,7 +10,7 @@ defmodule Slack do
   [Token Generation Instructions]: https://hexdocs.pm/slack/token_generation_instructions.html
   [bot integration]: https://api.slack.com/bot-users
 
-  ## Example
+  ## Examples
 
   ```
   defmodule Bot do

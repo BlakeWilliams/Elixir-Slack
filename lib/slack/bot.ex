@@ -1,12 +1,12 @@
 defmodule Slack.Bot do
-  require Logger
-
-  @behaviour :websocket_client
-
   @moduledoc """
   This module is used to spawn bots and is used to manage the connection to Slack
   while delegating events to the specified bot module.
   """
+
+  require Logger
+
+  @behaviour :websocket_client
 
   @doc """
   Connects to Slack and delegates events to `bot_handler`.
@@ -16,11 +16,11 @@ defmodule Slack.Bot do
   * `keepalive` - How long to wait for the connection to respond before the client kills the connection.
   * `name` - registers a name for the process with the given atom
 
-  ## Example
+  ## Examples
 
-  {:ok, pid} = Slack.Bot.start_link(MyBot, [1,2,3], "abc-123", %{name: :slack_bot})
+      {:ok, pid} = Slack.Bot.start_link(MyBot, [1,2,3], "abc-123", %{name: :slack_bot})
 
-  :sys.get_state(:slack_bot)
+      :sys.get_state(:slack_bot)
 
   """
   def start_link(bot_handler, initial_state, token, options \\ %{}) do

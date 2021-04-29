@@ -1,17 +1,18 @@
 defmodule Slack.Mixfile do
   use Mix.Project
 
+  @source_url "https://github.com/BlakeWilliams/Elixir-Slack"
+  @version "0.23.6"
+
   def project do
     [
       app: :slack,
-      version: "0.23.6",
+      version: @version,
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       name: "Slack",
       deps: deps(),
       docs: docs(),
-      source_url: "https://github.com/BlakeWilliams/Elixir-Slack",
-      description: "A Slack Real Time Messaging API client.",
       package: package()
     ]
   end
@@ -30,7 +31,7 @@ defmodule Slack.Mixfile do
       {:httpoison, "~> 1.2"},
       {:websocket_client, "~> 1.2.4"},
       {:jason, "~> 1.1"},
-      {:ex_doc, "~> 0.19", only: :dev},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, "~> 0.5", only: [:dev, :test]},
       {:plug, "~> 1.6", only: :test},
       {:cowboy, "~> 1.0.0", only: :test}
@@ -39,21 +40,27 @@ defmodule Slack.Mixfile do
 
   def docs do
     [
-      {:main, Slack},
-      {:assets, "guides/assets"},
-      {:extra_section, "GUIDES"},
-      {:extras, ["guides/token_generation_instructions.md"]}
+      extras: [
+        {:"LICENSE.md", [title: "License"]},
+        {:"README.md", [title: "Overview"]},
+        "guides/token_generation_instructions.md"
+      ],
+      main: "readme",
+      source_url: @source_url,
+      assets: "guides/assets",
+      extra_section: "GUIDES",
+      formatters: ["html"]
     ]
   end
 
   defp package do
-    %{
+    [
+      description: "A Slack Real Time Messaging API client.",
       maintainers: ["Blake Williams"],
       licenses: ["MIT"],
       links: %{
-        Github: "https://github.com/BlakeWilliams/Elixir-Slack",
-        Documentation: "http://hexdocs.pm/slack/"
+        GitHub: @source_url
       }
-    }
+    ]
   end
 end

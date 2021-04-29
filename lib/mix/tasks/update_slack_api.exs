@@ -1,5 +1,7 @@
 defmodule Mix.Tasks.UpdateSlackApi do
-  @moduledoc "Updates Slack API documentation files for generating API code"
+  @moduledoc """
+  Updates Slack API documentation files for generating API code.
+  """
 
   use Mix.Task
   @dir System.tmp_dir()

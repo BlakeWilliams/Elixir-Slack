@@ -8,7 +8,7 @@
 			"desc"		: "Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name. See [below](#channels) for more details."
 		},
 		"text": {
-			"required"	: true,
+			"required"	: false,
 			"example"	: "Hello world",
 			"desc"		: "Text of the message to send. See below for an explanation of [formatting](#formatting)."
 		},

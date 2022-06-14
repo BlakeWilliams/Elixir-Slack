@@ -117,7 +117,7 @@ defmodule Slack.Web.Documentation do
       |> String.graphemes()
       |> Enum.reverse()
       |> Enum.find_index(&(&1 == "."))
-      |> (&(String.split_at(endpoint, -&1))).()
+      |> (&String.split_at(endpoint, -&1)).()
 
     {String.replace_suffix(module_name, ".", ""), function_name}
   end

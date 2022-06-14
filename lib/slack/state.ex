@@ -53,7 +53,6 @@ defmodule Slack.State do
     put_in(slack, [:groups, channel.id], channel)
   end
 
-
   def update(%{type: "channel_left", channel: channel_id}, slack) do
     put_in(slack, [:channels, channel_id, :is_member], false)
   end
@@ -78,7 +77,13 @@ defmodule Slack.State do
     end
 
     def update(
-          %{type: "message", subtype: unquote(type <> "_topic"), channel: channel, user: user, topic: topic},
+          %{
+            type: "message",
+            subtype: unquote(type <> "_topic"),
+            channel: channel,
+            user: user,
+            topic: topic
+          },
           slack
         ) do
       put_in(slack, [unquote(plural_atom), safe_map_getter(channel), :topic], %{
@@ -92,14 +97,22 @@ defmodule Slack.State do
           %{type: "message", subtype: unquote(type <> "_join"), channel: channel, user: user},
           slack
         ) do
-      update_in(slack, [unquote(plural_atom), safe_map_getter(channel), safe_list_getter(:members)], &Enum.uniq([user | &1]))
+      update_in(
+        slack,
+        [unquote(plural_atom), safe_map_getter(channel), safe_list_getter(:members)],
+        &Enum.uniq([user | &1])
+      )
     end
 
     def update(
           %{type: "message", subtype: unquote(type <> "_leave"), channel: channel, user: user},
           slack
         ) do
-      update_in(slack, [unquote(plural_atom), safe_map_getter(channel), safe_list_getter(:members)], &(&1 -- [user]))
+      update_in(
+        slack,
+        [unquote(plural_atom), safe_map_getter(channel), safe_list_getter(:members)],
+        &(&1 -- [user])
+      )
     end
   end)
 

@@ -1,37 +1,34 @@
 defmodule Slack.FakeSlack.Websocket do
-  @behaviour :cowboy_websocket_handler
+  @behaviour :cowboy_websocket
 
-  def init(_, _req, _opts) do
-    {:upgrade, :protocol, :cowboy_websocket}
+  @impl true
+  def init(req, state \\ %{}) do
+    {:cowboy_websocket, req, state}
   end
 
-  @activity_timeout 5000
-
-  def websocket_init(_type, req, _opts) do
-    state = %{}
-
+  @impl true
+  def websocket_init(state) do
     pid = Application.get_env(:slack, :test_pid)
     send(pid, {:websocket_connected, self()})
 
-    {:ok, req, state, @activity_timeout}
+    {:ok, state}
   end
 
-  def websocket_handle({:text, "ping"}, req, state) do
-    {:reply, {:text, "pong"}, req, state}
+  @impl true
+  def websocket_handle({:text, "ping"}, state) do
+    {:reply, {:text, "pong"}, state}
   end
 
-  def websocket_handle({:text, message}, req, state) do
+  @impl true
+  def websocket_handle({:text, message}, state) do
     pid = Application.get_env(:slack, :test_pid)
     send(pid, {:bot_message, Jason.decode!(message)})
 
-    {:ok, req, state}
+    {:ok, state}
   end
 
-  def websocket_info(message, req, state) do
-    {:reply, {:text, message}, req, state}
-  end
-
-  def websocket_terminate(_reason, _req, _state) do
-    :ok
+  @impl true
+  def websocket_info(message, state) do
+    {:reply, {:text, message}, state}
   end
 end

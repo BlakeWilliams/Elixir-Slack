@@ -93,13 +93,11 @@ defmodule Slack do
         }
       end
 
-      defoverridable [
-        handle_connect: 2,
-        handle_event: 3,
-        handle_close: 3,
-        handle_info: 3,
-        child_spec: 1
-      ]
+      defoverridable handle_connect: 2,
+                     handle_event: 3,
+                     handle_close: 3,
+                     handle_info: 3,
+                     child_spec: 1
     end
   end
 end

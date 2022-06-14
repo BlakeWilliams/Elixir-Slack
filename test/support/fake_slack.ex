@@ -20,7 +20,7 @@ defmodule Slack.FakeSlack do
         :_,
         [
           {"/ws", Slack.FakeSlack.Websocket, []},
-          {:_, Plug.Adapters.Cowboy.Handler, {Slack.FakeSlack.Router, []}}
+          {:_, Plug.Cowboy.Handler, {Slack.FakeSlack.Router, []}}
         ]
       }
     ]

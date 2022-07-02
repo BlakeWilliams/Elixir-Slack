@@ -1,12 +1,14 @@
 defmodule Slack.Lookups do
+  @moduledoc """
+  Utility functions for looking up slack state information.
+  """
+
   require Logger
 
   @username_warning """
   Referencing "@USER_NAME" is deprecated, and should not be used.
   For more information see https://api.slack.com/changelog/2017-09-the-one-about-usernames
   """
-
-  @moduledoc "Utility functions for looking up slack state information"
 
   @doc ~S"""
   Turns a string like `"@USER_NAME"` into the ID that Slack understands (`"U…"`).
@@ -84,15 +86,13 @@ defmodule Slack.Lookups do
   end
 
   @doc ~S"""
-  Turns a Slack channel ID (`"C…"`) into a string in the format "#CHANNEL_NAME".
+  Turns a Slack channel ID (`"C…"`) or a Slack private channel ID (`"G…"`) into
+  a string in the format "#CHANNEL_NAME".
   """
   def lookup_channel_name(channel_id = "C" <> _id, slack) do
     "#" <> slack.channels[channel_id].name
   end
 
-  @doc ~S"""
-  Turns a Slack private channel ID (`"G…"`) into a string in the format "#CHANNEL_NAME".
-  """
   def lookup_channel_name(channel_id = "G" <> _id, slack) do
     "#" <> slack.groups[channel_id].name
   end

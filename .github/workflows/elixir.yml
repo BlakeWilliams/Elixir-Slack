@@ -52,8 +52,5 @@ jobs:
       - run: mix format --check-formatted
         if: matrix.lint
 
-      - run: mix credo
-        if: matrix.lint
-
       - name: Run Tests
         run: mix test

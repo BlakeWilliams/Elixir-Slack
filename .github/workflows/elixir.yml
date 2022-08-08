@@ -2,25 +2,55 @@ name: Elixir CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        otp: ['21.0', '22.0']
-        elixir: ['1.7.2', '1.10.1']
+        elixir: ['1.13', '1.12', '1.11', '1.10']
+        otp: ['24.x', '23.x', '22.x']
+        include:
+          - lint: lint
+            elixir: '1.13'
+            otp: '24.x'
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup elixir
-      uses: actions/setup-elixir@v1
-      with:
-        elixir-version: ${{matrix.elixir}} # Define the elixir version [required]
-        otp-version: ${{matrix.otp}} # Define the OTP version [required]
-    - name: Install Dependencies
-      run: mix deps.get
-    - name: Run Tests
-      run: mix test
+      - uses: actions/checkout@v3
+
+      - name: Setup BEAM
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ matrix.otp }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-${{ matrix.otp }}-${{ hashFiles('mix.lock') }}
+            ${{ runner.os }}-mix-${{ matrix.otp }}-
+            ${{ runner.os }}-mix-
+
+      - name: Install Dependencies
+        if: steps.mix-cache.outputs.cache-hit != 'true'
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+          mix deps.compile
+
+      - run: mix format --check-formatted
+        if: matrix.lint
+
+      - name: Run Tests
+        run: mix test

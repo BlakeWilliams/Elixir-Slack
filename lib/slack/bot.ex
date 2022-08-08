@@ -99,8 +99,16 @@ defmodule Slack.Bot do
         _websocket_request,
         %{slack: slack, process_state: process_state, bot_handler: bot_handler} = state
       ) do
-    {:ok, new_process_state} = bot_handler.handle_connect(slack, process_state)
-    {:ok, %{state | process_state: new_process_state}}
+    state =
+      case bot_handler.handle_connect(slack, process_state) do
+        {:ok, {slack, new_process_state}} ->
+          %{state | slack: slack, process_state: new_process_state}
+
+        {:ok, new_process_state} ->
+          %{state | process_state: new_process_state}
+      end
+
+    {:ok, state}
   end
 
   @doc false

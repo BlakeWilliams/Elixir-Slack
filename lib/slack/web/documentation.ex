@@ -94,11 +94,18 @@ defmodule Slack.Web.Documentation do
 
   defp get_params_with_required(%{"args" => args}, required) do
     args
-    |> Enum.filter(fn {_, meta} ->
-      if required do
-        meta["required"]
-      else
-        !meta["required"]
+    |> Enum.filter(fn {name, meta} ->
+      cond do
+        # Almost all methods in the Documentation require the "token" argument
+        # and we always sent the token argument anyways.
+        name == "token" &&  ->
+          false
+
+        ^required ->
+          meta["required"]
+
+        _ ->
+          !meta["required"]
       end
     end)
     |> Enum.map(fn {name, _meta} ->

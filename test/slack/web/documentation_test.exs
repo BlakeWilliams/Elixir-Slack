@@ -34,6 +34,18 @@ defmodule Slack.Web.DocumentationTest do
       assert {:info, 1} in module_functions
     end
 
+    test "filters out required `:token` argument" do
+      file_content =
+        "#{__DIR__}/../../../lib/slack/web/docs/chat.postMessage.json"
+        |> File.read!()
+        |> Jason.decode!()
+
+      doc = Documentation.new(file_content, "chat.postMessage.json")
+
+      refute :token in doc.required_params,
+             "required params contains `:token`, but this should be ignored"
+    end
+
     test "accepts versioned endpoints" do
       file_content =
         "#{__DIR__}/../../../lib/slack/web/docs/oauth.v2.access.json"

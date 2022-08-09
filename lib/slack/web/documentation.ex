@@ -101,10 +101,10 @@ defmodule Slack.Web.Documentation do
         name == "token" ->
           false
 
-        ^required ->
+        required == true ->
           meta["required"]
 
-        _ ->
+        true ->
           !meta["required"]
       end
     end)

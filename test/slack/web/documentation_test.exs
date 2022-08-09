@@ -34,6 +34,29 @@ defmodule Slack.Web.DocumentationTest do
       assert {:info, 1} in module_functions
     end
 
+    test "generates function params based on required arguments from json" do
+      file_content =
+        "#{__DIR__}/../../../lib/slack/web/docs/conversations.replies.json"
+        |> File.read!()
+        |> Jason.decode!()
+
+      doc = Documentation.new(file_content, "conversations.replies.json")
+
+      assert doc.module == "conversations"
+      assert doc.endpoint == "conversations.replies"
+      assert doc.function == :replies
+
+      module_functions = Slack.Web.Conversations.__info__(:functions)
+
+      required_args_count = Enum.count(doc.required_params)
+
+      # Without optional arguments
+      assert {:replies, required_args_count} in module_functions
+
+      # With optional arguments
+      assert {:replies, required_args_count + 1} in module_functions
+    end
+
     test "filters out required `:token` argument" do
       file_content =
         "#{__DIR__}/../../../lib/slack/web/docs/chat.postMessage.json"

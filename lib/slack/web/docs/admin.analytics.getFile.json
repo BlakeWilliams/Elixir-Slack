@@ -1,0 +1,90 @@
+{
+  "args": {
+    "date": {
+      "desc": "Date to retrieve the analytics data for, expressed as YYYY-MM-DD in UTC.",
+      "example": "2020-09-01",
+      "name": "date",
+      "required": false,
+      "type": "string"
+    },
+    "metadata_only": {
+      "desc": "Retrieve metadata for the type of analytics indicated. Can be used only with type set to public_channel analytics. See detail below. Omit the date parameter when using this argument.",
+      "example": "falsetrue",
+      "name": "metadata_only",
+      "required": false,
+      "type": "boolean"
+    },
+    "token": {
+      "desc": "Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.",
+      "example": "xxxx-xxxxxxxxx-xxxx",
+      "name": "token",
+      "required": true,
+      "type": "token"
+    },
+    "type": {
+      "desc": "The type of analytics to retrieve. The options are currently limited to member (for grid member analytics) and public_channel (for public channel analytics).",
+      "example": "member",
+      "name": "type",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "content_types": [
+    "application/x-www-form-urlencoded"
+  ],
+  "desc": "Retrieve analytics data for a given date, presented as a compressed JSON file",
+  "errors": {
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "ekm_access_denied": "Administrators have suspended the ability to post a message.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "invalid_date": "The date argument was invalid.",
+    "account_inactive": "Authentication token is for a deleted user or workspace when using a bot token.",
+    "not_an_admin": "The user token does not have admin privileges.",
+    "access_denied": "Access to a resource specified in the request is denied.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "not_authed": "No authentication token provided.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "is_bot": "This method cannot be called by a bot user.",
+    "invalid_type": "The analytics data for the type specified weren't found.",
+    "metadata_only_does_not_support_date": "The metadata_only field gets the latest metadata file. The date field is not supported.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed when using a user token.",
+    "deprecated_endpoint": "The endpoint has been deprecated.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "member_analytics_disabled": "Member analytics are disabled for your organization.",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "accesslimited": "Access to this method is limited on the current network",
+    "enterprise_is_restricted": "The method cannot be called from an Enterprise.",
+    "feature_not_enabled": "This feature is not enabled on your workspace.",
+    "file_not_found": "The analytics data for the date specified weren't found.",
+    "metadata_not_available": "Metadata not available for the analytics type you provided.",
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "not_allowed_token_type": "The token type used in this request is not allowed.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "org_level_email_display_disabled": "This API is unavailable for organizations with a 'Hide email addresses' policy.",
+    "two_factor_setup_required": "Two factor setup is required.",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "not_an_enterprise": "The user token does not belong to an enterprise.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "data_not_available": "The date was before the API became available.",
+    "token_expired": "Authentication token has expired",
+    "file_not_yet_available": "The analytics data for the date isn't available yet.",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "method_deprecated": "The method has been deprecated."
+  },
+  "is_deprecated": false,
+  "link": "/methods/admin.analytics.getFile",
+  "name": "admin.analytics.getFile",
+  "response": {
+    "ok": true
+  },
+  "warnings": {
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
+  }
+}

@@ -3,29 +3,113 @@
     "client_id": {
       "desc": "Issued when you created your application.",
       "example": "4b39e9-752c4",
-      "required": true
+      "name": "client_id",
+      "required": false,
+      "type": "string"
     },
     "client_secret": {
       "desc": "Issued when you created your application.",
       "example": "33fea0113f5b1",
-      "required": true
+      "name": "client_secret",
+      "required": false,
+      "type": "string"
     },
     "code": {
-      "desc": "The `code` param returned via the OAuth callback.",
+      "desc": "The code param returned via the OAuth callback.",
       "example": "ccdaa72ad",
-      "required": true
+      "name": "code",
+      "required": false,
+      "type": "string"
     },
     "redirect_uri": {
       "desc": "This must match the originally submitted URI (if one was sent).",
       "example": "http://example.com",
-      "required": false
+      "name": "redirect_uri",
+      "required": false,
+      "type": "string"
+    },
+    "single_channel": {
+      "desc": "Request the user to add your app only to a single channel. Only valid with a legacy workspace app.",
+      "example": "falsetrue",
+      "name": "single_channel",
+      "required": false,
+      "type": "boolean"
     }
   },
-  "desc": "Exchanges a temporary OAuth code for an API token.",
+  "content_types": [
+    "application/x-www-form-urlencoded"
+  ],
+  "desc": "Exchanges a temporary OAuth verifier code for an access token.",
   "errors": {
-    "bad_client_secret": "Value passed for `client_secret` was invalid.",
-    "bad_redirect_uri": "Value passed for `redirect_uri` did not match the `redirect_uri` in the original request.",
-    "invalid_client_id": "Value passed for `client_id` was invalid.",
-    "invalid_code": "Value passed for `code` was invalid."
+    "accesslimited": "Access to this method is limited on the current network",
+    "bad_client_secret": "Value passed for client_secret was invalid.",
+    "bad_redirect_uri": "Value passed for redirect_uri did not match the redirect_uri in the original request.",
+    "code_already_used": "Value passed for code was already exchanged.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "invalid_client_id": "Value passed for client_id was invalid.",
+    "invalid_code": "Value passed for code was invalid.",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "invalid_token": "Invalid refresh token.",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "missing_resource": "Missing permission resource.",
+    "oauth_authorization_url_mismatch": "The OAuth flow was initiated on an incorrect version of the authorization url. The flow must be initiated via /oauth/authorize.",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete."
+  },
+  "is_deprecated": false,
+  "link": "/methods/oauth.access",
+  "name": "oauth.access",
+  "response": {
+    "access_token": "xoxa-access-token-string",
+    "app_id": "A012345678",
+    "app_user_id": "U0NKHRW57",
+    "authorizing_user": {
+      "app_home": "D0PNCRP9N",
+      "user_id": "U061F7AUR"
+    },
+    "enterprise_id": null,
+    "installer_user": {
+      "app_home": "D0PNCRP9N",
+      "user_id": "U061F7AUR"
+    },
+    "ok": true,
+    "scopes": {
+      "app_home": [
+        "chat:write",
+        "im:history",
+        "im:read"
+      ],
+      "channel": [
+        "channels:history",
+        "channels:read",
+        "chat:write"
+      ],
+      "group": [
+        "chat:write"
+      ],
+      "im": [
+        "chat:write"
+      ],
+      "mpim": [
+        "chat:write"
+      ],
+      "team": [],
+      "user": []
+    },
+    "team_id": "T061EG9R6",
+    "team_name": "Subarachnoid Workspace",
+    "token_type": "app"
+  },
+  "warnings": {
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
   }
 }

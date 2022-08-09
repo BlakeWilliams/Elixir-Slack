@@ -98,7 +98,7 @@ defmodule Slack.Web.Documentation do
       cond do
         # Almost all methods in the Documentation require the "token" argument
         # and we always sent the token argument anyways.
-        name == "token" &&  ->
+        name == "token" ->
           false
 
         ^required ->

@@ -1,19 +1,16 @@
 {
-	"desc": "Gets information about a team file.",
-
-	"args": {
-		"file": {
-			"required"	: true,
-			"desc"		: "Specify a file by providing its ID.",
-			"example"	: "F2147483862"
-		}
-	},
-
-	"has_paging"	: true,
-	"default_count"	: 100,
-
-	"errors": {
-		"file_not_found"	: "Value passed for `file` was invalid",
-		"file_deleted"		: "The requested file has been deleted"
-	}
+  "args": {
+    "file": {
+      "desc": "Specify a file by providing its ID.",
+      "example": "F2147483862",
+      "required": true
+    }
+  },
+  "default_count": 100,
+  "desc": "Gets information about a team file.",
+  "errors": {
+    "file_deleted": "The requested file has been deleted",
+    "file_not_found": "Value passed for `file` was invalid"
+  },
+  "has_paging": true
 }

@@ -1,18 +1,17 @@
 {
-	"desc": "List all users in a user group",
-
-	"args": {
-		"usergroup": {
-			"required"	: true,
-			"type"		: "string",
-			"example"	: "S0604QSJC",
-			"desc"		: "The encoded ID of the user group to update."
-		},
-		"include_disabled": {
-			"required"	: false,
-			"type"		: "int",
-			"example"	: "1",
-			"desc"		: "Allow results that involve disabled user groups."
-		}
-	}
+  "args": {
+    "include_disabled": {
+      "desc": "Allow results that involve disabled user groups.",
+      "example": "1",
+      "required": false,
+      "type": "int"
+    },
+    "usergroup": {
+      "desc": "The encoded ID of the user group to update.",
+      "example": "S0604QSJC",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "desc": "List all users in a user group"
 }

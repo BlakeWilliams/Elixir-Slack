@@ -1,26 +1,22 @@
 {
-	"desc": "Removes a user from a private channel.",
-
-	"args": {
-		"channel": {
-			"type"		: "group",
-			"required"	: true,
-			"desc"		: "Private channel to remove user from."
-		},
-		"user": {
-			"type"		: "user",
-			"required"	: true,
-			"desc"		: "User to remove from private channel."
-		}
-	},
-
-	"errors": {
-
-		"channel_not_found"	: "Value passed for `channel` was invalid.",
-		"user_not_found"	: "Value passed for `user` was invalid.",
-		"cant_kick_self"	: "You can't remove yourself from a group",
-		"not_in_group"		: "User or caller were are not in the group",
-		"restricted_action"	: "A team preference prevents the authenticated user from kicking."
-
-	}
+  "args": {
+    "channel": {
+      "desc": "Private channel to remove user from.",
+      "required": true,
+      "type": "group"
+    },
+    "user": {
+      "desc": "User to remove from private channel.",
+      "required": true,
+      "type": "user"
+    }
+  },
+  "desc": "Removes a user from a private channel.",
+  "errors": {
+    "cant_kick_self": "You can't remove yourself from a group",
+    "channel_not_found": "Value passed for `channel` was invalid.",
+    "not_in_group": "User or caller were are not in the group",
+    "restricted_action": "A team preference prevents the authenticated user from kicking.",
+    "user_not_found": "Value passed for `user` was invalid."
+  }
 }

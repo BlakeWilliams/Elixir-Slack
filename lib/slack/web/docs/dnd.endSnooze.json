@@ -1,10 +1,7 @@
 {
-	"desc": "Ends the current user's snooze mode immediately.",
-
-	"errors": {
-		"snooze_not_active"	: "Snooze is not active for this user and cannot be ended",
-		"snooze_end_failed"	: "There was a problem setting the user's Do Not Disturb status"
-
-	}
-
+  "desc": "Ends the current user's snooze mode immediately.",
+  "errors": {
+    "snooze_end_failed": "There was a problem setting the user's Do Not Disturb status",
+    "snooze_not_active": "Snooze is not active for this user and cannot be ended"
+  }
 }

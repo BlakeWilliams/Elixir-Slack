@@ -1,51 +1,44 @@
 {
-	"desc": "Fetches history of messages and events from direct message channel.",
-
-	"args": {
-		"channel": {
-			"type"		: "im",
-			"required"	: true,
-			"desc"		: "Direct message channel to fetch history for."
-		},
-
-		"latest": {
-			"type"		: "timestamp",
-			"required"	: false,
-			"default"	: "now",
-			"desc"		: "End of time range of messages to include in results."
-		},
-
-		"oldest": {
-			"type"		: "timestamp",
-			"required"	: false,
-			"default"	: "0",
-			"desc"		: "Start of time range of messages to include in results."
-		},
-
-		"inclusive": {
-			"example"	: 1,
-			"default"	: 0,
-			"desc"		: "Include messages with latest or oldest timestamp in results."
-		},
-
-		"count": {
-			"required"	: false,
-			"default"	: "100",
-			"example"	: "100",
-			"desc"		: "Number of messages to return, between 1 and 1000."
-		},
-
-		"unreads": {
-			"required"	: false,
-			"default"	: 0,
-			"example"	: 1,
-			"desc"		: "Include `unread_count_display` in the output?"
-		}
-	},
-
-	"errors": {
-		"channel_not_found"	: "Value passed for `channel` was invalid.",
-		"invalid_ts_latest"	: "Value passed for `latest` was invalid",
-		"invalid_ts_oldest"	: "Value passed for `oldest` was invalid"
-	}
+  "args": {
+    "channel": {
+      "desc": "Direct message channel to fetch history for.",
+      "required": true,
+      "type": "im"
+    },
+    "count": {
+      "default": "100",
+      "desc": "Number of messages to return, between 1 and 1000.",
+      "example": "100",
+      "required": false
+    },
+    "inclusive": {
+      "default": 0,
+      "desc": "Include messages with latest or oldest timestamp in results.",
+      "example": 1
+    },
+    "latest": {
+      "default": "now",
+      "desc": "End of time range of messages to include in results.",
+      "required": false,
+      "type": "timestamp"
+    },
+    "oldest": {
+      "default": "0",
+      "desc": "Start of time range of messages to include in results.",
+      "required": false,
+      "type": "timestamp"
+    },
+    "unreads": {
+      "default": 0,
+      "desc": "Include `unread_count_display` in the output?",
+      "example": 1,
+      "required": false
+    }
+  },
+  "desc": "Fetches history of messages and events from direct message channel.",
+  "errors": {
+    "channel_not_found": "Value passed for `channel` was invalid.",
+    "invalid_ts_latest": "Value passed for `latest` was invalid",
+    "invalid_ts_oldest": "Value passed for `oldest` was invalid"
+  }
 }

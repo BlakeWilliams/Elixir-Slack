@@ -1,100 +1,96 @@
 {
-  "desc": "Initiates a public or private channel-based conversation.",
-
   "args": {
-    "name": {
-      "required"  : true,
-      "example" : "mychannel",
-      "desc"    : "Name of the public or private channel to create."
-    },
     "is_private": {
-      "required"  : false,
-      "example" : "true",
-      "desc"    : "Create a private channel instead of a public one."
+      "desc": "Create a private channel instead of a public one.",
+      "example": "true",
+      "required": false
+    },
+    "name": {
+      "desc": "Name of the public or private channel to create.",
+      "example": "mychannel",
+      "required": true
     },
     "user_ids": {
-      "required"  : false,
-      "example" : "W1234567890,U2345678901,U3456789012",
-      "desc"    : "Required for workspace apps. A list of between 1 and 30 human users that will be added to the newly-created conversation. This argument has no effect when used by classic Slack apps."
+      "desc": "Required for workspace apps. A list of between 1 and 30 human users that will be added to the newly-created conversation. This argument has no effect when used by classic Slack apps.",
+      "example": "W1234567890,U2345678901,U3456789012",
+      "required": false
     }
   },
-
-  "response": {
-    "ok": true,
-    "channel": {
-      "id": "C0EAQDV4Z",
-      "name": "endeavor",
-      "is_channel": true,
-      "is_group": false,
-      "is_im": false,
-      "created": 1504554479,
-      "creator": "U0123456",
-      "is_archived": false,
-      "is_general": false,
-      "unlinked": 0,
-      "name_normalized": "endeavor",
-      "is_shared": false,
-      "is_ext_shared": false,
-      "is_org_shared": false,
-      "pending_shared": [],
-      "is_pending_ext_shared": false,
-      "is_member": true,
-      "is_private": false,
-      "is_mpim": false,
-      "last_read": "0000000000.000000",
-      "latest": null,
-      "unread_count": 0,
-      "unread_count_display": 0,
-      "topic": {
-        "value": "",
-        "creator": "",
-        "last_set": 0
-      },
-      "purpose": {
-        "value": "",
-        "creator": "",
-        "last_set": 0
-      },
-      "previous_names": [],
-      "priority": 0
-    }
-  },
-
+  "desc": "Initiates a public or private channel-based conversation.",
   "errors": {
-    "name_taken": "A channel cannot be created with the given name.",
-    "restricted_action": "A team preference prevents the authenticated user from creating channels.",
-    "no_channel": "Value passed for `name` was empty.",
-    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
-    "invalid_name_required": "Value passed for `name` was empty.",
-    "invalid_name_punctuation": "Value passed for `name` contained only punctuation.",
-    "invalid_name_maxlength": "Value passed for `name` exceeded max length.",
-    "invalid_name_specials": "Value passed for `name` contained unallowed special characters or upper case characters.",
-    "invalid_name": "Value passed for `name` was invalid.",
-    "invalid_users": "Value passed for `user_ids` was empty or invalid.",
-    "user_not_found": "One or more users in `user_ids` was not found.",
-    "too_many_convos_for_team": "The workspace has exceeded its limit of public and private channels.",
-    "too_many_convos_for_app_on_team": "This app has exceeded its per-workspace limit of public and private channels.",
-    "not_authed": "No authentication token provided.",
-    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
     "account_inactive": "Authentication token is for a deleted user or workspace.",
-    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed.",
-    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
-    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
     "ekm_access_denied": "Administrators have suspended the ability to post a message.",
-    "is_bot": "This method cannot be called by a bot user.",
-    "user_is_ultra_restricted": "This method cannot be called by a single channel guest.",
-    "invalid_arguments": "The method was called with invalid arguments.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
     "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_arguments": "The method was called with invalid arguments.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
     "invalid_charset": "The method was called via a `POST` request, but the `charset` specified in the `Content-Type` header was invalid. Valid charset names are: `utf-8` `iso-8859-1`.",
     "invalid_form_data": "The method was called via a `POST` request with `Content-Type` `application/x-www-form-urlencoded` or `multipart/form-data`, but the form data was either missing or syntactically invalid.",
+    "invalid_name": "Value passed for `name` was invalid.",
+    "invalid_name_maxlength": "Value passed for `name` exceeded max length.",
+    "invalid_name_punctuation": "Value passed for `name` contained only punctuation.",
+    "invalid_name_required": "Value passed for `name` was empty.",
+    "invalid_name_specials": "Value passed for `name` contained unallowed special characters or upper case characters.",
     "invalid_post_type": "The method was called via a `POST` request, but the specified `Content-Type` was invalid. Valid types are: `application/json` `application/x-www-form-urlencoded` `multipart/form-data` `text/plain`.",
+    "invalid_users": "Value passed for `user_ids` was empty or invalid.",
+    "is_bot": "This method cannot be called by a bot user.",
     "missing_post_type": "The method was called via a `POST` request and included a data payload, but the request did not include a `Content-Type` header.",
-    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "name_taken": "A channel cannot be created with the given name.",
+    "no_channel": "Value passed for `name` was empty.",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "not_authed": "No authentication token provided.",
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
     "request_timeout": "The method was called via a `POST` request, but the `POST` data was either missing or truncated.",
-    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
-    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised."
+    "restricted_action": "A team preference prevents the authenticated user from creating channels.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed.",
+    "too_many_convos_for_app_on_team": "This app has exceeded its per-workspace limit of public and private channels.",
+    "too_many_convos_for_team": "The workspace has exceeded its limit of public and private channels.",
+    "user_is_ultra_restricted": "This method cannot be called by a single channel guest.",
+    "user_not_found": "One or more users in `user_ids` was not found."
   },
-
+  "response": {
+    "channel": {
+      "created": 1504554479,
+      "creator": "U0123456",
+      "id": "C0EAQDV4Z",
+      "is_archived": false,
+      "is_channel": true,
+      "is_ext_shared": false,
+      "is_general": false,
+      "is_group": false,
+      "is_im": false,
+      "is_member": true,
+      "is_mpim": false,
+      "is_org_shared": false,
+      "is_pending_ext_shared": false,
+      "is_private": false,
+      "is_shared": false,
+      "last_read": "0000000000.000000",
+      "latest": null,
+      "name": "endeavor",
+      "name_normalized": "endeavor",
+      "pending_shared": [],
+      "previous_names": [],
+      "priority": 0,
+      "purpose": {
+        "creator": "",
+        "last_set": 0,
+        "value": ""
+      },
+      "topic": {
+        "creator": "",
+        "last_set": 0,
+        "value": ""
+      },
+      "unlinked": 0,
+      "unread_count": 0,
+      "unread_count_display": 0
+    },
+    "ok": true
+  },
   "warnings": {
     "missing_charset": "The method was called via a `POST` request, and recommended practice for the specified `Content-Type` is to include a `charset` parameter. However, no `charset` was present. Specifically, non-form-data content types (e.g. `text/plain`) are the ones for which `charset` is recommended.",
     "superfluous_charset": "The method was called via a `POST` request, and the specified `Content-Type` is not defined to understand the `charset` parameter. However, `charset` was in fact present. Specifically, form-data content types (e.g. `multipart/form-data`) are the ones for which `charset` is superfluous."

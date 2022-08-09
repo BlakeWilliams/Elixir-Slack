@@ -1,19 +1,16 @@
 {
-	"desc": "Checks API calling code.",
-
-	"args": {
-		"error": {
-			"required"	: false,
-			"example"	: "my_error",
-			"desc"		: "Error response to return"
-		},
-		"foo": {
-			"required"	: false,
-			"example"	: "bar",
-			"desc"		: "example property to return"
-		}
-	},
-
-	"errors": {
-	}
+  "args": {
+    "error": {
+      "desc": "Error response to return",
+      "example": "my_error",
+      "required": false
+    },
+    "foo": {
+      "desc": "example property to return",
+      "example": "bar",
+      "required": false
+    }
+  },
+  "desc": "Checks API calling code.",
+  "errors": {}
 }

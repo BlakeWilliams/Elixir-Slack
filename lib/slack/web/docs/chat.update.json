@@ -1,54 +1,52 @@
 {
-	"desc": "Updates a message.",
-
-	"args": {
-		"ts": {
-			"required"	: true,
-			"example"	: "1405894322.002768",
-			"desc"		: "Timestamp of the message to be updated."
-		},
-		"channel": {
-			"type"		: "channel",
-			"required"	: true,
-			"desc"		: "Channel containing the message to be updated."
-		},
-		"text": {
-			"required"	: false,
-			"example"	: "Hello world",
-			"desc"		: "New text for the message, using the default formatting rules. It's not required when presenting blocks or attachments."
-		},
-		"attachments": {
-			"example"	: "[{\"pretext\": \"pre-hello\", \"text\": \"text-world\"}]",
-			"desc"		: "Structured message attachments."
-		},
-		"parse": {
-			"required"	: false,
-			"example"	: "none",
-			"desc"		: "Change how messages are treated. Defaults to `client`, unlike `chat.postMessage`. See [below](#formatting)."
-		},
-		"link_names": {
-			"required"	: false,
-			"example"	: "1",
-			"desc"		: "Find and link channel names and usernames. Defaults to `none`. This parameter should be used in conjunction with `parse`. To set `link_names` to `1`, specify a `parse` mode of `full`."
-		},
-		"as_user": {
-			"required"	: false,
-			"example"	: "true",
-			"desc"		: "Pass true to update the message as the authed user. [Bot users](/bot-users) in this context are considered authed users."
-		},
-		"blocks": {
-			"required" : false,
-			"example" : "[{\"type\": \"section\", \"text\": {\"type\": \"plain_text\", \"text\": \"Hello world\"}}]",
-			"desc": "A JSON-based array of structured blocks, presented as a URL-encoded string. If you don't include this field, the message's previous `blocks` will be retained. To remove previous `blocks`, include an empty array for this field."
-		}
-	},
-
-	"errors": {
-		"message_not_found" : "No message exists with the requested timestamp.",
-		"cant_update_message" : "Authenticated user does not have permission to update this message.",
-		"channel_not_found"	: "Value passed for `channel` was invalid.",
-		"edit_window_closed": "The message cannot be edited due to the team message edit settings",
-		"msg_too_long"		: "Message text is too long",
-		"no_text"			: "No message text provided"
-	}
+  "args": {
+    "as_user": {
+      "desc": "Pass true to update the message as the authed user. [Bot users](/bot-users) in this context are considered authed users.",
+      "example": "true",
+      "required": false
+    },
+    "attachments": {
+      "desc": "Structured message attachments.",
+      "example": "[{\"pretext\": \"pre-hello\", \"text\": \"text-world\"}]"
+    },
+    "blocks": {
+      "desc": "A JSON-based array of structured blocks, presented as a URL-encoded string. If you don't include this field, the message's previous `blocks` will be retained. To remove previous `blocks`, include an empty array for this field.",
+      "example": "[{\"type\": \"section\", \"text\": {\"type\": \"plain_text\", \"text\": \"Hello world\"}}]",
+      "required": false
+    },
+    "channel": {
+      "desc": "Channel containing the message to be updated.",
+      "required": true,
+      "type": "channel"
+    },
+    "link_names": {
+      "desc": "Find and link channel names and usernames. Defaults to `none`. This parameter should be used in conjunction with `parse`. To set `link_names` to `1`, specify a `parse` mode of `full`.",
+      "example": "1",
+      "required": false
+    },
+    "parse": {
+      "desc": "Change how messages are treated. Defaults to `client`, unlike `chat.postMessage`. See [below](#formatting).",
+      "example": "none",
+      "required": false
+    },
+    "text": {
+      "desc": "New text for the message, using the default formatting rules. It's not required when presenting blocks or attachments.",
+      "example": "Hello world",
+      "required": false
+    },
+    "ts": {
+      "desc": "Timestamp of the message to be updated.",
+      "example": "1405894322.002768",
+      "required": true
+    }
+  },
+  "desc": "Updates a message.",
+  "errors": {
+    "cant_update_message": "Authenticated user does not have permission to update this message.",
+    "channel_not_found": "Value passed for `channel` was invalid.",
+    "edit_window_closed": "The message cannot be edited due to the team message edit settings",
+    "message_not_found": "No message exists with the requested timestamp.",
+    "msg_too_long": "Message text is too long",
+    "no_text": "No message text provided"
+  }
 }

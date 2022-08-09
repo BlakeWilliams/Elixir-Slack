@@ -1,39 +1,34 @@
 {
-	"desc": "Adds a star to an item.",
-
-	"args": {
-		"file": {
-			"type"		: "file",
-			"required"	: false,
-			"desc"		: "File to add star to."
-		},
-
-		"file_comment": {
-			"type"		: "file_comment",
-			"required"	: false,
-			"desc"		: "File comment to add star to."
-		},
-
-		"channel": {
-			"required"	: false,
-			"type"		: "channel",
-			"desc"		: "Channel to add star to, or channel where the message to add star to was posted (used with `timestamp`)."
-		},
-
-		"timestamp": {
-			"required"	: false,
-			"type"		: "timestamp",
-			"desc"		: "Timestamp of the message to add star to."
-		}
-	},
-
-	"errors": {
-		"bad_timestamp"			: "Value passed for `timestamp` was invalid.",
-		"message_not_found"		: "Message specified by `channel` and `timestamp` does not exist.",
-		"file_not_found"		: "File specified by `file` does not exist.",
-		"file_comment_not_found"	: "File comment specified by `file_comment` does not exist.",
-		"channel_not_found"		: "Channel, private group, or DM specified by `channel` does not exist",
-		"no_item_specified"		: "`file`, `file_comment`, `channel` and `timestamp` was not specified.",
-		"already_starred"		: "The specified item has already been starred by the authenticated user."
-	}
+  "args": {
+    "channel": {
+      "desc": "Channel to add star to, or channel where the message to add star to was posted (used with `timestamp`).",
+      "required": false,
+      "type": "channel"
+    },
+    "file": {
+      "desc": "File to add star to.",
+      "required": false,
+      "type": "file"
+    },
+    "file_comment": {
+      "desc": "File comment to add star to.",
+      "required": false,
+      "type": "file_comment"
+    },
+    "timestamp": {
+      "desc": "Timestamp of the message to add star to.",
+      "required": false,
+      "type": "timestamp"
+    }
+  },
+  "desc": "Adds a star to an item.",
+  "errors": {
+    "already_starred": "The specified item has already been starred by the authenticated user.",
+    "bad_timestamp": "Value passed for `timestamp` was invalid.",
+    "channel_not_found": "Channel, private group, or DM specified by `channel` does not exist",
+    "file_comment_not_found": "File comment specified by `file_comment` does not exist.",
+    "file_not_found": "File specified by `file` does not exist.",
+    "message_not_found": "Message specified by `channel` and `timestamp` does not exist.",
+    "no_item_specified": "`file`, `file_comment`, `channel` and `timestamp` was not specified."
+  }
 }

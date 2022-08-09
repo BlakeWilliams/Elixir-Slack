@@ -1,15 +1,13 @@
 {
-	"desc": "Revokes public/external sharing access for a file",
-
-	"args": {
-		"file": {
-			"required"	: true,
-			"desc"		: "File to revoke",
-			"type"		: "file"
-		}
-	},
-
-	"errors": {
-		"file_not_found"	: "Value passed for `file` was invalid"
-	}
+  "args": {
+    "file": {
+      "desc": "File to revoke",
+      "required": true,
+      "type": "file"
+    }
+  },
+  "desc": "Revokes public/external sharing access for a file",
+  "errors": {
+    "file_not_found": "Value passed for `file` was invalid"
+  }
 }

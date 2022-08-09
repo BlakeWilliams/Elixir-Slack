@@ -1,16 +1,14 @@
 {
-	"desc": "Enables a file for public/external sharing.",
-
-	"args": {
-		"file": {
-			"required"	: true,
-			"desc"		: "File to share",
-			"type"		: "file"
-		}
-	},
-
-	"errors": {
-		"file_not_found"	: "Value passed for `file` was invalid",
-		"not_allowed"		: "Public sharing has been disabled for this team"
-	}
+  "args": {
+    "file": {
+      "desc": "File to share",
+      "required": true,
+      "type": "file"
+    }
+  },
+  "desc": "Enables a file for public/external sharing.",
+  "errors": {
+    "file_not_found": "Value passed for `file` was invalid",
+    "not_allowed": "Public sharing has been disabled for this team"
+  }
 }

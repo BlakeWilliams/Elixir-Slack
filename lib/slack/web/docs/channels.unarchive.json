@@ -1,16 +1,14 @@
 {
-	"desc": "Unarchives a channel.",
-
-	"args": {
-		"channel": {
-			"type"		: "channel",
-			"required"	: true,
-			"desc"		: "Channel to unarchive"
-		}
-	},
-
-	"errors": {
-		"channel_not_found"	: "Value passed for `channel` was invalid.",
-		"not_archived"		: "Channel is not archived."
-	}
+  "args": {
+    "channel": {
+      "desc": "Channel to unarchive",
+      "required": true,
+      "type": "channel"
+    }
+  },
+  "desc": "Unarchives a channel.",
+  "errors": {
+    "channel_not_found": "Value passed for `channel` was invalid.",
+    "not_archived": "Channel is not archived."
+  }
 }

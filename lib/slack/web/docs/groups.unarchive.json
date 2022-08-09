@@ -1,16 +1,14 @@
 {
-	"desc": "Unarchives a private channel.",
-
-	"args": {
-		"channel": {
-			"type"		: "group",
-			"required"	: true,
-			"desc"		: "Private channel to unarchive"
-		}
-	},
-
-	"errors": {
-		"channel_not_found"	: "Value passed for `channel` was invalid.",
-		"not_archived"		: "Group is not archived."
-	}
+  "args": {
+    "channel": {
+      "desc": "Private channel to unarchive",
+      "required": true,
+      "type": "group"
+    }
+  },
+  "desc": "Unarchives a private channel.",
+  "errors": {
+    "channel_not_found": "Value passed for `channel` was invalid.",
+    "not_archived": "Group is not archived."
+  }
 }

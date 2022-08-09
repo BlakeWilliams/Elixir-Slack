@@ -1,36 +1,34 @@
 {
-  "desc": "Set the profile information for a user.",
-
   "args": {
-    "user": {
-      "type": "user",
-      "required": false,
-      "example": "W1234567890",
-      "desc": "User to retrieve profile info for"
-    },
     "name": {
-      "required": false,
+      "desc": "Name of a single key to set. Usable only if `profile` is not passed.",
       "example": "first_name",
-      "desc": "Name of a single key to set. Usable only if `profile` is not passed."
-    },
-    "value": {
-      "required": false,
-      "example": "John",
-      "desc": "Value to set a single key to. Usable only if `profile` is not passed."
+      "required": false
     },
     "profile": {
-      "required": false,
+      "desc": "Collection of key:value pairs presented as a URL-encoded JSON hash. At most 50 fields may be set. Each field name is limited to 255 characters.",
       "example": "`{ first_name: \"John\", ... }`",
-      "desc": "Collection of key:value pairs presented as a URL-encoded JSON hash. At most 50 fields may be set. Each field name is limited to 255 characters."
+      "required": false
+    },
+    "user": {
+      "desc": "User to retrieve profile info for",
+      "example": "W1234567890",
+      "required": false,
+      "type": "user"
+    },
+    "value": {
+      "desc": "Value to set a single key to. Usable only if `profile` is not passed.",
+      "example": "John",
+      "required": false
     }
   },
-
+  "desc": "Set the profile information for a user.",
   "errors": {
-    "reserved_name": "First or last name are reserved.",
+    "cannot_update_admin_user": "Only a primary owner can update the profile of an admin.",
     "invalid_profile": "Profile object passed in is not valid JSON (make sure it is URL encoded!).",
-    "profile_set_failed": "Failed to set user profile.",
     "not_admin": "Only admins can update the profile of another user. Some fields, like email may only be updated by an admin.",
     "not_app_admin": "Only team owners and selected members can update the profile of a bot user.",
-    "cannot_update_admin_user": "Only a primary owner can update the profile of an admin."
+    "profile_set_failed": "Failed to set user profile.",
+    "reserved_name": "First or last name are reserved."
   }
 }

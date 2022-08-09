@@ -1,14 +1,11 @@
 {
-	"desc": "Gets user presence information.",
-
-	"args": {
-		"user": {
-			"required"	: true,
-			"type"		: "user",
-			"desc"		: "User to get presence info on. Defaults to the authed user."
-		}
-	},
-
-	"errors": {
-	}
+  "args": {
+    "user": {
+      "desc": "User to get presence info on. Defaults to the authed user.",
+      "required": true,
+      "type": "user"
+    }
+  },
+  "desc": "Gets user presence information.",
+  "errors": {}
 }

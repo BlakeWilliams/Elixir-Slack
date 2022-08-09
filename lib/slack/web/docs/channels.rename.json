@@ -1,25 +1,21 @@
 {
-	"desc": "Renames a channel.",
-
-	"args": {
-		"channel": {
-			"type"		: "channel",
-			"required"	: true,
-			"desc"		: "Channel to rename"
-		},
-
-		"name": {
-			"required"	: true,
-			"desc"		: "New name for channel."
-		}
-	},
-
-	"errors": {
-
-		"channel_not_found"	: "Value passed for `channel` was invalid.",
-		"not_in_channel"	: "Caller is not a member of the channel.",
-		"not_authorized"	: "Caller cannot rename this channel",
-		"invalid_name"		: "New name is invalid",
-		"name_taken"		: "New channel name is taken"
-	}
+  "args": {
+    "channel": {
+      "desc": "Channel to rename",
+      "required": true,
+      "type": "channel"
+    },
+    "name": {
+      "desc": "New name for channel.",
+      "required": true
+    }
+  },
+  "desc": "Renames a channel.",
+  "errors": {
+    "channel_not_found": "Value passed for `channel` was invalid.",
+    "invalid_name": "New name is invalid",
+    "name_taken": "New channel name is taken",
+    "not_authorized": "Caller cannot rename this channel",
+    "not_in_channel": "Caller is not a member of the channel."
+  }
 }

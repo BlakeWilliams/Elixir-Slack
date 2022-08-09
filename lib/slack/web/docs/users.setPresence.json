@@ -1,15 +1,13 @@
 {
-	"desc": "Manually sets user presence.",
-
-	"args": {
-		"presence": {
-			"required"	: true,
-			"example"   : "away",
-			"desc"		: "Either `auto` or `away`"
-		}
-	},
-
-	"errors": {
-		"invalid_presence": "Value passed for `presence` was invalid."
-	}
+  "args": {
+    "presence": {
+      "desc": "Either `auto` or `away`",
+      "example": "away",
+      "required": true
+    }
+  },
+  "desc": "Manually sets user presence.",
+  "errors": {
+    "invalid_presence": "Value passed for `presence` was invalid."
+  }
 }

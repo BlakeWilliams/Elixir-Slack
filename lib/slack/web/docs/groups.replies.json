@@ -1,21 +1,18 @@
 {
-	"desc": "Retrieve a thread of messages posted to a private channel.",
-
-	"args": {
-		"channel": {
-			"type"		: "channel",
-			"required"	: true,
-			"desc"		: "Private channel to fetch thread from"
-		},
-
-		"thread_ts": {
-			"required"	: true,
-			"desc"		: "Unique identifier of a thread's parent message."
-		}
-	},
-
-	"errors": {
-		"channel_not_found"	: "Value passed for `channel` was invalid.",
+  "args": {
+    "channel": {
+      "desc": "Private channel to fetch thread from",
+      "required": true,
+      "type": "channel"
+    },
+    "thread_ts": {
+      "desc": "Unique identifier of a thread's parent message.",
+      "required": true
+    }
+  },
+  "desc": "Retrieve a thread of messages posted to a private channel.",
+  "errors": {
+    "channel_not_found": "Value passed for `channel` was invalid.",
     "thread_not_found": "Value for thread_ts was missing or invalid."
-	}
+  }
 }

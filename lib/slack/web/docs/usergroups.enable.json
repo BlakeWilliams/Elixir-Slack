@@ -1,18 +1,17 @@
 {
-	"desc": "Enable a user group",
-
-	"args": {
-		"usergroup": {
-			"required"	: true,
-			"type"		: "string",
-			"example"	: "S0604QSJC",
-			"desc"		: "The encoded ID of the user group to enable."
-		},
-		"include_count": {
-			"required"	: false,
-			"type"		: "int",
-			"example"	: "1",
-			"desc"		: "Include the number of users in the user group."
-		}
-	}
+  "args": {
+    "include_count": {
+      "desc": "Include the number of users in the user group.",
+      "example": "1",
+      "required": false,
+      "type": "int"
+    },
+    "usergroup": {
+      "desc": "The encoded ID of the user group to enable.",
+      "example": "S0604QSJC",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "desc": "Enable a user group"
 }

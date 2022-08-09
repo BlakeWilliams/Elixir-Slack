@@ -1,10 +1,10 @@
 {
-  "desc": "Gets information about a bot user.",
   "args": {
     "bot": {
-      "example" : "B12345678",
-      "required": false,
-      "desc"    : "Bot user to get info on"
+      "desc": "Bot user to get info on",
+      "example": "B12345678",
+      "required": false
     }
-  }
+  },
+  "desc": "Gets information about a bot user."
 }

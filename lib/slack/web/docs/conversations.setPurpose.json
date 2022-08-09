@@ -1,25 +1,23 @@
 {
-  "desc": "Change the purpose of a conversation. The calling user must be a member of the conversation. Not all conversation types may have a purpose set.",
-
   "args": {
     "channel": {
-      "example" : "G1234567890",
-      "required": true,
-      "desc"    : "Conversation to set the purpose of."
+      "desc": "Conversation to set the purpose of.",
+      "example": "G1234567890",
+      "required": true
     },
     "purpose": {
-      "example" : "My More Special Purpose",
-      "required": true,
-      "desc"    : "A new, specialer purpose"
+      "desc": "A new, specialer purpose",
+      "example": "My More Special Purpose",
+      "required": true
     }
   },
-
+  "desc": "Change the purpose of a conversation. The calling user must be a member of the conversation. Not all conversation types may have a purpose set.",
   "errors": {
     "channel_not_found": "Value passed for `channel` was invalid",
-    "not_in_channel": "Authenticated user is not in the channel.",
     "is_archived": "Channel has been archived",
+    "method_not_supported_for_channel_type": "This type of conversation cannot be used with this method.",
+    "not_in_channel": "Authenticated user is not in the channel.",
     "too_long": "Purpose was longer than 250 characters.",
-    "user_is_restricted": "This method cannot be called by a restricted user or single channel guest.",
-    "method_not_supported_for_channel_type": "This type of conversation cannot be used with this method."
+    "user_is_restricted": "This method cannot be called by a restricted user or single channel guest."
   }
 }

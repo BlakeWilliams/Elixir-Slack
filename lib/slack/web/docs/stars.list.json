@@ -1,18 +1,15 @@
 {
-	"desc": "Lists stars for a user.",
-
-	"args": {
-		"user": {
-			"type"		: "user",
-			"required"	: false,
-			"desc"		: "Show stars by this user. Defaults to the authed user."
-		}
-	},
-
-	"has_paging"	: true,
-	"default_count"	: 100,
-
-	"errors": {
-		"user_not_found"	: "Value passed for `user` was invalid"
-	}
+  "args": {
+    "user": {
+      "desc": "Show stars by this user. Defaults to the authed user.",
+      "required": false,
+      "type": "user"
+    }
+  },
+  "default_count": 100,
+  "desc": "Lists stars for a user.",
+  "errors": {
+    "user_not_found": "Value passed for `user` was invalid"
+  },
+  "has_paging": true
 }

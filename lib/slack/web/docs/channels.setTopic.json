@@ -1,24 +1,22 @@
 {
-	"desc": "Sets the topic for a channel.",
-
-	"args": {
-		"channel": {
-			"type"		: "channel",
-			"required"	: true,
-			"desc"		: "Channel to set the topic of"
-		},
-		"topic": {
-			"required"	: true,
-			"example"	: "My Topic",
-			"desc"		: "The new topic"
-		}
-	},
-
-	"errors": {
-		"channel_not_found"	: "Value passed for `channel` was invalid.",
-		"not_in_channel": "Authenticated user is not in the channel.",
-		"is_archived"	: "Channel has been archived.",
-		"too_long": "Topic was longer than 250 characters.",
-		"user_is_restricted" : "Setting the topic is a restricted action."
-	}
+  "args": {
+    "channel": {
+      "desc": "Channel to set the topic of",
+      "required": true,
+      "type": "channel"
+    },
+    "topic": {
+      "desc": "The new topic",
+      "example": "My Topic",
+      "required": true
+    }
+  },
+  "desc": "Sets the topic for a channel.",
+  "errors": {
+    "channel_not_found": "Value passed for `channel` was invalid.",
+    "is_archived": "Channel has been archived.",
+    "not_in_channel": "Authenticated user is not in the channel.",
+    "too_long": "Topic was longer than 250 characters.",
+    "user_is_restricted": "Setting the topic is a restricted action."
+  }
 }

@@ -1,14 +1,12 @@
 {
-  "desc": "Closes direct messages, multi-person or 1:1 or otherwise.",
-
   "args": {
     "channel": {
-      "example" : "G1234567890",
-      "required": true,
-      "desc"    : "Conversation to close."
+      "desc": "Conversation to close.",
+      "example": "G1234567890",
+      "required": true
     }
   },
-
+  "desc": "Closes direct messages, multi-person or 1:1 or otherwise.",
   "errors": {
     "channel_not_found": "Value passed for `channel` was invalid"
   }

@@ -1,32 +1,30 @@
 {
-  "desc": "Opens a multi-person direct message or just a 1:1 direct message.",
-
   "args": {
     "channel": {
-      "example" : "G1234567890",
-      "required": false,
-      "desc"    : "Resume a conversation by supplying an `im` or `mpim`'s ID. Or provide the `users` field instead."
+      "desc": "Resume a conversation by supplying an `im` or `mpim`'s ID. Or provide the `users` field instead.",
+      "example": "G1234567890",
+      "required": false
     },
     "return_im": {
-      "example" : "true",
-      "required": false,
-      "desc"    : "Boolean, indicates you want the full IM channel definition in the response."
+      "desc": "Boolean, indicates you want the full IM channel definition in the response.",
+      "example": "true",
+      "required": false
     },
     "users": {
-      "example" : "W1234567890,U2345678901,U3456789012",
-      "required": false,
-      "desc"    : "Comma separated lists of users. If only one user is included, this creates a 1:1 DM. The ordering of the users is preserved whenever a multi-person direct message is returned. Supply a `channel` when not supplying `users`."
+      "desc": "Comma separated lists of users. If only one user is included, this creates a 1:1 DM. The ordering of the users is preserved whenever a multi-person direct message is returned. Supply a `channel` when not supplying `users`.",
+      "example": "W1234567890,U2345678901,U3456789012",
+      "required": false
     }
   },
-
+  "desc": "Opens a multi-person direct message or just a 1:1 direct message.",
   "errors": {
     "channel_not_found": "Value passed for `channel` was invalid",
-    "user_not_found": "Value(s) passed for `users` was invalid",
-    "user_not_visible": "The calling user is restricted from seeing the requested user.",
-    "user_disabled": "A specified `user` has been disabled",
-    "users_list_not_supplied": "Missing `users` in request",
+    "method_not_supported_for_channel_type": "This type of conversation cannot be used with this method.",
     "not_enough_users": "Needs at least 2 users to open",
     "too_many_users": "Needs at most 8 users to open",
-    "method_not_supported_for_channel_type": "This type of conversation cannot be used with this method."
+    "user_disabled": "A specified `user` has been disabled",
+    "user_not_found": "Value(s) passed for `users` was invalid",
+    "user_not_visible": "The calling user is restricted from seeing the requested user.",
+    "users_list_not_supplied": "Missing `users` in request"
   }
 }

@@ -1,24 +1,23 @@
 {
-	"desc": "Update the list of users for a user group",
-
-	"args": {
-		"usergroup": {
-			"required"	: true,
-			"type"		: "string",
-			"example"	: "S0604QSJC",
-			"desc"		: "The encoded ID of the user group to update."
-		},
-		"users": {
-			"required"	: true,
-			"type"		: "string",
-			"example"	: "U060R4BJ4,U060RNRCZ",
-			"desc"		: "A comma separated string of encoded user IDs that represent the entire list of users for the user group."
-		},
-		"include_count": {
-			"required"	: false,
-			"type"		: "int",
-			"example"	: "1",
-			"desc"		: "Include the number of users in the user group."
-		}
-	}
+  "args": {
+    "include_count": {
+      "desc": "Include the number of users in the user group.",
+      "example": "1",
+      "required": false,
+      "type": "int"
+    },
+    "usergroup": {
+      "desc": "The encoded ID of the user group to update.",
+      "example": "S0604QSJC",
+      "required": true,
+      "type": "string"
+    },
+    "users": {
+      "desc": "A comma separated string of encoded user IDs that represent the entire list of users for the user group.",
+      "example": "U060R4BJ4,U060RNRCZ",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "desc": "Update the list of users for a user group"
 }

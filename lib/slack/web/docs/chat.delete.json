@@ -1,23 +1,21 @@
 {
-	"desc": "Deletes a message.",
-
-	"args": {
-		"ts": {
-			"required"	: true,
-			"example"	: "1405894322.002768",
-			"desc"		: "Timestamp of the message to be deleted."
-		},
-		"channel": {
-			"type"		: "channel",
-			"required"	: true,
-			"desc"		: "Channel containing the message to be deleted."
-		}
-	},
-
-	"errors": {
-		"message_not_found"			: "No message exists with the requested timestamp.",
-		"channel_not_found"			: "Value passed for `channel` was invalid.",
-		"cant_delete_message"			: "Authenticated user does not have permission to delete this message.",
-		"compliance_exports_prevent_deletion"	: "Compliance exports are on, messages can not be deleted"
-	}
+  "args": {
+    "channel": {
+      "desc": "Channel containing the message to be deleted.",
+      "required": true,
+      "type": "channel"
+    },
+    "ts": {
+      "desc": "Timestamp of the message to be deleted.",
+      "example": "1405894322.002768",
+      "required": true
+    }
+  },
+  "desc": "Deletes a message.",
+  "errors": {
+    "cant_delete_message": "Authenticated user does not have permission to delete this message.",
+    "channel_not_found": "Value passed for `channel` was invalid.",
+    "compliance_exports_prevent_deletion": "Compliance exports are on, messages can not be deleted",
+    "message_not_found": "No message exists with the requested timestamp."
+  }
 }

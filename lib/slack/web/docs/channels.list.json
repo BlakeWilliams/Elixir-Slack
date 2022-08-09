@@ -1,11 +1,10 @@
 {
-	"desc": "Lists all channels in a Slack team.",
-
-	"args": {
-		"exclude_archived": {
-			"example"	: 1,
-			"default"	: 0,
-			"desc"		: "Don't return archived channels."
-		}
-	}
+  "args": {
+    "exclude_archived": {
+      "default": 0,
+      "desc": "Don't return archived channels.",
+      "example": 1
+    }
+  },
+  "desc": "Lists all channels in a Slack team."
 }

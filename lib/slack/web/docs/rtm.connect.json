@@ -1,15 +1,15 @@
 {
-	"desc": "Starts a Real Time Messaging session.",
-	"args": {
+  "args": {
     "batch_presence_aware": {
-      "type": "int",
+      "desc": "Batch presence deliveries via subscription. Enabling changes the shape of `presence_change` events. See [batch presence](https://api.slack.com/docs/presence-and-status#batching).",
       "required": false,
-      "desc": "Batch presence deliveries via subscription. Enabling changes the shape of `presence_change` events. See [batch presence](https://api.slack.com/docs/presence-and-status#batching)."
+      "type": "int"
     },
     "presence_sub": {
-			"type": "bool",
-			"required": false,
-			"desc": "Only deliver presence events when requested by subscription. See [presence subscriptions](https://api.slack.com/docs/presence-and-status#subscriptions)."
-		}
-	}
+      "desc": "Only deliver presence events when requested by subscription. See [presence subscriptions](https://api.slack.com/docs/presence-and-status#subscriptions).",
+      "required": false,
+      "type": "bool"
+    }
+  },
+  "desc": "Starts a Real Time Messaging session."
 }

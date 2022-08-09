@@ -1,16 +1,14 @@
 {
-	"desc": "Retrieve a single user by looking them up by their registered email address. Requires `users:read.email`.",
-
-	"args": {
-		"email": {
-			"type"		: "string",
-			"required"	: true,
-			"desc"		: "User's email address"
-		}
-	},
-
-	"errors": {
-		"user_not_found"	: "Value passed for `user` was invalid.",
-		"missing_scope"		: "The token used is not granted the specific scope permissions required to complete this request. Need: `users:read.email`."
-	}
+  "args": {
+    "email": {
+      "desc": "User's email address",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "desc": "Retrieve a single user by looking them up by their registered email address. Requires `users:read.email`.",
+  "errors": {
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request. Need: `users:read.email`.",
+    "user_not_found": "Value passed for `user` was invalid."
+  }
 }

@@ -1,21 +1,19 @@
 {
-  "desc": "Retrieves a user's profile information.",
-
   "args": {
-    "user": {
-      "type": "user",
-      "required": false,
-      "example": "W1234567890",
-      "desc": "User to retrieve profile info for"
-    },
     "include_labels": {
-      "type": "boolean",
-      "required": false,
+      "desc": "Include labels for each ID in custom profile fields",
       "example": true,
-      "desc": "Include labels for each ID in custom profile fields"
+      "required": false,
+      "type": "boolean"
+    },
+    "user": {
+      "desc": "User to retrieve profile info for",
+      "example": "W1234567890",
+      "required": false,
+      "type": "user"
     }
   },
-
+  "desc": "Retrieves a user's profile information.",
   "errors": {
     "user_not_found": "Value passed for `user` was invalid."
   }

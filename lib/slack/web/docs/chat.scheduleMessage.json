@@ -1,119 +1,115 @@
 {
-  "desc": "Schedules a message to be sent to a channel.",
-
   "args": {
-    "channel": {
-      "required": true,
-      "example": "C1234567890",
-      "desc": "Channel, private group, or DM channel to send message to. Can be an encoded ID, or a name."
-    },
-    "post_at": {
-      "required": true,
-      "example": "299876400",
-      "desc": "Unix EPOCH timestamp of time in future to send the message."
-    },
     "as_user": {
-      "required": false,
+      "desc": "Pass true to post the message as the authed user, instead of as a bot. Defaults to false. See `chat.postMessage`.",
       "example": "true",
-      "desc": "Pass true to post the message as the authed user, instead of as a bot. Defaults to false. See `chat.postMessage`."
+      "required": false
     },
     "attachments": {
-      "required": false,
+      "desc": "A JSON-based array of structured attachments, presented as a URL-encoded string.",
       "example": "[{\"pretext\": \"pre-hello\", \"text\": \"text-world\"}]",
-      "desc": "A JSON-based array of structured attachments, presented as a URL-encoded string."
+      "required": false
     },
     "blocks": {
-      "required": false,
+      "desc": "A JSON-based array of structured blocks, presented as a URL-encoded string.",
       "example": "[{\"type\": \"section\", \"text\": {\"type\": \"plain_text\", \"text\": \"Hello world\"}}]",
-      "desc": "A JSON-based array of structured blocks, presented as a URL-encoded string."
+      "required": false
+    },
+    "channel": {
+      "desc": "Channel, private group, or DM channel to send message to. Can be an encoded ID, or a name.",
+      "example": "C1234567890",
+      "required": true
     },
     "link_names": {
-      "required": false,
+      "desc": "Find and link channel names and usernames.",
       "example": "true",
-      "desc": "Find and link channel names and usernames."
+      "required": false
     },
     "parse": {
-      "required": false,
+      "desc": "Change how messages are treated. Defaults to none. See `chat.postMessage`.",
       "example": "full",
-      "desc": "Change how messages are treated. Defaults to none. See `chat.postMessage`."
+      "required": false
+    },
+    "post_at": {
+      "desc": "Unix EPOCH timestamp of time in future to send the message.",
+      "example": "299876400",
+      "required": true
     },
     "reply_broadcast": {
-      "required": false,
+      "desc": "Used in conjunction with `thread_ts` and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to `false`.",
       "example": "true",
-      "desc": "Used in conjunction with `thread_ts` and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to `false`."
+      "required": false
     },
     "thread_ts": {
-      "required": false,
+      "desc": "Provide another message's `ts` value to make this message a reply. Avoid using a reply's `ts` value; use its parent instead.",
       "example": "1234567890.123456",
-      "desc": "Provide another message's `ts` value to make this message a reply. Avoid using a reply's `ts` value; use its parent instead."
+      "required": false
     },
     "unfurl_links": {
-      "required": false,
+      "desc": "Pass true to enable unfurling of primarily text-based content.",
       "example": "true",
-      "desc": "Pass true to enable unfurling of primarily text-based content."
+      "required": false
     },
     "unfurl_media": {
-      "required": false,
+      "desc": "Pass false to disable unfurling of media content.",
       "example": "false",
-      "desc": "Pass false to disable unfurling of media content."
+      "required": false
     }
   },
-
-  "response": {
-    "ok": true,
-    "channel": "C1H9RESGL",
-    "scheduled_message_id": "Q1298393284",
-    "post_at": "1562180400",
-    "message": {
-      "text": "Here's a message for you in the future",
-      "username": "ecto1",
-      "bot_id": "B19LU7CSY",
-      "attachments": [
-        {
-          "text": "This is an attachment",
-          "id": 1,
-          "fallback": "This is an attachment's fallback"
-        }
-      ],
-      "type": "delayed_message",
-      "subtype": "bot_message"
-    }
-  },
-
+  "desc": "Schedules a message to be sent to a channel.",
   "errors": {
-    "invalid_time" : "value passed for `post_time` was invalid.",
-    "time_in_past" : "value passed for `post_time` was in the past.",
-    "time_too_far": "value passed for `post_time` was too far into the future.",
-    "channel_not_found": "Value passed for `channel` was invalid.",
-    "not_in_channel": "Cannot post user messages to a channel they are not in.",
-    "is_archived": "Channel has been archived.",
-    "msg_too_long": "Message text is too long",
-    "no_text": "No message text provided",
-    "restricted_action": "A workspace preference prevents the authenticated user from posting.",
-    "restricted_action_read_only_channel": "Cannot post any message into a read-only channel.",
-    "restricted_action_thread_only_channel": "Cannot post top-level messages into a thread-only channel.",
-    "restricted_action_non_threadable_channel": "Cannot post thread replies into a non_threadable channel.",
-    "too_many_attachments": "Too many attachments were provided with this message. A maximum of 100 attachments are allowed on a message.",
-    "rate_limited": "Application has posted too many messages, read the Rate Limit documentation for more information",
-    "not_authed": "No authentication token provided.",
-    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
     "account_inactive": "Authentication token is for a deleted user or workspace.",
-    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed.",
-    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
-    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "channel_not_found": "Value passed for `channel` was invalid.",
     "ekm_access_denied": "Administrators have suspended the ability to post a message.",
-    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
-    "invalid_arguments": "The method was called with invalid arguments.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
     "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_arguments": "The method was called with invalid arguments.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
     "invalid_charset": "The method was called via a `POST` request, but the `charset` specified in the `Content-Type` header was invalid. Valid charset names are: `utf-8` `iso-8859-1`.",
     "invalid_form_data": "The method was called via a `POST` request with `Content-Type` `application/x-www-form-urlencoded` or `multipart/form-data`, but the form data was either missing or syntactically invalid.",
     "invalid_post_type": "The method was called via a `POST` request, but the specified `Content-Type` was invalid. Valid types are: `application/json` `application/x-www-form-urlencoded` `multipart/form-data` `text/plain`.",
+    "invalid_time": "value passed for `post_time` was invalid.",
+    "is_archived": "Channel has been archived.",
     "missing_post_type": "The method was called via a `POST` request and included a data payload, but the request did not include a `Content-Type` header.",
-    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "msg_too_long": "Message text is too long",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "no_text": "No message text provided",
+    "not_authed": "No authentication token provided.",
+    "not_in_channel": "Cannot post user messages to a channel they are not in.",
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "rate_limited": "Application has posted too many messages, read the Rate Limit documentation for more information",
     "request_timeout": "The method was called via a `POST` request, but the `POST` data was either missing or truncated.",
-    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised."
+    "restricted_action": "A workspace preference prevents the authenticated user from posting.",
+    "restricted_action_non_threadable_channel": "Cannot post thread replies into a non_threadable channel.",
+    "restricted_action_read_only_channel": "Cannot post any message into a read-only channel.",
+    "restricted_action_thread_only_channel": "Cannot post top-level messages into a thread-only channel.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "time_in_past": "value passed for `post_time` was in the past.",
+    "time_too_far": "value passed for `post_time` was too far into the future.",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed.",
+    "too_many_attachments": "Too many attachments were provided with this message. A maximum of 100 attachments are allowed on a message."
   },
-
+  "response": {
+    "channel": "C1H9RESGL",
+    "message": {
+      "attachments": [
+        {
+          "fallback": "This is an attachment's fallback",
+          "id": 1,
+          "text": "This is an attachment"
+        }
+      ],
+      "bot_id": "B19LU7CSY",
+      "subtype": "bot_message",
+      "text": "Here's a message for you in the future",
+      "type": "delayed_message",
+      "username": "ecto1"
+    },
+    "ok": true,
+    "post_at": "1562180400",
+    "scheduled_message_id": "Q1298393284"
+  },
   "warnings": {
     "message_truncated": "The `text` field of a message should have no more than 40,000 characters. We truncate really long messages.",
     "missing_charset": "The method was called via a `POST` request, and recommended practice for the specified `Content-Type` is to include a `charset` parameter. However, no `charset` was present. Specifically, non-form-data content types (e.g. `text/plain`) are the ones for which `charset` is recommended.",

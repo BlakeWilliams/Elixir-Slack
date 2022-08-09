@@ -1,33 +1,32 @@
 {
-	"desc": "Create a user group",
-
-	"args": {
-		"name": {
-			"required"	: true,
-			"type"		: "string",
-			"example"	: "My Test Team",
-			"desc"		: "A name for the user group. Must be unique among user groups."
-		},
-		"handle": {
-			"required"	: false,
-			"type"		: "string",
-			"desc"		: "A mention handle. Must be unique among channels, users and user groups."
-		},
-		"description": {
-			"required"	: false,
-			"type"		: "string",
-			"desc"		: "A short description of the user group."
-		},
-		"channels": {
-			"required"	: false,
-			"type"		: "string",
-			"desc"		: "A comma separated string of encoded channel IDs for which the user group uses as a default."
-		},
-		"include_count": {
-			"required"	: false,
-			"type"		: "int",
-			"example"	: "1",
-			"desc"		: "Include the number of users in each user group."
-		}
-	}
+  "args": {
+    "channels": {
+      "desc": "A comma separated string of encoded channel IDs for which the user group uses as a default.",
+      "required": false,
+      "type": "string"
+    },
+    "description": {
+      "desc": "A short description of the user group.",
+      "required": false,
+      "type": "string"
+    },
+    "handle": {
+      "desc": "A mention handle. Must be unique among channels, users and user groups.",
+      "required": false,
+      "type": "string"
+    },
+    "include_count": {
+      "desc": "Include the number of users in each user group.",
+      "example": "1",
+      "required": false,
+      "type": "int"
+    },
+    "name": {
+      "desc": "A name for the user group. Must be unique among user groups.",
+      "example": "My Test Team",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "desc": "Create a user group"
 }

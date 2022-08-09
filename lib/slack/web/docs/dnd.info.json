@@ -1,12 +1,11 @@
 {
-	"desc": "Retrieves a user's current Do Not Disturb status.",
-
-	"args": {
-		"user": {
-			"required"	: false,
-			"type"		: "string",
-			"example"	: "U1234",
-			"desc"		: "User to fetch status for (defaults to current user)"
-		}
-	}
+  "args": {
+    "user": {
+      "desc": "User to fetch status for (defaults to current user)",
+      "example": "U1234",
+      "required": false,
+      "type": "string"
+    }
+  },
+  "desc": "Retrieves a user's current Do Not Disturb status."
 }

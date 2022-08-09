@@ -1,10 +1,10 @@
 {
-	"desc": "Lists all users in a Slack team.",
-	"args": {
-		"presence": {
-			"required"	: false,
-			"example"       : 1,
-			"desc"		: "Whether to include presence data in the output"
-		}
-	}
+  "args": {
+    "presence": {
+      "desc": "Whether to include presence data in the output",
+      "example": 1,
+      "required": false
+    }
+  },
+  "desc": "Lists all users in a Slack team."
 }

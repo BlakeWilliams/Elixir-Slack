@@ -1,16 +1,14 @@
 {
-	"desc": "Deletes a file.",
-
-	"args": {
-		"file": {
-			"required"	: true,
-			"desc"		: "ID of file to delete."
-		}
-	},
-
-	"errors": {
-		"file_not_found"	: "The file does not exist, or is not visible to the calling user.",
-		"file_deleted"		: "The file has already been deleted.",
-		"cant_delete_file"	: "Authenticated user does not have permission to delete this file."
-	}
+  "args": {
+    "file": {
+      "desc": "ID of file to delete.",
+      "required": true
+    }
+  },
+  "desc": "Deletes a file.",
+  "errors": {
+    "cant_delete_file": "Authenticated user does not have permission to delete this file.",
+    "file_deleted": "The file has already been deleted.",
+    "file_not_found": "The file does not exist, or is not visible to the calling user."
+  }
 }

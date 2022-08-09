@@ -1,17 +1,15 @@
 {
-	"desc": "Leaves a channel.",
-
-	"args": {
-		"channel": {
-			"type"		: "channel",
-			"required"	: true,
-			"desc"		: "Channel to leave"
-		}
-	},
-
-	"errors": {
-		"channel_not_found"	: "Value passed for `channel` was invalid.",
-		"is_archived"	: "Channel has been archived.",
-		"cant_leave_general"	: "Authenticated user cannot leave the general channel"
-	}
+  "args": {
+    "channel": {
+      "desc": "Channel to leave",
+      "required": true,
+      "type": "channel"
+    }
+  },
+  "desc": "Leaves a channel.",
+  "errors": {
+    "cant_leave_general": "Authenticated user cannot leave the general channel",
+    "channel_not_found": "Value passed for `channel` was invalid.",
+    "is_archived": "Channel has been archived."
+  }
 }

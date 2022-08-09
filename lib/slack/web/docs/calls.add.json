@@ -1,0 +1,118 @@
+{
+  "args": {
+    "created_by": {
+      "desc": "The valid Slack user ID of the user who created this Call. When this method is called with a user token, the created_by field is optional and defaults to the authed user of the token. Otherwise, the field is required.",
+      "example": "U1H77",
+      "name": "created_by",
+      "required": false,
+      "type": "string"
+    },
+    "date_start": {
+      "desc": "Call start time in UTC UNIX timestamp format",
+      "example": "1562002086",
+      "name": "date_start",
+      "required": false,
+      "type": "integer"
+    },
+    "desktop_app_join_url": {
+      "desc": "When supplied, available Slack clients will attempt to directly launch the 3rd-party Call with this URL.",
+      "example": "callapp://join/1234567890",
+      "name": "desktop_app_join_url",
+      "required": false,
+      "type": "string"
+    },
+    "external_display_id": {
+      "desc": "An optional, human-readable ID supplied by the 3rd-party Call provider. If supplied, this ID will be displayed in the Call object.",
+      "example": "705-292-868",
+      "name": "external_display_id",
+      "required": false,
+      "type": "string"
+    },
+    "external_unique_id": {
+      "desc": "An ID supplied by the 3rd-party Call provider. It must be unique across all Calls from that service.",
+      "example": "025169F6-E37A-4E62-BB54-7F93A0FC4C1F",
+      "name": "external_unique_id",
+      "required": true,
+      "type": "string"
+    },
+    "join_url": {
+      "desc": "The URL required for a client to join the Call.",
+      "example": "https://example.com/calls/1234567890",
+      "name": "join_url",
+      "required": true,
+      "type": "string"
+    },
+    "title": {
+      "desc": "The name of the Call.",
+      "example": "Kimpossible sync up",
+      "name": "title",
+      "required": false,
+      "type": "string"
+    },
+    "token": {
+      "desc": "Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.",
+      "example": "xxxx-xxxxxxxxx-xxxx",
+      "name": "token",
+      "required": true,
+      "type": "token"
+    },
+    "users": {
+      "desc": "The list of users to register as participants in the Call. Read more on how to specify users here.",
+      "example": "[{\"slack_id\": \"U1H77\"}, {\"external_id\": \"54321678\", \"display_name\": \"External User\", \"avatar_url\": \"https://example.com/users/avatar1234.jpg\"}]",
+      "name": "users",
+      "required": false,
+      "type": "array"
+    }
+  },
+  "content_types": [
+    "application/x-www-form-urlencoded",
+    "application/json"
+  ],
+  "desc": "Registers a new Call.",
+  "errors": {
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "user_not_found": "A specified user wasn't found.",
+    "ekm_access_denied": "Administrators have suspended the ability to post a message.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "account_inactive": "Authentication token is for a deleted user or workspace when using a bot token.",
+    "not_authorized": "The specified user is not authorized to create a Call in this channel.",
+    "access_denied": "Access to a resource specified in the request is denied.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "not_authed": "No authentication token provided.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed when using a user token.",
+    "deprecated_endpoint": "The endpoint has been deprecated.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "accesslimited": "Access to this method is limited on the current network",
+    "invalid_created_by": "The created_by user ID is invalid.",
+    "enterprise_is_restricted": "The method cannot be called from an Enterprise.",
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "not_allowed_token_type": "The token type used in this request is not allowed.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "two_factor_setup_required": "Two factor setup is required.",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "not_implemented": "This method is not available.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "invalid_start_time": "The start time is invalid.",
+    "token_expired": "Authentication token has expired",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "method_deprecated": "The method has been deprecated."
+  },
+  "is_deprecated": false,
+  "link": "/methods/calls.add",
+  "name": "calls.add",
+  "response": {
+    "ok": true
+  },
+  "warnings": {
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
+  }
+}

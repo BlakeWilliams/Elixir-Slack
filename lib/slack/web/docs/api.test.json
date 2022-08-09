@@ -1,19 +1,42 @@
 {
-	"desc": "Checks API calling code.",
-
-	"args": {
-		"error": {
-			"required"	: false,
-			"example"	: "my_error",
-			"desc"		: "Error response to return"
-		},
-		"foo": {
-			"required"	: false,
-			"example"	: "bar",
-			"desc"		: "example property to return"
-		}
-	},
-
-	"errors": {
-	}
+  "args": {
+    "error": {
+      "desc": "Error response to return",
+      "example": "my_error",
+      "name": "error",
+      "required": false,
+      "type": "string"
+    }
+  },
+  "content_types": [
+    "application/x-www-form-urlencoded",
+    "application/json"
+  ],
+  "desc": "Checks API calling code.",
+  "errors": {
+    "accesslimited": "Access to this method is limited on the current network",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete."
+  },
+  "is_deprecated": false,
+  "link": "/methods/api.test",
+  "name": "api.test",
+  "response": {
+    "ok": true
+  },
+  "warnings": {
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
+  }
 }

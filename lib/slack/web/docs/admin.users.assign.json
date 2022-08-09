@@ -1,0 +1,103 @@
+{
+  "args": {
+    "channel_ids": {
+      "desc": "Comma separated values of channel IDs to add user in the new workspace.",
+      "example": "C123,C3456",
+      "name": "channel_ids",
+      "required": false,
+      "type": "string"
+    },
+    "is_restricted": {
+      "desc": "True if user should be added to the workspace as a guest.",
+      "example": "true",
+      "name": "is_restricted",
+      "required": false,
+      "type": "boolean"
+    },
+    "is_ultra_restricted": {
+      "desc": "True if user should be added to the workspace as a single-channel guest.",
+      "example": "true",
+      "name": "is_ultra_restricted",
+      "required": false,
+      "type": "boolean"
+    },
+    "team_id": {
+      "desc": "The ID (T1234) of the workspace.",
+      "example": "",
+      "name": "team_id",
+      "required": true,
+      "type": "string"
+    },
+    "token": {
+      "desc": "Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.",
+      "example": "xxxx-xxxxxxxxx-xxxx",
+      "name": "token",
+      "required": true,
+      "type": "token"
+    },
+    "user_id": {
+      "desc": "The ID of the user to add to the workspace.",
+      "example": "",
+      "name": "user_id",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "content_types": [
+    "application/x-www-form-urlencoded",
+    "application/json"
+  ],
+  "desc": "Add an Enterprise user to a workspace.",
+  "errors": {
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "user_not_found": "user_id was not found.",
+    "invited_user_not_reactivated": "The invited user could not be reactivated.",
+    "ekm_access_denied": "Administrators have suspended the ability to post a message.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "account_inactive": "Authentication token is for a deleted user or workspace when using a bot token.",
+    "not_an_admin": "This method wasn't called by an admin.",
+    "team_not_found": "`team_id was not found.",
+    "access_denied": "Access to a resource specified in the request is denied.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "not_authed": "No authentication token provided.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "is_bot": "This method cannot be called by a bot user.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed when using a user token.",
+    "deprecated_endpoint": "The endpoint has been deprecated.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "user_already_team_member": "The given user is already active on the given team.",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "accesslimited": "Access to this method is limited on the current network",
+    "enterprise_is_restricted": "The method cannot be called from an Enterprise.",
+    "feature_not_enabled": "The Admin APIs feature is not enabled for this team",
+    "invalid_role_for_user": "The requested status is incompatible with the user's role on another workspace.",
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "invited_user_not_created": "The invited user could not be created.",
+    "not_allowed_token_type": "The token type used in this request is not allowed.",
+    "user_is_bot": "The given user is a bot from an app. This api only works with humans.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "two_factor_setup_required": "Two factor setup is required.",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "token_expired": "Authentication token has expired",
+    "invitor_cannot_see_channel": "The invitor is not part of one or many channels that the user was requested to be added to",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "method_deprecated": "The method has been deprecated."
+  },
+  "is_deprecated": false,
+  "link": "/methods/admin.users.assign",
+  "name": "admin.users.assign",
+  "response": {
+    "ok": true
+  },
+  "warnings": {
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
+  }
+}

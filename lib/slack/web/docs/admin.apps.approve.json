@@ -1,62 +1,100 @@
 {
-  "desc": "Approve an app for installation on a workspace.",
-
   "args": {
     "app_id": {
-      "required"  : false,
-      "example" : "A12345",
-      "desc"    : "The id of the app to approve. Required if `request_id` is missing."
+      "desc": "The id of the app to approve.",
+      "example": "A12345",
+      "name": "app_id",
+      "required": false,
+      "type": "string"
+    },
+    "enterprise_id": {
+      "desc": "The ID of the enterprise to approve the app on",
+      "example": "E12345",
+      "name": "enterprise_id",
+      "required": false,
+      "type": "string"
     },
     "request_id": {
-      "required"  : false,
-      "example" : "Ar12345",
-      "desc"    : "The id of the request to approve. Required if `app_id` is missing."
+      "desc": "The id of the request to approve.",
+      "example": "Ar12345",
+      "name": "request_id",
+      "required": false,
+      "type": "string"
     },
     "team_id": {
-      "required"  : false,
-      "example" : "A12345",
-      "desc"    : "The id of the team to approve. Required if your Enterprise Grid org contains more than one workspace."
+      "desc": "The ID of the workspace to approve the app on",
+      "example": "T12345",
+      "name": "team_id",
+      "required": false,
+      "type": "string"
+    },
+    "token": {
+      "desc": "Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.",
+      "example": "xxxx-xxxxxxxxx-xxxx",
+      "name": "token",
+      "required": true,
+      "type": "token"
     }
   },
-
+  "content_types": [
+    "application/x-www-form-urlencoded",
+    "application/json"
+  ],
+  "desc": "Approve an app for installation on a workspace.",
+  "errors": {
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "ekm_access_denied": "Administrators have suspended the ability to post a message.",
+    "invalid_scopes": "Some of the provided scopes do not exist",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "account_inactive": "Authentication token is for a deleted user or workspace when using a bot token.",
+    "app_management_app_not_installed_on_org": "The app management app must be installed on the org.",
+    "not_an_admin": "This method is only accessible by org owners and admins",
+    "team_not_found": "Returned when team id is not found.",
+    "request_id_or_app_id_is_required": "Must include a request_id or app_id",
+    "access_denied": "Access to a resource specified in the request is denied.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "not_authed": "No authentication token provided.",
+    "invalid_app_id": "The app_id passed is invalid.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "is_bot": "This method cannot be called by a bot user.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "too_many_teams_provided": "Please provide only team_id OR enterprise_id",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed when using a user token.",
+    "deprecated_endpoint": "The endpoint has been deprecated.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "accesslimited": "Access to this method is limited on the current network",
+    "enterprise_is_restricted": "The method cannot be called from an Enterprise.",
+    "feature_not_enabled": "Returned when the Admin APIs feature is not enabled for this team",
+    "request_id_required_for_custom_integrations": "A request_id is required for custom integrations",
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "invalid_request_id": "The request_id passed is invalid.",
+    "not_allowed_token_type": "The token type used in this request is not allowed.",
+    "app_restricted_org_wide": "The app is already restricted org wide.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "two_factor_setup_required": "Two factor setup is required.",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "request_already_resolved": "The app request has already been resolved",
+    "token_expired": "Authentication token has expired",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "custom_integration_not_allowed_at_enterprise": "Returned when the install request is for custom integration app.",
+    "too_many_ids_provided": "Please provide only app_id OR request_id",
+    "method_deprecated": "The method has been deprecated."
+  },
+  "is_deprecated": false,
+  "link": "/methods/admin.apps.approve",
+  "name": "admin.apps.approve",
   "response": {
     "ok": true
   },
-
-  "errors": {
-    "invalid_request_id" : "The `request_id` passed was invalid.",
-    "invalid_app_id" : "The `app_id` passed was invalid.",
-    "request_id_required_for_custom_integrations" : "A `request_id` is required for custom integrations.",
-    "feature_not_enabled" : "Returned when the Admin APIs feature is not enabled for this team.",
-    "not_an_admin" : "This method is only accessible by org owners and admins.",
-    "request_id_or_app_id_is_required" : "Must include a `request_id` or `app_id`.",
-    "too_many_ids_provided" : "Please provide only `app_id` OR `request_id`.",
-    "too_many_teams_provided" : "Please provide only `team_id` OR `enterprise_id`.",
-    "request_already_resolved" : "The app request has already been resolved.",
-    "team_not_found" : "Returned when team id is not found.",
-    "app_management_app_not_installed_on_org" : "The app management app must be installed on the org.",
-    "not_authed": "No authentication token provided.",
-    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
-    "account_inactive": "Authentication token is for a deleted user or workspace.",
-    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed.",
-    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
-    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
-    "ekm_access_denied": "Administrators have suspended the ability to post a message.",
-    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
-    "is_bot": "This method cannot be called by a bot user.",
-    "invalid_arguments": "The method was called with invalid arguments.",
-    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
-    "invalid_charset": "The method was called via a `POST` request, but the `charset` specified in the `Content-Type` header was invalid. Valid charset names are: `utf-8` `iso-8859-1`.",
-    "invalid_form_data": "The method was called via a `POST` request with `Content-Type` `application/x-www-form-urlencoded` or `multipart/form-data`, but the form data was either missing or syntactically invalid.",
-    "invalid_post_type": "The method was called via a `POST` request, but the specified `Content-Type` was invalid. Valid types are: `application/json` `application/x-www-form-urlencoded` `multipart/form-data` `text/plain`.",
-    "missing_post_type": "The method was called via a `POST` request and included a data payload, but the request did not include a `Content-Type` header.",
-    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
-    "request_timeout": "The method was called via a `POST` request, but the `POST` data was either missing or truncated.",
-    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised."
-  },
-
   "warnings": {
-    "missing_charset": "The method was called via a `POST` request, and recommended practice for the specified `Content-Type` is to include a `charset` parameter. However, no `charset` was present. Specifically, non-form-data content types (e.g. `text/plain`) are the ones for which `charset` is recommended.",
-    "superfluous_charset": "The method was called via a `POST` request, and the specified `Content-Type` is not defined to understand the `charset` parameter. However, `charset` was in fact present. Specifically, form-data content types (e.g. `multipart/form-data`) are the ones for which `charset` is superfluous."
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
   }
 }

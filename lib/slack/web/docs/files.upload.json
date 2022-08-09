@@ -1,47 +1,178 @@
 {
-	"desc": "Uploads or creates a file.",
-
-	"args": {
-		"file": {
-			"required"	: true,
-			"example"	: "...",
-			"desc"		: "File contents via `multipart/form-data`.",
-			"type"		: "file"
-		},
-		"content": {
-			"required"	: false,
-			"example"	: "...",
-			"desc"		: "File contents via a POST var."
-		},
-		"filetype": {
-			"required"	: false,
-			"example"	: "php",
-			"desc"		: "Slack-internal file type identifier."
-		},
-		"filename": {
-			"required"	: true,
-			"example"	: "foo.txt",
-			"desc"		: "Filename of file."
-		},
-		"title": {
-			"required"	: false,
-			"example"	: "My File",
-			"desc"		: "Title of file."
-		},
-		"initial_comment": {
-			"required"	: false,
-			"example"	: "Best!",
-			"desc"		: "Initial comment to add to file."
-		},
-		"channels": {
-			"type"		: "channel",
-			"required"	: false,
-			"desc"		: "Comma-separated list of channel names or IDs where the file will be shared."
-		}
-	},
-
-	"errors": {
-		"posting_to_general_channel_denied"	: "An admin has restricted posting to the #general channel.",
-		"invalid_channel"			: "One or more channels supplied are invalid"
-	}
+  "args": {
+    "channels": {
+      "desc": "Comma-separated list of channel names or IDs where the file will be shared.",
+      "example": "C1234567890,C2345678901,C3456789012",
+      "name": "channels",
+      "required": false,
+      "type": "string"
+    },
+    "content": {
+      "desc": "File contents via a POST variable. If omitting this parameter, you must provide a file.",
+      "example": "...",
+      "name": "content",
+      "required": false,
+      "type": "string"
+    },
+    "file": {
+      "desc": "File contents via multipart/form-data. If omitting this parameter, you must submit content.",
+      "example": "...",
+      "name": "file",
+      "required": false,
+      "type": "string"
+    },
+    "filename": {
+      "desc": "Filename of file.",
+      "example": "foo.txt",
+      "name": "filename",
+      "required": false,
+      "type": "string"
+    },
+    "filetype": {
+      "desc": "A file type identifier.",
+      "example": "php",
+      "name": "filetype",
+      "required": false,
+      "type": "string"
+    },
+    "initial_comment": {
+      "desc": "The message text introducing the file in specified channels.",
+      "example": "Best!",
+      "name": "initial_comment",
+      "required": false,
+      "type": "string"
+    },
+    "thread_ts": {
+      "desc": "Provide another message's ts value to upload this file as a reply. Never use a reply's ts value; use its parent instead.",
+      "example": "1234567890.123456",
+      "name": "thread_ts",
+      "required": false,
+      "type": "string"
+    },
+    "title": {
+      "desc": "Title of file.",
+      "example": "My File",
+      "name": "title",
+      "required": false,
+      "type": "string"
+    },
+    "token": {
+      "desc": "Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.",
+      "example": "xxxx-xxxxxxxxx-xxxx",
+      "name": "token",
+      "required": true,
+      "type": "token"
+    }
+  },
+  "content_types": [
+    "multipart/form-data",
+    "application/x-www-form-urlencoded"
+  ],
+  "desc": "Uploads or creates a file.",
+  "errors": {
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "ekm_access_denied": "Administrators have suspended the ability to post a message.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "account_inactive": "Authentication token is for a deleted user or workspace when using a bot token.",
+    "team_access_not_granted": "The token used is not granted the specific workspace access required to complete this request.",
+    "access_denied": "Access to a resource specified in the request is denied.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "slack_connect_file_upload_sharing_blocked": "Admin has disabled File uploads in all Slack Connect communications",
+    "not_authed": "No authentication token provided.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed when using a user token.",
+    "deprecated_endpoint": "The endpoint has been deprecated.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "slack_connect_blocked_file_type": "File uploads with certain types are blocked in all Slack Connect communications",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "slack_connect_clip_sharing_blocked": "Admin has disabled Clip sharing in Slack Connect channels",
+    "invalid_channel": "One or more channels supplied are invalid",
+    "accesslimited": "Access to this method is limited on the current network",
+    "enterprise_is_restricted": "The method cannot be called from an Enterprise.",
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "not_allowed_token_type": "The token type used in this request is not allowed.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
+    "posting_to_general_channel_denied": "An admin has restricted posting to the #general channel.",
+    "channel_not_found": "At least one of the values passed for channels was invalid.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "two_factor_setup_required": "Two factor setup is required.",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "malware_detected": "This file may contain a virus or other malware and can't be uploaded to Slack",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "token_expired": "Authentication token has expired",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "not_in_channel": "Authenticated user is not in the channel.",
+    "method_deprecated": "The method has been deprecated."
+  },
+  "is_deprecated": false,
+  "link": "/methods/files.upload",
+  "name": "files.upload",
+  "response": {
+    "file": {
+      "thumb_480": "https://.../dramacat_480.gif",
+      "original_w": 526,
+      "title": "dramacat",
+      "created": 1532293501,
+      "thumb_360": "https://.../dramacat_360.gif",
+      "username": "",
+      "url_private_download": "https://.../dramacat.gif",
+      "external_type": "",
+      "thumb_360_h": 250,
+      "permalink": "https://.../dramacat.gif",
+      "has_rich_preview": false,
+      "shares": {
+        "private": {
+          "D0L4B9P0Q": [
+            {
+              "reply_count": 0,
+              "reply_users": [],
+              "reply_users_count": 0,
+              "ts": "1532293503.000001"
+            }
+          ]
+        }
+      },
+      "id": "F0TD00400",
+      "permalink_public": "https://.../More-Path-Components",
+      "thumb_360_w": 360,
+      "filetype": "gif",
+      "mimetype": "image/jpeg",
+      "thumb_160": "https://.../dramacat_160.gif",
+      "user": "U0L4B9NSU",
+      "channels": [],
+      "timestamp": 1532293501,
+      "is_public": false,
+      "public_url_shared": false,
+      "image_exif_rotation": 1,
+      "is_starred": false,
+      "name": "dramacat.gif",
+      "thumb_80": "https://.../dramacat_80.gif",
+      "is_external": false,
+      "thumb_480_h": 334,
+      "comments_count": 0,
+      "url_private": "https://.../dramacat.gif",
+      "editable": false,
+      "thumb_64": "https://.../dramacat_64.gif",
+      "thumb_480_w": 480,
+      "groups": [],
+      "original_h": 366,
+      "pretty_type": "JPEG",
+      "size": 43518,
+      "mode": "hosted",
+      "display_as_bot": false,
+      "ims": [
+        "D0L4B9P0Q"
+      ]
+    },
+    "ok": true
+  },
+  "warnings": {
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
+  }
 }

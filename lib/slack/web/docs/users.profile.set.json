@@ -1,36 +1,135 @@
 {
-  "desc": "Set the profile information for a user.",
-
   "args": {
-    "user": {
-      "type": "user",
-      "required": false,
-      "example": "W1234567890",
-      "desc": "User to retrieve profile info for"
-    },
     "name": {
-      "required": false,
+      "desc": "Name of a single key to set. Usable only if profile is not passed.",
       "example": "first_name",
-      "desc": "Name of a single key to set. Usable only if `profile` is not passed."
-    },
-    "value": {
+      "name": "name",
       "required": false,
-      "example": "John",
-      "desc": "Value to set a single key to. Usable only if `profile` is not passed."
+      "type": "string"
     },
     "profile": {
+      "desc": "Collection of key:value pairs presented as a URL-encoded JSON hash. At most 50 fields may be set. Each field name is limited to 255 characters.",
+      "example": "{ first_name: \"John\", ... }",
+      "name": "profile",
       "required": false,
-      "example": "`{ first_name: \"John\", ... }`",
-      "desc": "Collection of key:value pairs presented as a URL-encoded JSON hash. At most 50 fields may be set. Each field name is limited to 255 characters."
+      "type": "string"
+    },
+    "token": {
+      "desc": "Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.",
+      "example": "xxxx-xxxxxxxxx-xxxx",
+      "name": "token",
+      "required": true,
+      "type": "token"
+    },
+    "user": {
+      "desc": "ID of user to change. This argument may only be specified by team admins on paid teams.",
+      "example": "W1234567890",
+      "name": "user",
+      "required": false,
+      "type": "string"
+    },
+    "value": {
+      "desc": "Value to set a single key to. Usable only if profile is not passed.",
+      "example": "John",
+      "name": "value",
+      "required": false,
+      "type": "string"
     }
   },
-
+  "content_types": [
+    "application/x-www-form-urlencoded",
+    "application/json"
+  ],
+  "desc": "Set a user's profile information, including custom status.",
   "errors": {
-    "reserved_name": "First or last name are reserved.",
-    "invalid_profile": "Profile object passed in is not valid JSON (make sure it is URL encoded!).",
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "ekm_access_denied": "Administrators have suspended the ability to post a message.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "account_inactive": "Authentication token is for a deleted user or workspace when using a bot token.",
+    "email_taken": "email taken",
+    "access_denied": "Access to a resource specified in the request is denied.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "not_authed": "No authentication token provided.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "is_bot": "This method cannot be called by a bot user.",
+    "must_clear_both_status_text_and_status_emoji": "Clearing the status requires setting both status_text and status_emoji to ''.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
     "profile_set_failed": "Failed to set user profile.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed when using a user token.",
+    "deprecated_endpoint": "The endpoint has been deprecated.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "partial_profile_set_failed": "Failed to set user profile.",
+    "too_long": "You attempted to set a custom status but it was longer than the maximum allowed, 100.",
+    "accesslimited": "Access to this method is limited on the current network",
+    "reserved_name": "First or last name are reserved.",
     "not_admin": "Only admins can update the profile of another user. Some fields, like email may only be updated by an admin.",
+    "invalid_profile": "Profile object passed in is not valid JSON (make sure it is URL encoded!).",
+    "enterprise_is_restricted": "The method cannot be called from an Enterprise.",
+    "cannot_update_admin_user": "Only a primary owner can update the profile of an admin.",
     "not_app_admin": "Only team owners and selected members can update the profile of a bot user.",
-    "cannot_update_admin_user": "Only a primary owner can update the profile of an admin."
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "not_allowed_token_type": "The token type used in this request is not allowed.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "two_factor_setup_required": "Two factor setup is required.",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "token_expired": "Authentication token has expired",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "method_deprecated": "The method has been deprecated."
+  },
+  "is_deprecated": false,
+  "link": "/methods/users.profile.set",
+  "name": "users.profile.set",
+  "response": {
+    "ok": true,
+    "profile": {
+      "avatar_hash": "123xyz",
+      "display_name": "john",
+      "display_name_normalized": "john",
+      "email": "johnsmith@example.com",
+      "fields": {
+        "Xf0111111": {
+          "alt": "",
+          "value": "Barista"
+        },
+        "Xf0222222": {
+          "alt": "",
+          "value": "2022-04-11"
+        },
+        "Xf0333333": {
+          "alt": "",
+          "value": "https://example.com"
+        }
+      },
+      "first_name": "john",
+      "huddle_state": "default_unset",
+      "huddle_state_expiration_ts": 0,
+      "image_192": "https://.../....-192png",
+      "image_24": "https://.../...-24.png",
+      "image_32": "https://.../...-32.png",
+      "image_48": "https://.../...-48.png",
+      "image_512": "https://.../...-512.png",
+      "image_72": "https://.../...-72.png",
+      "last_name": "smith",
+      "phone": "",
+      "real_name": "John Smith",
+      "real_name_normalized": "John Smith",
+      "skype": "",
+      "status_emoji": ":coffee:",
+      "status_emoji_display_info": [],
+      "status_expiration": 0,
+      "status_text": "Watching cold brew steep",
+      "title": "Head of Coffee Production"
+    }
+  },
+  "warnings": {
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
   }
 }

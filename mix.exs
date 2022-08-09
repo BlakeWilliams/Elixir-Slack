@@ -34,7 +34,8 @@ defmodule Slack.Mixfile do
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, "~> 0.5", only: [:dev, :test]},
       {:plug, "~> 1.6", only: :test},
-      {:cowboy, "~> 1.0.0", only: :test}
+      {:cowboy, "~> 1.0.0", only: :test},
+      {:slack_api_docs, "~> 0.1.2", only: [:dev], runtime: false}
     ]
   end
 

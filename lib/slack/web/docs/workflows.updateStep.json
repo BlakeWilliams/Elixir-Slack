@@ -1,0 +1,100 @@
+{
+  "args": {
+    "inputs": {
+      "desc": "A JSON key-value map of inputs required from a user during configuration. This is the data your app expects to receive when the workflow step starts. Please note: the embedded variable format is set and replaced by the workflow system. You cannot create custom variables that will be replaced at runtime. Read more about variables in workflow steps here.",
+      "example": "{\"title\":{\"value\":\"The Title\"},\"submitter\":{\"value\":\"{{user}}\"}}",
+      "name": "inputs",
+      "required": false,
+      "type": "object"
+    },
+    "outputs": {
+      "desc": "An JSON array of output objects used during step execution. This is the data your app agrees to provide when your workflow step was executed.",
+      "example": "[{\"name\":\"ticket_id\",\"type\":\"text\",\"label\":\"Ticket ID\"},{\"name\":\"title\",\"type\":\"text\",\"label\":\"Title\"}]",
+      "name": "outputs",
+      "required": false,
+      "type": "array"
+    },
+    "step_image_url": {
+      "desc": "An optional field that can be used to override app image that is shown in the Workflow Builder.",
+      "example": "",
+      "name": "step_image_url",
+      "required": false,
+      "type": "string"
+    },
+    "step_name": {
+      "desc": "An optional field that can be used to override the step name that is shown in the Workflow Builder.",
+      "example": "",
+      "name": "step_name",
+      "required": false,
+      "type": "string"
+    },
+    "token": {
+      "desc": "Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.",
+      "example": "xxxx-xxxxxxxxx-xxxx",
+      "name": "token",
+      "required": true,
+      "type": "token"
+    },
+    "workflow_step_edit_id": {
+      "desc": "A context identifier provided with view_submission payloads used to call back to workflows.updateStep.",
+      "example": "",
+      "name": "workflow_step_edit_id",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "content_types": [
+    "application/x-www-form-urlencoded",
+    "application/json"
+  ],
+  "desc": "Update the configuration for a workflow step.",
+  "errors": {
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "invalid_inputs": "Error returned when an input is missing the required value key",
+    "unsupported_context_type": "The context_type is unsupported",
+    "ekm_access_denied": "Administrators have suspended the ability to post a message.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "account_inactive": "Authentication token is for a deleted user or workspace when using a bot token.",
+    "access_denied": "Access to a resource specified in the request is denied.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "not_authed": "No authentication token provided.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "is_bot": "This method cannot be called by a bot user.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed when using a user token.",
+    "deprecated_endpoint": "The endpoint has been deprecated.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "accesslimited": "Access to this method is limited on the current network",
+    "enterprise_is_restricted": "The method cannot be called from an Enterprise.",
+    "invalid_trigger": "Error returned when the provided workflow_step_edit_id does not match any steps in the workflow",
+    "invalid_payload": "Error returned when the payload is invalid",
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "not_found": "Error returned when the context_id is invalid",
+    "not_allowed_token_type": "The token type used in this request is not allowed.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "two_factor_setup_required": "Two factor setup is required.",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "trigger_expired": "Error returned when there was a timeout between view submission and workflows.updateStep call",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "invalid_token": "Error returned when the token used is invalid.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "token_expired": "Authentication token has expired",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "method_deprecated": "The method has been deprecated."
+  },
+  "is_deprecated": false,
+  "link": "/methods/workflows.updateStep",
+  "name": "workflows.updateStep",
+  "response": {
+    "ok": true
+  },
+  "warnings": {
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
+  }
+}

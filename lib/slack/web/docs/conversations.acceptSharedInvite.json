@@ -1,0 +1,132 @@
+{
+  "args": {
+    "channel_id": {
+      "desc": "ID of the channel that you'd like to accept. Must provide either invite_id or channel_id.",
+      "example": "",
+      "name": "channel_id",
+      "required": false,
+      "type": "string"
+    },
+    "channel_name": {
+      "desc": "Name of the channel. If the channel does not exist already in your workspace, this name is the one that the channel will take.",
+      "example": "puppies-r-us",
+      "name": "channel_name",
+      "required": true,
+      "type": "string"
+    },
+    "free_trial_accepted": {
+      "desc": "Whether you'd like to use your workspace's free trial to begin using Slack Connect.",
+      "example": "true",
+      "name": "free_trial_accepted",
+      "required": false,
+      "type": "boolean"
+    },
+    "invite_id": {
+      "desc": "See the shared_channel_invite_received event payload for more details on how to retrieve the ID of the invitation.",
+      "example": "",
+      "name": "invite_id",
+      "required": false,
+      "type": "string"
+    },
+    "is_private": {
+      "desc": "Whether the channel should be private.",
+      "example": "true",
+      "name": "is_private",
+      "required": false,
+      "type": "boolean"
+    },
+    "team_id": {
+      "desc": "The ID of the workspace to accept the channel in. If an org-level token is used to call this method, the team_id argument is required.",
+      "example": "T1234567890",
+      "name": "team_id",
+      "required": false,
+      "type": "string"
+    },
+    "token": {
+      "desc": "Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.",
+      "example": "xxxx-xxxxxxxxx-xxxx",
+      "name": "token",
+      "required": true,
+      "type": "token"
+    }
+  },
+  "content_types": [
+    "application/x-www-form-urlencoded",
+    "application/json"
+  ],
+  "desc": "Accepts an invitation to a Slack Connect channel.",
+  "errors": {
+    "not_allowed_for_grid_workspace": "Acceptance is not allowed for this workspace.",
+    "missing_scope": "The token used is not granted the specific scope permissions required to complete this request.",
+    "user_not_found": "The user accepting the invite is not a member of the team provided in the team_id argument.",
+    "invalid_name_punctuation": "The value passed for channel_name contained only punctuation.",
+    "invalid_recipient_team": "The accepting team does not match the expected recipient team.",
+    "invalid_name_specials": "The value passed for channel_name contained unallowed special characters or upper case characters.",
+    "ekm_access_denied": "Administrators have suspended the ability to post a message.",
+    "invalid_name_required": "The value passed for channel_name was empty.",
+    "internal_error": "The server could not complete your operation(s) without encountering an error, likely due to a transient issue on our end. It's possible some aspect of the operation succeeded before the error was raised.",
+    "account_inactive": "Authentication token is for a deleted user or workspace when using a bot token.",
+    "name_taken": "The desired channel name is already taken in your workspace.",
+    "team_access_not_granted": "The token used is not granted the specific workspace access required to complete this request.",
+    "team_not_found": "The team provided in the team_id argument does not exits.",
+    "invite_from_same_org": "You can't accept an invite from the same org or workspace.",
+    "access_denied": "Access to a resource specified in the request is denied.",
+    "fatal_error": "The server could not complete your operation(s) without encountering a catastrophic error. It's possible some aspect of the operation succeeded before the error was raised.",
+    "not_authed": "No authentication token provided.",
+    "team_added_to_org": "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
+    "is_bot": "This method cannot be called by a bot user.",
+    "invalid_target_team": "The target workspace is invalid.",
+    "invalid_arg_name": "The method was passed an argument whose name falls outside the bounds of accepted or expected values. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.",
+    "invalid_post_type": "The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/jsonapplication/x-www-form-urlencodedmultipart/form-datatext/plain.",
+    "failed_to_start_trial": "Unable to initiate a trial on shared invite acceptance",
+    "user_required_to_accept_as_private_but_cannot": "This uer cannot accept a private channel invitation.",
+    "invite_used": "This invite has already been accepted.",
+    "restricted_action": "A team preference prevents the authenticated user from creating private channels.",
+    "token_revoked": "Authentication token is for a deleted user or workspace or the app has been removed when using a user token.",
+    "deprecated_endpoint": "The endpoint has been deprecated.",
+    "invalid_array_arg": "The method was passed an array as an argument. Please only input valid strings.",
+    "invalid_form_data": "The method was called via a POST request with Content-Typeapplication/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.",
+    "channel_conversion_in_progress": "Unable to create a channel connection while a channel conversion is in progress",
+    "user_is_restricted": "This method cannot be called by a restricted user or single channel guest.",
+    "accesslimited": "Access to this method is limited on the current network",
+    "enterprise_is_restricted": "The method cannot be called from an Enterprise.",
+    "not_paid": "This workspace doesn't have access to this feature.",
+    "org_login_required": "The workspace is undergoing an enterprise migration and will not be available until migration is complete.",
+    "invalid_name": "The value passed for channel_name was invalid.",
+    "legacy_connection_limit_exceeded": "You cannot share a legacy ESC channel with a third team",
+    "legacy_connection_invalid_org": "Teams not previously connected to this legacy channel can't connect.",
+    "is_pending_connected_to_org": "A team pending to join the channel is on the org of the team trying to accept.",
+    "invalid_link": "We couldn't find an invite associated with the ID provided.",
+    "not_allowed_token_type": "The token type used in this request is not allowed.",
+    "connection_limit_exceeded": "This channel has hit the limit of external connections.",
+    "invalid_auth": "Some aspect of authentication cannot be validated. Either the provided token is invalid or the request originates from an IP address disallowed from making the request.",
+    "invalid_arguments": "The method was either called with invalid arguments or some detail about the arguments passed are invalid, which is more likely when using complex arguments like blocks or attachments.",
+    "two_factor_setup_required": "Two factor setup is required.",
+    "no_permission": "The workspace token used in this request does not have the permissions necessary to complete the request. Make sure your app is a member of the conversation it's attempting to post a message to.",
+    "ratelimited": "The request has been ratelimited. Refer to the Retry-After header for when to retry the request.",
+    "has_already_connected_to_org": "A team on the workspace of the org is already in the channel.",
+    "service_unavailable": "The service is temporarily unavailable",
+    "missing_post_type": "The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.",
+    "request_timeout": "The method was called via a POST request, but the POST data was either missing or truncated.",
+    "invalid_name_maxlength": "The value passed for channel_name exceeded the maximum length.",
+    "email_does_not_match": "User's email does not match the email in the invite.",
+    "invalid_emoji_not_allowed": "The desired name contains emoji.",
+    "token_expired": "Authentication token has expired",
+    "invalid_charset": "The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8iso-8859-1.",
+    "invalid_host_team": "The host workspace is invalid.",
+    "invite_not_found": "We couldn't find a Slack Connect channel invite with the ID provided.",
+    "user_cannot_create_channel": "This user is not allowed to create a channel.",
+    "invalid_privacy": "An invalid channel privacy was provided.",
+    "method_deprecated": "The method has been deprecated."
+  },
+  "is_deprecated": false,
+  "link": "/methods/conversations.acceptSharedInvite",
+  "name": "conversations.acceptSharedInvite",
+  "response": {
+    "ok": true
+  },
+  "warnings": {
+    "missing_charset": "The method was called via a POST request, and recommended practice for the specified Content-Type is to include a charset parameter. However, no charset was present. Specifically, non-form-data content types (e.g. text/plain) are the ones for which charset is recommended.",
+    "superfluous_charset": "The method was called via a POST request, and the specified Content-Type is not defined to understand the charset parameter. However, charset was in fact present. Specifically, form-data content types (e.g. multipart/form-data) are the ones for which charset is superfluous."
+  }
+}

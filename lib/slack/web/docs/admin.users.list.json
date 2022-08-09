@@ -9,7 +9,7 @@
     },
     "limit": {
       "desc": "Limit for how many users to be retrieved per page",
-      "example": "10050",
+      "example": "50",
       "name": "limit",
       "required": false,
       "type": "integer"

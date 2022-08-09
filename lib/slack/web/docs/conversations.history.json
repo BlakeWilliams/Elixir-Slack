@@ -16,14 +16,14 @@
     },
     "include_all_metadata": {
       "desc": "Return all metadata associated with this message.",
-      "example": "0true",
+      "example": "true",
       "name": "include_all_metadata",
       "required": false,
       "type": "boolean"
     },
     "inclusive": {
       "desc": "Include messages with oldest or latest timestamps in results. Ignored unless either timestamp is specified.",
-      "example": "0true",
+      "example": "true",
       "name": "inclusive",
       "required": false,
       "type": "boolean"
@@ -37,14 +37,14 @@
     },
     "limit": {
       "desc": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached.",
-      "example": "10020",
+      "example": "20",
       "name": "limit",
       "required": false,
       "type": "number"
     },
     "oldest": {
       "desc": "Only messages after this Unix timestamp will be included in results.",
-      "example": "01234567890.123456",
+      "example": "1234567890.123456",
       "name": "oldest",
       "required": false,
       "type": "string"

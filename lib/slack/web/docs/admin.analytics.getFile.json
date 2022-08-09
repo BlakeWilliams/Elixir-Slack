@@ -9,7 +9,7 @@
     },
     "metadata_only": {
       "desc": "Retrieve metadata for the type of analytics indicated. Can be used only with type set to public_channel analytics. See detail below. Omit the date parameter when using this argument.",
-      "example": "falsetrue",
+      "example": "true",
       "name": "metadata_only",
       "required": false,
       "type": "boolean"

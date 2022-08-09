@@ -9,7 +9,7 @@
     },
     "org_channel": {
       "desc": "True if channel has to be converted to an org channel",
-      "example": "falsetrue",
+      "example": "true",
       "name": "org_channel",
       "required": false,
       "type": "boolean"

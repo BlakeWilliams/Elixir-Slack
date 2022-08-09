@@ -9,14 +9,14 @@
     },
     "exclude_archived": {
       "desc": "Set to true to exclude archived channels from the list.",
-      "example": "falsetrue",
+      "example": "true",
       "name": "exclude_archived",
       "required": false,
       "type": "boolean"
     },
     "limit": {
       "desc": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached. Must be an integer no larger than 1000.",
-      "example": "10020",
+      "example": "20",
       "name": "limit",
       "required": false,
       "type": "number"
@@ -37,7 +37,7 @@
     },
     "types": {
       "desc": "Mix and match channel types by providing a comma-separated list of any combination of public_channel, private_channel, mpim, im",
-      "example": "public_channelpublic_channel,private_channel",
+      "example": "public_channel,private_channel",
       "name": "types",
       "required": false,
       "type": "string"

@@ -9,14 +9,14 @@
     },
     "include_icon": {
       "desc": "Whether to return icon paths for each workspace. An icon path represents a URI pointing to the image signifying the workspace.",
-      "example": "falsefalse",
+      "example": "false",
       "name": "include_icon",
       "required": false,
       "type": "boolean"
     },
     "limit": {
       "desc": "The maximum number of workspaces to return. Must be a positive integer no larger than 1000.",
-      "example": "10050",
+      "example": "50",
       "name": "limit",
       "required": false,
       "type": "integer"

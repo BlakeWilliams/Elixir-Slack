@@ -9,7 +9,7 @@
     },
     "count": {
       "desc": "Number of items to return per page.",
-      "example": "10020",
+      "example": "20",
       "name": "count",
       "required": false,
       "type": "integer"
@@ -23,7 +23,7 @@
     },
     "page": {
       "desc": "Page number of results to return.",
-      "example": "12",
+      "example": "2",
       "name": "page",
       "required": false,
       "type": "integer"
@@ -51,21 +51,21 @@
     },
     "ts_from": {
       "desc": "Filter files created after this timestamp (inclusive).",
-      "example": "0123456789",
+      "example": "123456789",
       "name": "ts_from",
       "required": false,
       "type": "string"
     },
     "ts_to": {
       "desc": "Filter files created before this timestamp (inclusive).",
-      "example": "now123456789",
+      "example": "123456789",
       "name": "ts_to",
       "required": false,
       "type": "string"
     },
     "types": {
       "desc": "Filter files by type (see below). You can pass multiple values in the types argument, like types=spaces,snippets.The default value is all, which does not filter the list.",
-      "example": "allimages",
+      "example": "images",
       "name": "types",
       "required": false,
       "type": "string"

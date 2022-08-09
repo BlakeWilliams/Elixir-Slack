@@ -2,7 +2,7 @@
   "args": {
     "batch_presence_aware": {
       "desc": "Batch presence deliveries via subscription. Enabling changes the shape of presence_change events. See batch presence.",
-      "example": "false1",
+      "example": "1",
       "name": "batch_presence_aware",
       "required": false,
       "type": "boolean"
@@ -23,7 +23,7 @@
     },
     "no_latest": {
       "desc": "Exclude latest timestamps for channels, groups, mpims, and ims. Automatically sets no_unreads to 1",
-      "example": "01",
+      "example": "1",
       "name": "no_latest",
       "required": false,
       "type": "boolean"
@@ -37,7 +37,7 @@
     },
     "presence_sub": {
       "desc": "Only deliver presence events when requested by subscription. See presence subscriptions.",
-      "example": "truetrue",
+      "example": "true",
       "name": "presence_sub",
       "required": false,
       "type": "boolean"

@@ -58,7 +58,7 @@
     },
     "user_auth_required": {
       "desc": "Set to true or 1 to indicate the user must install your Slack app to trigger unfurls for this domain",
-      "example": "0true",
+      "example": "true",
       "name": "user_auth_required",
       "required": false,
       "type": "boolean"

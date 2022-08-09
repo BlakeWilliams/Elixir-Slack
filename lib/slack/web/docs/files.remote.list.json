@@ -30,14 +30,14 @@
     },
     "ts_from": {
       "desc": "Filter files created after this timestamp (inclusive).",
-      "example": "0123456789",
+      "example": "123456789",
       "name": "ts_from",
       "required": false,
       "type": "string"
     },
     "ts_to": {
       "desc": "Filter files created before this timestamp (inclusive).",
-      "example": "now123456789",
+      "example": "123456789",
       "name": "ts_to",
       "required": false,
       "type": "string"

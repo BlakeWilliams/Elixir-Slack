@@ -9,7 +9,7 @@
     },
     "presence_sub": {
       "desc": "Only deliver presence events when requested by subscription. See presence subscriptions.",
-      "example": "1true",
+      "example": "true",
       "name": "presence_sub",
       "required": false,
       "type": "boolean"

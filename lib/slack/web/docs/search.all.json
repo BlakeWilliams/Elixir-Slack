@@ -2,7 +2,7 @@
   "args": {
     "count": {
       "desc": "Number of items to return per page.",
-      "example": "2020",
+      "example": "20",
       "name": "count",
       "required": false,
       "type": "integer"
@@ -16,7 +16,7 @@
     },
     "page": {
       "desc": "Page number of results to return.",
-      "example": "12",
+      "example": "2",
       "name": "page",
       "required": false,
       "type": "integer"
@@ -30,14 +30,14 @@
     },
     "sort": {
       "desc": "Return matches sorted by either score or timestamp.",
-      "example": "scoretimestamp",
+      "example": "timestamp",
       "name": "sort",
       "required": false,
       "type": "string"
     },
     "sort_dir": {
       "desc": "Change sort direction to ascending (asc) or descending (desc).",
-      "example": "descasc",
+      "example": "asc",
       "name": "sort_dir",
       "required": false,
       "type": "string"

@@ -7,6 +7,20 @@
       "required": false,
       "type": "boolean"
     },
+    "attachments": {
+      "desc": "Required unless `blocks`, `text` is passed. A JSON-based array of structured attachments, presented as a URL-encoded string.",
+      "example": "[{\"pretext\": \"pre-hello\", \"text\": \"text-world\"}]",
+      "name": "attachments",
+      "required": false,
+      "type": "string"
+    },
+    "blocks": {
+      "desc": "Required unless `attachments`, `text` is passed. A JSON-based array of structured blocks, presented as a URL-encoded string.",
+      "example": "[{\"type\": \"section\", \"text\": {\"type\": \"plain_text\", \"text\": \"Hello world\"}}]",
+      "name": "blocks",
+      "required": false,
+      "type": "blocks[] as string"
+    },
     "channel": {
       "desc": "Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name. See below for more details.",
       "example": "C1234567890",
@@ -44,7 +58,7 @@
     },
     "mrkdwn": {
       "desc": "Disable Slack markup parsing by setting to false. Enabled by default.",
-      "example": "truefalse",
+      "example": "false",
       "name": "mrkdwn",
       "required": false,
       "type": "boolean"
@@ -62,6 +76,13 @@
       "name": "reply_broadcast",
       "required": false,
       "type": "boolean"
+    },
+    "text": {
+      "desc": "Required unless `attachments`, `blocks` is passed. The formatted text of the message to be published. If blocks are included, this will become the fallback text used in notifications.",
+      "example": "Hello world",
+      "name": "text",
+      "required": false,
+      "type": "string"
     },
     "thread_ts": {
       "desc": "Provide another message's ts value to make this message a reply. Avoid using a reply's ts value; use its parent instead.",

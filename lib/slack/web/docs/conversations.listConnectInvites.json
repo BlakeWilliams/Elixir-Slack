@@ -2,7 +2,7 @@
   "args": {
     "count": {
       "desc": "Maximum number of invites to return",
-      "example": "100",
+      "example": "",
       "name": "count",
       "required": false,
       "type": "integer"

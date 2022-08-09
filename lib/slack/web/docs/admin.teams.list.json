@@ -9,7 +9,7 @@
     },
     "limit": {
       "desc": "The maximum number of items to return. Must be between 1 - 100 both inclusive.",
-      "example": "10050",
+      "example": "50",
       "name": "limit",
       "required": false,
       "type": "integer"

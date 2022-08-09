@@ -23,7 +23,7 @@
     },
     "org_wide": {
       "desc": "When true, the channel will be available org-wide. Note: if the channel is not org_wide=true, you must specify a team_id for this channel",
-      "example": "falsetrue",
+      "example": "true",
       "name": "org_wide",
       "required": false,
       "type": "boolean"

@@ -2,21 +2,21 @@
   "args": {
     "before": {
       "desc": "End of time range of logs to include in results (inclusive).",
-      "example": "now1457989166",
+      "example": "1457989166",
       "name": "before",
       "required": false,
       "type": "string"
     },
     "count": {
       "desc": "Number of items to return per page.",
-      "example": "10020",
+      "example": "20",
       "name": "count",
       "required": false,
       "type": "string"
     },
     "page": {
       "desc": "Page number of results to return.",
-      "example": "12",
+      "example": "2",
       "name": "page",
       "required": false,
       "type": "string"

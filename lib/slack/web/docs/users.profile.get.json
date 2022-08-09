@@ -2,7 +2,7 @@
   "args": {
     "include_labels": {
       "desc": "Include labels for each ID in custom profile fields. Using this parameter will heavily rate-limit your requests and is not recommended.",
-      "example": "falsetrue",
+      "example": "true",
       "name": "include_labels",
       "required": false,
       "type": "boolean"

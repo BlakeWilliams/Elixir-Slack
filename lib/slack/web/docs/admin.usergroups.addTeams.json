@@ -2,7 +2,7 @@
   "args": {
     "auto_provision": {
       "desc": "When true, this method automatically creates new workspace accounts for the IDP group members.",
-      "example": "falsetrue",
+      "example": "true",
       "name": "auto_provision",
       "required": false,
       "type": "boolean"

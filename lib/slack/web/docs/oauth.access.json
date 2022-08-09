@@ -30,7 +30,7 @@
     },
     "single_channel": {
       "desc": "Request the user to add your app only to a single channel. Only valid with a legacy workspace app.",
-      "example": "falsetrue",
+      "example": "true",
       "name": "single_channel",
       "required": false,
       "type": "boolean"

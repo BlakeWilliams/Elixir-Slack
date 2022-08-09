@@ -2,14 +2,14 @@
   "args": {
     "date_end_of_support": {
       "desc": "Unix timestamp of the date of past or upcoming end of support cycles. If not provided will include all announced end of support cycles.",
-      "example": "0",
+      "example": "",
       "name": "date_end_of_support",
       "required": false,
       "type": "integer"
     },
     "date_sessions_started": {
       "desc": "Unix timestamp of a date to start looking for user sessions. If not provided will start six months ago.",
-      "example": "0",
+      "example": "",
       "name": "date_sessions_started",
       "required": false,
       "type": "integer"

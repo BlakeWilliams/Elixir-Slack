@@ -16,7 +16,7 @@
     },
     "limit": {
       "desc": "Maximum number of items to be returned. Must be between 1 - 20 both inclusive. Default is 10.",
-      "example": "1020",
+      "example": "20",
       "name": "limit",
       "required": false,
       "type": "integer"
@@ -37,14 +37,14 @@
     },
     "sort": {
       "desc": "Possible values are relevant (search ranking based on what we think is closest), name (alphabetical), member_count (number of users in the channel), and created (date channel was created). You can optionally pair this with the sort_dir arg to change how it is sorted",
-      "example": "member_countname",
+      "example": "name",
       "name": "sort",
       "required": false,
       "type": "string"
     },
     "sort_dir": {
       "desc": "Sort direction. Possible values are asc for ascending order like (1, 2, 3) or (a, b, c), and desc for descending order like (3, 2, 1) or (c, b, a)",
-      "example": "descasc",
+      "example": "asc",
       "name": "sort_dir",
       "required": false,
       "type": "string"

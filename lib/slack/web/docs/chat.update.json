@@ -58,7 +58,7 @@
     },
     "reply_broadcast": {
       "desc": "Broadcast an existing thread reply to make it visible to everyone in the channel or conversation.",
-      "example": "falsetrue",
+      "example": "true",
       "name": "reply_broadcast",
       "required": false,
       "type": "boolean"
